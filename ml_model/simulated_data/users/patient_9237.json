@@ -1,0 +1,24 @@
+{
+  "id": "patient_9237",
+  "name": "Susan Smith",
+  "email": "patient_9237@yahoo.com",
+  "role": "patient",
+  "profileImageUrl": null,
+  "medicalHistory": {
+    "previousInjuries": "None",
+    "surgicalHistory": "Rotator cuff repair",
+    "medications": "Pain relievers",
+    "allergies": "Latex"
+  },
+  "physicalCondition": {
+    "bodyPart": "Hip",
+    "painLevel": 8,
+    "mobilityLimitations": "Limited range of motion and strength",
+    "painLocation": "Ligament"
+  },
+  "rehabilitationGoals": [
+    "Pain reduction",
+    "Post-surgery recovery"
+  ],
+  "createdAt": "2024-09-02T13:59:38.725518"
+}

@@ -1,0 +1,24 @@
+{
+  "id": "patient_9898",
+  "name": "Barbara Miller",
+  "email": "patient_9898@gmail.com",
+  "role": "patient",
+  "profileImageUrl": null,
+  "medicalHistory": {
+    "previousInjuries": "ACL tear",
+    "surgicalHistory": "Ankle ligament reconstruction",
+    "medications": "Anti-inflammatory medication",
+    "allergies": "Latex"
+  },
+  "physicalCondition": {
+    "bodyPart": "Hip",
+    "painLevel": 5,
+    "mobilityLimitations": "Limited range of motion and strength",
+    "painLocation": "Tendon"
+  },
+  "rehabilitationGoals": [
+    "Post-surgery recovery",
+    "Improve range of motion"
+  ],
+  "createdAt": "2024-06-21T13:59:38.711002"
+}

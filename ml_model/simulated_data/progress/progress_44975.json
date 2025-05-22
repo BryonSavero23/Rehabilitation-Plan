@@ -1,0 +1,60 @@
+{
+  "id": "progress_44975",
+  "userId": "patient_4771",
+  "planId": "plan_99948",
+  "date": "2024-11-05T13:59:38.695455",
+  "exerciseLogs": [
+    {
+      "exerciseId": "ex_elbow_1_4202",
+      "exerciseName": "Elbow Exercise 4",
+      "setsCompleted": 2,
+      "repsCompleted": 9,
+      "durationSeconds": 67,
+      "painLevel": 5,
+      "notes": null
+    },
+    {
+      "exerciseId": "ex_elbow_2_5487",
+      "exerciseName": "Elbow Exercise 6",
+      "setsCompleted": 3,
+      "repsCompleted": 4,
+      "durationSeconds": 48,
+      "painLevel": 2,
+      "notes": "Too challenging"
+    },
+    {
+      "exerciseId": "ex_elbow_3_8254",
+      "exerciseName": "Elbow Exercise 1",
+      "setsCompleted": 2,
+      "repsCompleted": 5,
+      "durationSeconds": 51,
+      "painLevel": 3,
+      "notes": "Need to modify"
+    },
+    {
+      "exerciseId": "ex_elbow_4_3133",
+      "exerciseName": "Elbow Exercise 3",
+      "setsCompleted": 1,
+      "repsCompleted": 1,
+      "durationSeconds": 47,
+      "painLevel": 5,
+      "notes": null
+    },
+    {
+      "exerciseId": "ex_elbow_5_7106",
+      "exerciseName": "Elbow Exercise 2",
+      "setsCompleted": 1,
+      "repsCompleted": 1,
+      "durationSeconds": 43,
+      "painLevel": 3,
+      "notes": null
+    }
+  ],
+  "metrics": {
+    "elbow_rom": 119,
+    "elbow_strength": 7
+  },
+  "feedback": "Still experiencing pain during certain movements",
+  "overallRating": 4,
+  "adherencePercentage": 69
+}

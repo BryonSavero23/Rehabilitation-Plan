@@ -1,0 +1,51 @@
+{
+  "id": "progress_58581",
+  "userId": "patient_5204",
+  "planId": "plan_24699",
+  "date": "2024-06-20T13:59:38.674414",
+  "exerciseLogs": [
+    {
+      "exerciseId": "ex_ankle_1_5915",
+      "exerciseName": "Toe Raises",
+      "setsCompleted": 3,
+      "repsCompleted": 7,
+      "durationSeconds": 31,
+      "painLevel": 7,
+      "notes": "Felt good"
+    },
+    {
+      "exerciseId": "ex_ankle_2_1590",
+      "exerciseName": "Ankle Pumps",
+      "setsCompleted": 2,
+      "repsCompleted": 11,
+      "durationSeconds": 84,
+      "painLevel": 5,
+      "notes": "Too challenging"
+    },
+    {
+      "exerciseId": "ex_ankle_3_8682",
+      "exerciseName": "Resistance Band Inversion",
+      "setsCompleted": 1,
+      "repsCompleted": 8,
+      "durationSeconds": 35,
+      "painLevel": 2,
+      "notes": "Too challenging"
+    },
+    {
+      "exerciseId": "ex_ankle_4_7075",
+      "exerciseName": "Resistance Band Eversion",
+      "setsCompleted": 1,
+      "repsCompleted": 13,
+      "durationSeconds": 44,
+      "painLevel": 2,
+      "notes": "Getting easier"
+    }
+  ],
+  "metrics": {
+    "ankle_rom": 162,
+    "ankle_strength": 6
+  },
+  "feedback": "Feeling improvement in range of motion",
+  "overallRating": 5,
+  "adherencePercentage": 58
+}

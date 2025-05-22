@@ -1,0 +1,25 @@
+{
+  "id": "patient_6891",
+  "name": "Elizabeth Johnson",
+  "email": "patient_6891@hotmail.com",
+  "role": "patient",
+  "profileImageUrl": null,
+  "medicalHistory": {
+    "previousInjuries": "None",
+    "surgicalHistory": "Fracture fixation",
+    "medications": "None",
+    "allergies": "Penicillin"
+  },
+  "physicalCondition": {
+    "bodyPart": "Ankle",
+    "painLevel": 7,
+    "mobilityLimitations": "Limited range of motion and strength",
+    "painLocation": "Ligament"
+  },
+  "rehabilitationGoals": [
+    "Improve range of motion",
+    "Return to sports",
+    "Pain reduction"
+  ],
+  "createdAt": "2025-02-10T13:59:38.719000"
+}

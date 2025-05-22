@@ -1,0 +1,42 @@
+{
+  "id": "progress_21818",
+  "userId": "patient_5148",
+  "planId": "plan_79504",
+  "date": "2025-02-18T13:59:38.727518",
+  "exerciseLogs": [
+    {
+      "exerciseId": "ex_shoulder_1_4347",
+      "exerciseName": "External Rotation",
+      "setsCompleted": 2,
+      "repsCompleted": 6,
+      "durationSeconds": 86,
+      "painLevel": 8,
+      "notes": "Getting easier"
+    },
+    {
+      "exerciseId": "ex_shoulder_2_3880",
+      "exerciseName": "Shoulder Flexion",
+      "setsCompleted": 1,
+      "repsCompleted": 10,
+      "durationSeconds": 90,
+      "painLevel": 6,
+      "notes": "Getting easier"
+    },
+    {
+      "exerciseId": "ex_shoulder_3_4337",
+      "exerciseName": "Internal Rotation",
+      "setsCompleted": 1,
+      "repsCompleted": 11,
+      "durationSeconds": 31,
+      "painLevel": 5,
+      "notes": "Felt good"
+    }
+  ],
+  "metrics": {
+    "shoulder_rom": 111,
+    "shoulder_strength": 8
+  },
+  "feedback": "Feeling improvement in range of motion",
+  "overallRating": 4,
+  "adherencePercentage": 44
+}

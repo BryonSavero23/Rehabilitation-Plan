@@ -1,0 +1,59 @@
+{
+  "id": "plan_24699",
+  "userId": "patient_5204",
+  "therapistId": null,
+  "title": "Ankle Rehabilitation Plan",
+  "description": "Personalized rehabilitation plan for Ankle recovery",
+  "exercises": [
+    {
+      "id": "ex_ankle_1_5915",
+      "name": "Toe Raises",
+      "description": "Stand and lift your toes off the ground",
+      "bodyPart": "Ankle",
+      "sets": 4,
+      "reps": 13,
+      "durationSeconds": 31,
+      "difficultyLevel": "advanced"
+    },
+    {
+      "id": "ex_ankle_2_1590",
+      "name": "Ankle Pumps",
+      "description": "Move your foot up and down",
+      "bodyPart": "Ankle",
+      "sets": 2,
+      "reps": 15,
+      "durationSeconds": 84,
+      "difficultyLevel": "advanced"
+    },
+    {
+      "id": "ex_ankle_3_8682",
+      "name": "Resistance Band Inversion",
+      "description": "Turn foot inward against resistance",
+      "bodyPart": "Ankle",
+      "sets": 4,
+      "reps": 8,
+      "durationSeconds": 35,
+      "difficultyLevel": "advanced"
+    },
+    {
+      "id": "ex_ankle_4_7075",
+      "name": "Resistance Band Eversion",
+      "description": "Turn foot outward against resistance",
+      "bodyPart": "Ankle",
+      "sets": 2,
+      "reps": 15,
+      "durationSeconds": 44,
+      "difficultyLevel": "advanced"
+    }
+  ],
+  "startDate": "2024-05-02T13:59:38.674414",
+  "endDate": null,
+  "status": "active",
+  "goals": {
+    "primary": "Prevent re-injury",
+    "bodyPart": "Ankle",
+    "painReduction": "low"
+  },
+  "lastUpdated": "2024-05-02T13:59:38.674414",
+  "isDynamicallyAdjusted": false
+}

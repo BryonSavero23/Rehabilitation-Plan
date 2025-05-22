@@ -1,0 +1,42 @@
+{
+  "id": "progress_58760",
+  "userId": "patient_5204",
+  "planId": "plan_24699",
+  "date": "2024-06-30T13:59:38.674414",
+  "exerciseLogs": [
+    {
+      "exerciseId": "ex_ankle_1_5915",
+      "exerciseName": "Toe Raises",
+      "setsCompleted": 2,
+      "repsCompleted": 13,
+      "durationSeconds": 31,
+      "painLevel": 1,
+      "notes": "Felt good"
+    },
+    {
+      "exerciseId": "ex_ankle_3_8682",
+      "exerciseName": "Resistance Band Inversion",
+      "setsCompleted": 4,
+      "repsCompleted": 1,
+      "durationSeconds": 35,
+      "painLevel": 3,
+      "notes": "Too challenging"
+    },
+    {
+      "exerciseId": "ex_ankle_4_7075",
+      "exerciseName": "Resistance Band Eversion",
+      "setsCompleted": 1,
+      "repsCompleted": 13,
+      "durationSeconds": 44,
+      "painLevel": 7,
+      "notes": "Need to modify"
+    }
+  ],
+  "metrics": {
+    "ankle_rom": 63,
+    "ankle_strength": 7
+  },
+  "feedback": null,
+  "overallRating": 5,
+  "adherencePercentage": 58
+}

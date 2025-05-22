@@ -1,0 +1,42 @@
+{
+  "id": "progress_53428",
+  "userId": "patient_7253",
+  "planId": "plan_92689",
+  "date": "2024-08-06T13:59:38.703984",
+  "exerciseLogs": [
+    {
+      "exerciseId": "ex_neck_1_1707",
+      "exerciseName": "Neck Exercise 4",
+      "setsCompleted": 3,
+      "repsCompleted": 13,
+      "durationSeconds": 67,
+      "painLevel": 3,
+      "notes": "Felt good"
+    },
+    {
+      "exerciseId": "ex_neck_2_3716",
+      "exerciseName": "Neck Exercise 6",
+      "setsCompleted": 4,
+      "repsCompleted": 2,
+      "durationSeconds": 35,
+      "painLevel": 3,
+      "notes": "Felt good"
+    },
+    {
+      "exerciseId": "ex_neck_3_2267",
+      "exerciseName": "Neck Exercise 3",
+      "setsCompleted": 3,
+      "repsCompleted": 5,
+      "durationSeconds": 63,
+      "painLevel": 8,
+      "notes": null
+    }
+  ],
+  "metrics": {
+    "neck_rom": 107,
+    "neck_strength": 6
+  },
+  "feedback": "Feeling improvement in range of motion",
+  "overallRating": 2,
+  "adherencePercentage": 90
+}

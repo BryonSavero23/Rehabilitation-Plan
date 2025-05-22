@@ -1,0 +1,24 @@
+{
+  "id": "patient_1571",
+  "name": "Elizabeth Rodriguez",
+  "email": "patient_1571@yahoo.com",
+  "role": "patient",
+  "profileImageUrl": null,
+  "medicalHistory": {
+    "previousInjuries": "Ankle sprain",
+    "surgicalHistory": "ACL reconstruction",
+    "medications": "Anti-inflammatory medication",
+    "allergies": "None"
+  },
+  "physicalCondition": {
+    "bodyPart": "Ankle",
+    "painLevel": 9,
+    "mobilityLimitations": "Limited range of motion and strength",
+    "painLocation": "Joint"
+  },
+  "rehabilitationGoals": [
+    "Increase strength",
+    "Pain reduction"
+  ],
+  "createdAt": "2024-12-19T13:59:38.721518"
+}

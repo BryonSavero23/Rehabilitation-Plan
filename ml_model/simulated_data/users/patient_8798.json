@@ -1,0 +1,24 @@
+{
+  "id": "patient_8798",
+  "name": "Elizabeth Davis",
+  "email": "patient_8798@gmail.com",
+  "role": "patient",
+  "profileImageUrl": null,
+  "medicalHistory": {
+    "previousInjuries": "Rotator cuff injury",
+    "surgicalHistory": "Fracture fixation",
+    "medications": "Anti-inflammatory medication",
+    "allergies": "None"
+  },
+  "physicalCondition": {
+    "bodyPart": "Hip",
+    "painLevel": 7,
+    "mobilityLimitations": "Limited range of motion and strength",
+    "painLocation": "Muscle"
+  },
+  "rehabilitationGoals": [
+    "Post-surgery recovery",
+    "Post-surgery recovery"
+  ],
+  "createdAt": "2024-04-20T13:59:38.693456"
+}

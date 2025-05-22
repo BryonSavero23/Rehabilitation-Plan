@@ -1,0 +1,42 @@
+{
+  "id": "progress_68870",
+  "userId": "patient_2011",
+  "planId": "plan_87640",
+  "date": "2024-11-10T13:59:38.695455",
+  "exerciseLogs": [
+    {
+      "exerciseId": "ex_knee_2_5575",
+      "exerciseName": "Wall Squats",
+      "setsCompleted": 4,
+      "repsCompleted": 5,
+      "durationSeconds": 90,
+      "painLevel": 7,
+      "notes": "Felt good"
+    },
+    {
+      "exerciseId": "ex_knee_3_1716",
+      "exerciseName": "Straight Leg Raises",
+      "setsCompleted": 2,
+      "repsCompleted": 7,
+      "durationSeconds": 74,
+      "painLevel": 8,
+      "notes": "Too challenging"
+    },
+    {
+      "exerciseId": "ex_knee_4_4657",
+      "exerciseName": "Terminal Knee Extensions",
+      "setsCompleted": 2,
+      "repsCompleted": 1,
+      "durationSeconds": 64,
+      "painLevel": 2,
+      "notes": null
+    }
+  ],
+  "metrics": {
+    "knee_rom": 66,
+    "knee_strength": 8
+  },
+  "feedback": "Need modifications for some exercises",
+  "overallRating": 1,
+  "adherencePercentage": 66
+}

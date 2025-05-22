@@ -1,0 +1,42 @@
+{
+  "id": "progress_92116",
+  "userId": "patient_5894",
+  "planId": "plan_58492",
+  "date": "2024-06-11T13:59:38.706985",
+  "exerciseLogs": [
+    {
+      "exerciseId": "ex_back_1_9140",
+      "exerciseName": "Back Exercise 4",
+      "setsCompleted": 2,
+      "repsCompleted": 2,
+      "durationSeconds": 50,
+      "painLevel": 1,
+      "notes": null
+    },
+    {
+      "exerciseId": "ex_back_2_2770",
+      "exerciseName": "Back Exercise 3",
+      "setsCompleted": 1,
+      "repsCompleted": 11,
+      "durationSeconds": 46,
+      "painLevel": 9,
+      "notes": "Getting easier"
+    },
+    {
+      "exerciseId": "ex_back_3_4723",
+      "exerciseName": "Back Exercise 6",
+      "setsCompleted": 1,
+      "repsCompleted": 5,
+      "durationSeconds": 81,
+      "painLevel": 4,
+      "notes": "Getting easier"
+    }
+  ],
+  "metrics": {
+    "back_rom": 158,
+    "back_strength": 6
+  },
+  "feedback": "Feeling improvement in range of motion",
+  "overallRating": 1,
+  "adherencePercentage": 28
+}

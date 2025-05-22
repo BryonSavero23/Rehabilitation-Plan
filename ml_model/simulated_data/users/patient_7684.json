@@ -1,0 +1,23 @@
+{
+  "id": "patient_7684",
+  "name": "Linda Miller",
+  "email": "patient_7684@hotmail.com",
+  "role": "patient",
+  "profileImageUrl": null,
+  "medicalHistory": {
+    "previousInjuries": "ACL tear",
+    "surgicalHistory": "None",
+    "medications": "None",
+    "allergies": "Aspirin"
+  },
+  "physicalCondition": {
+    "bodyPart": "Wrist",
+    "painLevel": 10,
+    "mobilityLimitations": "Limited range of motion and strength",
+    "painLocation": "Joint"
+  },
+  "rehabilitationGoals": [
+    "Post-surgery recovery"
+  ],
+  "createdAt": "2024-12-31T13:59:38.720509"
+}

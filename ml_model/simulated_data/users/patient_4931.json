@@ -1,0 +1,25 @@
+{
+  "id": "patient_4931",
+  "name": "Jennifer Thomas",
+  "email": "patient_4931@example.com",
+  "role": "patient",
+  "profileImageUrl": null,
+  "medicalHistory": {
+    "previousInjuries": "Meniscus tear",
+    "surgicalHistory": "Fracture fixation",
+    "medications": "Muscle relaxants",
+    "allergies": "Latex"
+  },
+  "physicalCondition": {
+    "bodyPart": "Back",
+    "painLevel": 6,
+    "mobilityLimitations": "Limited range of motion and strength",
+    "painLocation": "Muscle"
+  },
+  "rehabilitationGoals": [
+    "Improve range of motion",
+    "Improve range of motion",
+    "Post-surgery recovery"
+  ],
+  "createdAt": "2024-09-24T13:59:38.679936"
+}

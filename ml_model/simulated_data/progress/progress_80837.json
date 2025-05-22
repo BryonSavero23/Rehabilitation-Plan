@@ -1,0 +1,51 @@
+{
+  "id": "progress_80837",
+  "userId": "patient_3729",
+  "planId": "plan_25330",
+  "date": "2024-11-28T13:59:38.673412",
+  "exerciseLogs": [
+    {
+      "exerciseId": "ex_ankle_1_3478",
+      "exerciseName": "Resistance Band Eversion",
+      "setsCompleted": 1,
+      "repsCompleted": 1,
+      "durationSeconds": 64,
+      "painLevel": 8,
+      "notes": null
+    },
+    {
+      "exerciseId": "ex_ankle_2_6355",
+      "exerciseName": "Heel Raises",
+      "setsCompleted": 2,
+      "repsCompleted": 6,
+      "durationSeconds": 41,
+      "painLevel": 9,
+      "notes": "Need to modify"
+    },
+    {
+      "exerciseId": "ex_ankle_3_3436",
+      "exerciseName": "Resistance Band Inversion",
+      "setsCompleted": 3,
+      "repsCompleted": 4,
+      "durationSeconds": 44,
+      "painLevel": 5,
+      "notes": null
+    },
+    {
+      "exerciseId": "ex_ankle_4_4992",
+      "exerciseName": "Toe Raises",
+      "setsCompleted": 1,
+      "repsCompleted": 12,
+      "durationSeconds": 88,
+      "painLevel": 9,
+      "notes": "Need to modify"
+    }
+  ],
+  "metrics": {
+    "ankle_rom": 161,
+    "ankle_strength": 3
+  },
+  "feedback": null,
+  "overallRating": 1,
+  "adherencePercentage": 77
+}

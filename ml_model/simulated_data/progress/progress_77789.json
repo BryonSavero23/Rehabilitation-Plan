@@ -1,0 +1,60 @@
+{
+  "id": "progress_77789",
+  "userId": "patient_3766",
+  "planId": "plan_93657",
+  "date": "2025-03-05T13:59:38.682937",
+  "exerciseLogs": [
+    {
+      "exerciseId": "ex_hip_1_4240",
+      "exerciseName": "Hip Exercise 3",
+      "setsCompleted": 1,
+      "repsCompleted": 8,
+      "durationSeconds": 70,
+      "painLevel": 7,
+      "notes": "Getting easier"
+    },
+    {
+      "exerciseId": "ex_hip_2_9252",
+      "exerciseName": "Hip Exercise 2",
+      "setsCompleted": 1,
+      "repsCompleted": 13,
+      "durationSeconds": 35,
+      "painLevel": 8,
+      "notes": "Too challenging"
+    },
+    {
+      "exerciseId": "ex_hip_3_7894",
+      "exerciseName": "Hip Exercise 4",
+      "setsCompleted": 1,
+      "repsCompleted": 5,
+      "durationSeconds": 41,
+      "painLevel": 2,
+      "notes": null
+    },
+    {
+      "exerciseId": "ex_hip_5_2351",
+      "exerciseName": "Hip Exercise 1",
+      "setsCompleted": 2,
+      "repsCompleted": 8,
+      "durationSeconds": 66,
+      "painLevel": 10,
+      "notes": null
+    },
+    {
+      "exerciseId": "ex_hip_6_2493",
+      "exerciseName": "Hip Exercise 5",
+      "setsCompleted": 3,
+      "repsCompleted": 12,
+      "durationSeconds": 72,
+      "painLevel": 4,
+      "notes": "Too challenging"
+    }
+  ],
+  "metrics": {
+    "hip_rom": 127,
+    "hip_strength": 7
+  },
+  "feedback": "Feeling improvement in range of motion",
+  "overallRating": 5,
+  "adherencePercentage": 47
+}

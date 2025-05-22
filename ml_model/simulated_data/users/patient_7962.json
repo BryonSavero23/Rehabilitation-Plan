@@ -1,0 +1,25 @@
+{
+  "id": "patient_7962",
+  "name": "Mary Lopez",
+  "email": "patient_7962@example.com",
+  "role": "patient",
+  "profileImageUrl": null,
+  "medicalHistory": {
+    "previousInjuries": "Rotator cuff injury",
+    "surgicalHistory": "Joint replacement",
+    "medications": "Pain relievers",
+    "allergies": "None"
+  },
+  "physicalCondition": {
+    "bodyPart": "Ankle",
+    "painLevel": 6,
+    "mobilityLimitations": "Limited range of motion and strength",
+    "painLocation": "Tendon"
+  },
+  "rehabilitationGoals": [
+    "Post-surgery recovery",
+    "Pain reduction",
+    "Increase strength"
+  ],
+  "createdAt": "2024-10-22T13:59:38.670412"
+}

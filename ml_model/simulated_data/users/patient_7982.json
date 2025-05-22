@@ -1,0 +1,24 @@
+{
+  "id": "patient_7982",
+  "name": "Karen Moore",
+  "email": "patient_7982@hotmail.com",
+  "role": "patient",
+  "profileImageUrl": null,
+  "medicalHistory": {
+    "previousInjuries": "Fracture",
+    "surgicalHistory": "Fracture fixation",
+    "medications": "Muscle relaxants",
+    "allergies": "Penicillin"
+  },
+  "physicalCondition": {
+    "bodyPart": "Wrist",
+    "painLevel": 4,
+    "mobilityLimitations": "Limited range of motion and strength",
+    "painLocation": "Ligament"
+  },
+  "rehabilitationGoals": [
+    "Pain reduction",
+    "Improve daily function"
+  ],
+  "createdAt": "2024-04-30T13:59:38.729520"
+}

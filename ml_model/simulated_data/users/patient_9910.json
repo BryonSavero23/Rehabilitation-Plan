@@ -1,0 +1,24 @@
+{
+  "id": "patient_9910",
+  "name": "William Wilson",
+  "email": "patient_9910@yahoo.com",
+  "role": "patient",
+  "profileImageUrl": null,
+  "medicalHistory": {
+    "previousInjuries": "Muscle strain",
+    "surgicalHistory": "Arthroscopy",
+    "medications": "NSAIDs",
+    "allergies": "None"
+  },
+  "physicalCondition": {
+    "bodyPart": "Neck",
+    "painLevel": 3,
+    "mobilityLimitations": "Limited range of motion and strength",
+    "painLocation": "Muscle"
+  },
+  "rehabilitationGoals": [
+    "Improve daily function",
+    "Improve daily function"
+  ],
+  "createdAt": "2024-06-06T13:59:38.723516"
+}

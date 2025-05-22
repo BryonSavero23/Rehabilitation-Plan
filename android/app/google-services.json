@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "188510725049",
+    "project_id": "prp-60374",
+    "storage_bucket": "prp-60374.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:188510725049:android:d22e2c642fafaa0e468c68",
+        "android_client_info": {
+          "package_name": "com.example.personalized_rehabilitation_plans"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDA4lWK4Bb4quITCWNPMxQe8oXswzd7O2A"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

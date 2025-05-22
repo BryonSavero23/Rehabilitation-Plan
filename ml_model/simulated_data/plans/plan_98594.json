@@ -1,0 +1,59 @@
+{
+  "id": "plan_98594",
+  "userId": "patient_9196",
+  "therapistId": "therapist_2230",
+  "title": "Elbow Rehabilitation Plan",
+  "description": "Personalized rehabilitation plan for Elbow recovery",
+  "exercises": [
+    {
+      "id": "ex_elbow_1_5189",
+      "name": "Elbow Exercise 3",
+      "description": "Description for elbow exercise 3",
+      "bodyPart": "Elbow",
+      "sets": 2,
+      "reps": 12,
+      "durationSeconds": 88,
+      "difficultyLevel": "intermediate"
+    },
+    {
+      "id": "ex_elbow_2_7496",
+      "name": "Elbow Exercise 2",
+      "description": "Description for elbow exercise 2",
+      "bodyPart": "Elbow",
+      "sets": 4,
+      "reps": 8,
+      "durationSeconds": 61,
+      "difficultyLevel": "intermediate"
+    },
+    {
+      "id": "ex_elbow_3_1758",
+      "name": "Elbow Exercise 5",
+      "description": "Description for elbow exercise 5",
+      "bodyPart": "Elbow",
+      "sets": 3,
+      "reps": 15,
+      "durationSeconds": 89,
+      "difficultyLevel": "intermediate"
+    },
+    {
+      "id": "ex_elbow_4_7219",
+      "name": "Elbow Exercise 1",
+      "description": "Description for elbow exercise 1",
+      "bodyPart": "Elbow",
+      "sets": 3,
+      "reps": 15,
+      "durationSeconds": 48,
+      "difficultyLevel": "intermediate"
+    }
+  ],
+  "startDate": "2024-08-04T13:59:38.699985",
+  "endDate": null,
+  "status": "active",
+  "goals": {
+    "primary": "Pain reduction",
+    "bodyPart": "Elbow",
+    "painReduction": "medium"
+  },
+  "lastUpdated": "2024-08-04T13:59:38.699985",
+  "isDynamicallyAdjusted": true
+}

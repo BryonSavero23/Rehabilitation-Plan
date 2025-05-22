@@ -1,0 +1,24 @@
+{
+  "id": "patient_6248",
+  "name": "Mary Wilson",
+  "email": "patient_6248@yahoo.com",
+  "role": "patient",
+  "profileImageUrl": null,
+  "medicalHistory": {
+    "previousInjuries": "Fracture",
+    "surgicalHistory": "Joint replacement",
+    "medications": "Pain relievers",
+    "allergies": "Penicillin"
+  },
+  "physicalCondition": {
+    "bodyPart": "Ankle",
+    "painLevel": 5,
+    "mobilityLimitations": "Limited range of motion and strength",
+    "painLocation": "Joint"
+  },
+  "rehabilitationGoals": [
+    "Improve range of motion",
+    "Post-surgery recovery"
+  ],
+  "createdAt": "2025-01-06T13:59:38.672414"
+}

@@ -1,0 +1,51 @@
+{
+  "id": "progress_81942",
+  "userId": "patient_4454",
+  "planId": "plan_51793",
+  "date": "2025-02-22T13:59:38.660413",
+  "exerciseLogs": [
+    {
+      "exerciseId": "ex_wrist_1_2844",
+      "exerciseName": "Wrist Exercise 1",
+      "setsCompleted": 1,
+      "repsCompleted": 4,
+      "durationSeconds": 53,
+      "painLevel": 9,
+      "notes": "Felt good"
+    },
+    {
+      "exerciseId": "ex_wrist_2_4141",
+      "exerciseName": "Wrist Exercise 3",
+      "setsCompleted": 2,
+      "repsCompleted": 2,
+      "durationSeconds": 44,
+      "painLevel": 3,
+      "notes": null
+    },
+    {
+      "exerciseId": "ex_wrist_3_6337",
+      "exerciseName": "Wrist Exercise 4",
+      "setsCompleted": 1,
+      "repsCompleted": 11,
+      "durationSeconds": 39,
+      "painLevel": 5,
+      "notes": "Need to modify"
+    },
+    {
+      "exerciseId": "ex_wrist_4_8677",
+      "exerciseName": "Wrist Exercise 5",
+      "setsCompleted": 1,
+      "repsCompleted": 2,
+      "durationSeconds": 45,
+      "painLevel": 1,
+      "notes": null
+    }
+  ],
+  "metrics": {
+    "wrist_rom": 74,
+    "wrist_strength": 4
+  },
+  "feedback": "Exercises are getting easier to perform",
+  "overallRating": 4,
+  "adherencePercentage": 50
+}

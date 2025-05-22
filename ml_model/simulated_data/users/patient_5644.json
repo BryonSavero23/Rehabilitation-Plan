@@ -1,0 +1,23 @@
+{
+  "id": "patient_5644",
+  "name": "David Thomas",
+  "email": "patient_5644@hotmail.com",
+  "role": "patient",
+  "profileImageUrl": null,
+  "medicalHistory": {
+    "previousInjuries": "Rotator cuff injury",
+    "surgicalHistory": "Meniscus repair",
+    "medications": "Muscle relaxants",
+    "allergies": "Latex"
+  },
+  "physicalCondition": {
+    "bodyPart": "Back",
+    "painLevel": 1,
+    "mobilityLimitations": "Limited range of motion and strength",
+    "painLocation": "Joint"
+  },
+  "rehabilitationGoals": [
+    "Prevent re-injury"
+  ],
+  "createdAt": "2024-10-31T13:59:38.701987"
+}

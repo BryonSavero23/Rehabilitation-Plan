@@ -1,0 +1,33 @@
+{
+  "id": "progress_31065",
+  "userId": "patient_9196",
+  "planId": "plan_21813",
+  "date": "2024-09-07T13:59:38.699985",
+  "exerciseLogs": [
+    {
+      "exerciseId": "ex_elbow_2_7932",
+      "exerciseName": "Elbow Exercise 6",
+      "setsCompleted": 1,
+      "repsCompleted": 5,
+      "durationSeconds": 31,
+      "painLevel": 3,
+      "notes": "Too challenging"
+    },
+    {
+      "exerciseId": "ex_elbow_3_9851",
+      "exerciseName": "Elbow Exercise 3",
+      "setsCompleted": 3,
+      "repsCompleted": 9,
+      "durationSeconds": 78,
+      "painLevel": 8,
+      "notes": "Felt good"
+    }
+  ],
+  "metrics": {
+    "elbow_rom": 143,
+    "elbow_strength": 9
+  },
+  "feedback": "Feeling improvement in range of motion",
+  "overallRating": 3,
+  "adherencePercentage": 50
+}

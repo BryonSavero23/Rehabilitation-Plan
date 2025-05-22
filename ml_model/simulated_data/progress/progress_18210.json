@@ -1,0 +1,42 @@
+{
+  "id": "progress_18210",
+  "userId": "patient_1571",
+  "planId": "plan_81276",
+  "date": "2025-01-28T13:59:38.721518",
+  "exerciseLogs": [
+    {
+      "exerciseId": "ex_ankle_2_8276",
+      "exerciseName": "Heel Raises",
+      "setsCompleted": 1,
+      "repsCompleted": 1,
+      "durationSeconds": 58,
+      "painLevel": 8,
+      "notes": "Felt good"
+    },
+    {
+      "exerciseId": "ex_ankle_3_9321",
+      "exerciseName": "Ankle Pumps",
+      "setsCompleted": 2,
+      "repsCompleted": 2,
+      "durationSeconds": 89,
+      "painLevel": 8,
+      "notes": null
+    },
+    {
+      "exerciseId": "ex_ankle_4_4499",
+      "exerciseName": "Ankle Circles",
+      "setsCompleted": 4,
+      "repsCompleted": 4,
+      "durationSeconds": 38,
+      "painLevel": 5,
+      "notes": null
+    }
+  ],
+  "metrics": {
+    "ankle_rom": 155,
+    "ankle_strength": 4
+  },
+  "feedback": "Need modifications for some exercises",
+  "overallRating": 1,
+  "adherencePercentage": 53
+}

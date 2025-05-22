@@ -1,0 +1,25 @@
+{
+  "id": "patient_4878",
+  "name": "David Anderson",
+  "email": "patient_4878@gmail.com",
+  "role": "patient",
+  "profileImageUrl": null,
+  "medicalHistory": {
+    "previousInjuries": "Dislocation",
+    "surgicalHistory": "Ankle ligament reconstruction",
+    "medications": "Pain relievers",
+    "allergies": "NSAIDs"
+  },
+  "physicalCondition": {
+    "bodyPart": "Elbow",
+    "painLevel": 8,
+    "mobilityLimitations": "Limited range of motion and strength",
+    "painLocation": "Ligament"
+  },
+  "rehabilitationGoals": [
+    "Improve range of motion",
+    "Improve range of motion",
+    "Pain reduction"
+  ],
+  "createdAt": "2025-03-03T13:59:38.664412"
+}

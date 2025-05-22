@@ -1,0 +1,79 @@
+{
+  "id": "plan_67510",
+  "userId": "patient_2090",
+  "therapistId": "therapist_2230",
+  "title": "Elbow Rehabilitation Plan",
+  "description": "Personalized rehabilitation plan for Elbow recovery",
+  "exercises": [
+    {
+      "id": "ex_elbow_1_7576",
+      "name": "Elbow Exercise 1",
+      "description": "Description for elbow exercise 1",
+      "bodyPart": "Elbow",
+      "sets": 4,
+      "reps": 9,
+      "durationSeconds": 54,
+      "difficultyLevel": "advanced"
+    },
+    {
+      "id": "ex_elbow_2_8701",
+      "name": "Elbow Exercise 6",
+      "description": "Description for elbow exercise 6",
+      "bodyPart": "Elbow",
+      "sets": 4,
+      "reps": 9,
+      "durationSeconds": 51,
+      "difficultyLevel": "advanced"
+    },
+    {
+      "id": "ex_elbow_3_8022",
+      "name": "Elbow Exercise 3",
+      "description": "Description for elbow exercise 3",
+      "bodyPart": "Elbow",
+      "sets": 3,
+      "reps": 15,
+      "durationSeconds": 89,
+      "difficultyLevel": "advanced"
+    },
+    {
+      "id": "ex_elbow_4_9755",
+      "name": "Elbow Exercise 2",
+      "description": "Description for elbow exercise 2",
+      "bodyPart": "Elbow",
+      "sets": 3,
+      "reps": 12,
+      "durationSeconds": 58,
+      "difficultyLevel": "advanced"
+    },
+    {
+      "id": "ex_elbow_5_3806",
+      "name": "Elbow Exercise 4",
+      "description": "Description for elbow exercise 4",
+      "bodyPart": "Elbow",
+      "sets": 2,
+      "reps": 8,
+      "durationSeconds": 51,
+      "difficultyLevel": "advanced"
+    },
+    {
+      "id": "ex_elbow_6_6656",
+      "name": "Elbow Exercise 5",
+      "description": "Description for elbow exercise 5",
+      "bodyPart": "Elbow",
+      "sets": 3,
+      "reps": 8,
+      "durationSeconds": 89,
+      "difficultyLevel": "advanced"
+    }
+  ],
+  "startDate": "2025-01-17T13:59:38.685936",
+  "endDate": null,
+  "status": "completed",
+  "goals": {
+    "primary": "Improve daily function",
+    "bodyPart": "Elbow",
+    "painReduction": "low"
+  },
+  "lastUpdated": "2025-01-17T13:59:38.685936",
+  "isDynamicallyAdjusted": true
+}

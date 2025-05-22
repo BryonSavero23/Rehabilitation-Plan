@@ -1,0 +1,24 @@
+{
+  "id": "patient_3441",
+  "name": "Jennifer Anderson",
+  "email": "patient_3441@yahoo.com",
+  "role": "patient",
+  "profileImageUrl": null,
+  "medicalHistory": {
+    "previousInjuries": "Ankle sprain",
+    "surgicalHistory": "Rotator cuff repair",
+    "medications": "Muscle relaxants",
+    "allergies": "Aspirin"
+  },
+  "physicalCondition": {
+    "bodyPart": "Elbow",
+    "painLevel": 7,
+    "mobilityLimitations": "Limited range of motion and strength",
+    "painLocation": "Ligament"
+  },
+  "rehabilitationGoals": [
+    "Prevent re-injury",
+    "Prevent re-injury"
+  ],
+  "createdAt": "2024-05-19T13:59:38.688446"
+}

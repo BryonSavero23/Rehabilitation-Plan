@@ -1,0 +1,51 @@
+{
+  "id": "progress_48570",
+  "userId": "patient_7867",
+  "planId": "plan_12988",
+  "date": "2025-03-29T13:59:38.712000",
+  "exerciseLogs": [
+    {
+      "exerciseId": "ex_ankle_1_2275",
+      "exerciseName": "Toe Raises",
+      "setsCompleted": 3,
+      "repsCompleted": 10,
+      "durationSeconds": 53,
+      "painLevel": 9,
+      "notes": null
+    },
+    {
+      "exerciseId": "ex_ankle_2_8472",
+      "exerciseName": "Heel Raises",
+      "setsCompleted": 2,
+      "repsCompleted": 10,
+      "durationSeconds": 70,
+      "painLevel": 7,
+      "notes": "Too challenging"
+    },
+    {
+      "exerciseId": "ex_ankle_4_7380",
+      "exerciseName": "Ankle Pumps",
+      "setsCompleted": 4,
+      "repsCompleted": 4,
+      "durationSeconds": 77,
+      "painLevel": 7,
+      "notes": "Need to modify"
+    },
+    {
+      "exerciseId": "ex_ankle_6_1711",
+      "exerciseName": "Ankle Circles",
+      "setsCompleted": 3,
+      "repsCompleted": 6,
+      "durationSeconds": 54,
+      "painLevel": 2,
+      "notes": "Felt good"
+    }
+  ],
+  "metrics": {
+    "ankle_rom": 68,
+    "ankle_strength": 10
+  },
+  "feedback": "Feeling improvement in range of motion",
+  "overallRating": 1,
+  "adherencePercentage": 57
+}

@@ -1,0 +1,24 @@
+{
+  "id": "patient_9196",
+  "name": "Elizabeth Garcia",
+  "email": "patient_9196@yahoo.com",
+  "role": "patient",
+  "profileImageUrl": null,
+  "medicalHistory": {
+    "previousInjuries": "Muscle strain",
+    "surgicalHistory": "Rotator cuff repair",
+    "medications": "None",
+    "allergies": "NSAIDs"
+  },
+  "physicalCondition": {
+    "bodyPart": "Elbow",
+    "painLevel": 7,
+    "mobilityLimitations": "Limited range of motion and strength",
+    "painLocation": "Joint"
+  },
+  "rehabilitationGoals": [
+    "Pain reduction",
+    "Return to sports"
+  ],
+  "createdAt": "2024-07-25T13:59:38.699985"
+}

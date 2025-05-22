@@ -1,0 +1,23 @@
+{
+  "id": "patient_5204",
+  "name": "Charles Smith",
+  "email": "patient_5204@yahoo.com",
+  "role": "patient",
+  "profileImageUrl": null,
+  "medicalHistory": {
+    "previousInjuries": "Fracture",
+    "surgicalHistory": "Joint replacement",
+    "medications": "Anti-inflammatory medication",
+    "allergies": "None"
+  },
+  "physicalCondition": {
+    "bodyPart": "Ankle",
+    "painLevel": 1,
+    "mobilityLimitations": "Limited range of motion and strength",
+    "painLocation": "Muscle"
+  },
+  "rehabilitationGoals": [
+    "Prevent re-injury"
+  ],
+  "createdAt": "2024-04-25T13:59:38.674414"
+}

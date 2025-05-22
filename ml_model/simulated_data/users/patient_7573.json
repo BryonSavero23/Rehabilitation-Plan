@@ -1,0 +1,25 @@
+{
+  "id": "patient_7573",
+  "name": "Richard Lopez",
+  "email": "patient_7573@example.com",
+  "role": "patient",
+  "profileImageUrl": null,
+  "medicalHistory": {
+    "previousInjuries": "Fracture",
+    "surgicalHistory": "Ankle ligament reconstruction",
+    "medications": "None",
+    "allergies": "NSAIDs"
+  },
+  "physicalCondition": {
+    "bodyPart": "Wrist",
+    "painLevel": 4,
+    "mobilityLimitations": "Limited range of motion and strength",
+    "painLocation": "Muscle"
+  },
+  "rehabilitationGoals": [
+    "Pain reduction",
+    "Increase strength",
+    "Improve daily function"
+  ],
+  "createdAt": "2025-01-17T13:59:38.714007"
+}

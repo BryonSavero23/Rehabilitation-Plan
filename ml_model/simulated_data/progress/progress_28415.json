@@ -1,0 +1,42 @@
+{
+  "id": "progress_28415",
+  "userId": "patient_8262",
+  "planId": "plan_96001",
+  "date": "2024-11-22T13:59:38.664412",
+  "exerciseLogs": [
+    {
+      "exerciseId": "ex_wrist_1_7809",
+      "exerciseName": "Wrist Exercise 3",
+      "setsCompleted": 2,
+      "repsCompleted": 8,
+      "durationSeconds": 56,
+      "painLevel": 7,
+      "notes": "Need to modify"
+    },
+    {
+      "exerciseId": "ex_wrist_2_7751",
+      "exerciseName": "Wrist Exercise 4",
+      "setsCompleted": 1,
+      "repsCompleted": 1,
+      "durationSeconds": 32,
+      "painLevel": 2,
+      "notes": "Too challenging"
+    },
+    {
+      "exerciseId": "ex_wrist_3_3532",
+      "exerciseName": "Wrist Exercise 5",
+      "setsCompleted": 1,
+      "repsCompleted": 5,
+      "durationSeconds": 86,
+      "painLevel": 9,
+      "notes": "Getting easier"
+    }
+  ],
+  "metrics": {
+    "wrist_rom": 147,
+    "wrist_strength": 3
+  },
+  "feedback": "Still experiencing pain during certain movements",
+  "overallRating": 1,
+  "adherencePercentage": 50
+}

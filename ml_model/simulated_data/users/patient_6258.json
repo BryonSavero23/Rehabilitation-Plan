@@ -1,0 +1,23 @@
+{
+  "id": "patient_6258",
+  "name": "Sarah Smith",
+  "email": "patient_6258@outlook.com",
+  "role": "patient",
+  "profileImageUrl": null,
+  "medicalHistory": {
+    "previousInjuries": "Rotator cuff injury",
+    "surgicalHistory": "ACL reconstruction",
+    "medications": "None",
+    "allergies": "Penicillin"
+  },
+  "physicalCondition": {
+    "bodyPart": "Knee",
+    "painLevel": 7,
+    "mobilityLimitations": "Limited range of motion and strength",
+    "painLocation": "Muscle"
+  },
+  "rehabilitationGoals": [
+    "Post-surgery recovery"
+  ],
+  "createdAt": "2025-01-22T13:59:38.725518"
+}

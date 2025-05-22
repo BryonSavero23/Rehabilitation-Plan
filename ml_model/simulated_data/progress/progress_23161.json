@@ -1,0 +1,51 @@
+{
+  "id": "progress_23161",
+  "userId": "patient_1918",
+  "planId": "plan_26766",
+  "date": "2024-12-14T13:59:38.702986",
+  "exerciseLogs": [
+    {
+      "exerciseId": "ex_knee_1_8260",
+      "exerciseName": "Step-Ups",
+      "setsCompleted": 2,
+      "repsCompleted": 5,
+      "durationSeconds": 34,
+      "painLevel": 1,
+      "notes": null
+    },
+    {
+      "exerciseId": "ex_knee_2_4447",
+      "exerciseName": "Straight Leg Raises",
+      "setsCompleted": 3,
+      "repsCompleted": 13,
+      "durationSeconds": 36,
+      "painLevel": 2,
+      "notes": "Need to modify"
+    },
+    {
+      "exerciseId": "ex_knee_3_7397",
+      "exerciseName": "Hamstring Curls",
+      "setsCompleted": 2,
+      "repsCompleted": 1,
+      "durationSeconds": 53,
+      "painLevel": 3,
+      "notes": "Too challenging"
+    },
+    {
+      "exerciseId": "ex_knee_4_7067",
+      "exerciseName": "Knee Extensions",
+      "setsCompleted": 2,
+      "repsCompleted": 6,
+      "durationSeconds": 41,
+      "painLevel": 1,
+      "notes": "Felt good"
+    }
+  ],
+  "metrics": {
+    "knee_rom": 127,
+    "knee_strength": 6
+  },
+  "feedback": "Still experiencing pain during certain movements",
+  "overallRating": 5,
+  "adherencePercentage": 69
+}

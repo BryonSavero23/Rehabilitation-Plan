@@ -1,0 +1,24 @@
+{
+  "id": "patient_6001",
+  "name": "Barbara Martinez",
+  "email": "patient_6001@example.com",
+  "role": "patient",
+  "profileImageUrl": null,
+  "medicalHistory": {
+    "previousInjuries": "Tendonitis",
+    "surgicalHistory": "Fracture fixation",
+    "medications": "Muscle relaxants",
+    "allergies": "Aspirin"
+  },
+  "physicalCondition": {
+    "bodyPart": "Wrist",
+    "painLevel": 2,
+    "mobilityLimitations": "Limited range of motion and strength",
+    "painLocation": "Joint"
+  },
+  "rehabilitationGoals": [
+    "Improve daily function",
+    "Prevent re-injury"
+  ],
+  "createdAt": "2025-01-23T13:59:38.663413"
+}

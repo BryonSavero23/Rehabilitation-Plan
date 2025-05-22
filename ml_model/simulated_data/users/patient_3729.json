@@ -1,0 +1,23 @@
+{
+  "id": "patient_3729",
+  "name": "Jessica Rodriguez",
+  "email": "patient_3729@hotmail.com",
+  "role": "patient",
+  "profileImageUrl": null,
+  "medicalHistory": {
+    "previousInjuries": "Muscle strain",
+    "surgicalHistory": "ACL reconstruction",
+    "medications": "Anti-inflammatory medication",
+    "allergies": "None"
+  },
+  "physicalCondition": {
+    "bodyPart": "Ankle",
+    "painLevel": 6,
+    "mobilityLimitations": "Limited range of motion and strength",
+    "painLocation": "Tendon"
+  },
+  "rehabilitationGoals": [
+    "Post-surgery recovery"
+  ],
+  "createdAt": "2024-10-28T13:59:38.673412"
+}

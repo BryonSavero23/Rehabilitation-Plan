@@ -1,0 +1,23 @@
+{
+  "id": "patient_1287",
+  "name": "Mary Wilson",
+  "email": "patient_1287@yahoo.com",
+  "role": "patient",
+  "profileImageUrl": null,
+  "medicalHistory": {
+    "previousInjuries": "Meniscus tear",
+    "surgicalHistory": "Joint replacement",
+    "medications": "Muscle relaxants",
+    "allergies": "Penicillin"
+  },
+  "physicalCondition": {
+    "bodyPart": "Neck",
+    "painLevel": 6,
+    "mobilityLimitations": "Limited range of motion and strength",
+    "painLocation": "Tendon"
+  },
+  "rehabilitationGoals": [
+    "Increase strength"
+  ],
+  "createdAt": "2024-09-17T13:59:38.666414"
+}

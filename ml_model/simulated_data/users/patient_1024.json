@@ -1,0 +1,23 @@
+{
+  "id": "patient_1024",
+  "name": "Charles Gonzalez",
+  "email": "patient_1024@outlook.com",
+  "role": "patient",
+  "profileImageUrl": null,
+  "medicalHistory": {
+    "previousInjuries": "Rotator cuff injury",
+    "surgicalHistory": "Joint replacement",
+    "medications": "Anti-inflammatory medication",
+    "allergies": "NSAIDs"
+  },
+  "physicalCondition": {
+    "bodyPart": "Neck",
+    "painLevel": 9,
+    "mobilityLimitations": "Limited range of motion and strength",
+    "painLocation": "Ligament"
+  },
+  "rehabilitationGoals": [
+    "Return to sports"
+  ],
+  "createdAt": "2024-07-05T13:59:38.698986"
+}

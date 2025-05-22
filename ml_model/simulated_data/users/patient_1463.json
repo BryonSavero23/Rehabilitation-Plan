@@ -1,0 +1,23 @@
+{
+  "id": "patient_1463",
+  "name": "Sarah Martinez",
+  "email": "patient_1463@hotmail.com",
+  "role": "patient",
+  "profileImageUrl": null,
+  "medicalHistory": {
+    "previousInjuries": "None",
+    "surgicalHistory": "ACL reconstruction",
+    "medications": "Anti-inflammatory medication",
+    "allergies": "None"
+  },
+  "physicalCondition": {
+    "bodyPart": "Wrist",
+    "painLevel": 6,
+    "mobilityLimitations": "Limited range of motion and strength",
+    "painLocation": "Joint"
+  },
+  "rehabilitationGoals": [
+    "Return to sports"
+  ],
+  "createdAt": "2025-03-12T13:59:38.676417"
+}

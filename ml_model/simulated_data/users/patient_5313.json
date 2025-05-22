@@ -1,0 +1,25 @@
+{
+  "id": "patient_5313",
+  "name": "Sarah Rodriguez",
+  "email": "patient_5313@example.com",
+  "role": "patient",
+  "profileImageUrl": null,
+  "medicalHistory": {
+    "previousInjuries": "Rotator cuff injury",
+    "surgicalHistory": "Ankle ligament reconstruction",
+    "medications": "Anti-inflammatory medication",
+    "allergies": "Latex"
+  },
+  "physicalCondition": {
+    "bodyPart": "Back",
+    "painLevel": 2,
+    "mobilityLimitations": "Limited range of motion and strength",
+    "painLocation": "Tendon"
+  },
+  "rehabilitationGoals": [
+    "Improve daily function",
+    "Increase strength",
+    "Prevent re-injury"
+  ],
+  "createdAt": "2024-10-09T13:59:38.719000"
+}

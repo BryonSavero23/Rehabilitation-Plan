@@ -1,0 +1,42 @@
+{
+  "id": "progress_71690",
+  "userId": "patient_2011",
+  "planId": "plan_63821",
+  "date": "2024-11-08T13:59:38.695455",
+  "exerciseLogs": [
+    {
+      "exerciseId": "ex_knee_1_3506",
+      "exerciseName": "Step-Ups",
+      "setsCompleted": 2,
+      "repsCompleted": 7,
+      "durationSeconds": 41,
+      "painLevel": 1,
+      "notes": "Getting easier"
+    },
+    {
+      "exerciseId": "ex_knee_2_3435",
+      "exerciseName": "Knee Extensions",
+      "setsCompleted": 3,
+      "repsCompleted": 1,
+      "durationSeconds": 62,
+      "painLevel": 5,
+      "notes": "Felt good"
+    },
+    {
+      "exerciseId": "ex_knee_3_5524",
+      "exerciseName": "Straight Leg Raises",
+      "setsCompleted": 1,
+      "repsCompleted": 1,
+      "durationSeconds": 66,
+      "painLevel": 8,
+      "notes": "Need to modify"
+    }
+  ],
+  "metrics": {
+    "knee_rom": 68,
+    "knee_strength": 8
+  },
+  "feedback": "Still experiencing pain during certain movements",
+  "overallRating": 4,
+  "adherencePercentage": 60
+}

@@ -1,0 +1,79 @@
+{
+  "id": "plan_49307",
+  "userId": "patient_3153",
+  "therapistId": "therapist_2230",
+  "title": "Shoulder Rehabilitation Plan",
+  "description": "Personalized rehabilitation plan for Shoulder recovery",
+  "exercises": [
+    {
+      "id": "ex_shoulder_1_8472",
+      "name": "Pendulum Exercise",
+      "description": "Lean forward and let your arm hang, make small circles",
+      "bodyPart": "Shoulder",
+      "sets": 4,
+      "reps": 13,
+      "durationSeconds": 84,
+      "difficultyLevel": "advanced"
+    },
+    {
+      "id": "ex_shoulder_2_6997",
+      "name": "Wall Crawl",
+      "description": "Face a wall and walk your fingers up the wall",
+      "bodyPart": "Shoulder",
+      "sets": 2,
+      "reps": 12,
+      "durationSeconds": 42,
+      "difficultyLevel": "advanced"
+    },
+    {
+      "id": "ex_shoulder_3_1034",
+      "name": "External Rotation",
+      "description": "With elbow at side, rotate arm outward",
+      "bodyPart": "Shoulder",
+      "sets": 3,
+      "reps": 11,
+      "durationSeconds": 32,
+      "difficultyLevel": "advanced"
+    },
+    {
+      "id": "ex_shoulder_4_6818",
+      "name": "Shoulder Flexion",
+      "description": "Raise your arm forward and upward",
+      "bodyPart": "Shoulder",
+      "sets": 3,
+      "reps": 11,
+      "durationSeconds": 48,
+      "difficultyLevel": "advanced"
+    },
+    {
+      "id": "ex_shoulder_5_8836",
+      "name": "Shoulder Abduction",
+      "description": "Raise your arm out to the side",
+      "bodyPart": "Shoulder",
+      "sets": 3,
+      "reps": 8,
+      "durationSeconds": 60,
+      "difficultyLevel": "advanced"
+    },
+    {
+      "id": "ex_shoulder_6_8076",
+      "name": "Internal Rotation",
+      "description": "With elbow at side, rotate arm inward",
+      "bodyPart": "Shoulder",
+      "sets": 4,
+      "reps": 14,
+      "durationSeconds": 81,
+      "difficultyLevel": "advanced"
+    }
+  ],
+  "startDate": "2024-10-06T13:59:38.658412",
+  "endDate": null,
+  "status": "paused",
+  "goals": {
+    "primary": "Improve range of motion",
+    "bodyPart": "Shoulder",
+    "painReduction": "low"
+  },
+  "lastUpdated": "2024-10-06T13:59:38.658412",
+  "isDynamicallyAdjusted": false
+}

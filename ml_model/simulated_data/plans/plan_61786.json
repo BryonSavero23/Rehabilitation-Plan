@@ -1,0 +1,79 @@
+{
+  "id": "plan_61786",
+  "userId": "patient_5888",
+  "therapistId": "therapist_7144",
+  "title": "Wrist Rehabilitation Plan",
+  "description": "Personalized rehabilitation plan for Wrist recovery",
+  "exercises": [
+    {
+      "id": "ex_wrist_1_5939",
+      "name": "Wrist Exercise 6",
+      "description": "Description for wrist exercise 6",
+      "bodyPart": "Wrist",
+      "sets": 2,
+      "reps": 12,
+      "durationSeconds": 48,
+      "difficultyLevel": "beginner"
+    },
+    {
+      "id": "ex_wrist_2_4260",
+      "name": "Wrist Exercise 3",
+      "description": "Description for wrist exercise 3",
+      "bodyPart": "Wrist",
+      "sets": 4,
+      "reps": 15,
+      "durationSeconds": 69,
+      "difficultyLevel": "beginner"
+    },
+    {
+      "id": "ex_wrist_3_5417",
+      "name": "Wrist Exercise 1",
+      "description": "Description for wrist exercise 1",
+      "bodyPart": "Wrist",
+      "sets": 2,
+      "reps": 10,
+      "durationSeconds": 58,
+      "difficultyLevel": "beginner"
+    },
+    {
+      "id": "ex_wrist_4_5826",
+      "name": "Wrist Exercise 4",
+      "description": "Description for wrist exercise 4",
+      "bodyPart": "Wrist",
+      "sets": 4,
+      "reps": 10,
+      "durationSeconds": 62,
+      "difficultyLevel": "beginner"
+    },
+    {
+      "id": "ex_wrist_5_7705",
+      "name": "Wrist Exercise 2",
+      "description": "Description for wrist exercise 2",
+      "bodyPart": "Wrist",
+      "sets": 3,
+      "reps": 12,
+      "durationSeconds": 52,
+      "difficultyLevel": "beginner"
+    },
+    {
+      "id": "ex_wrist_6_8229",
+      "name": "Wrist Exercise 5",
+      "description": "Description for wrist exercise 5",
+      "bodyPart": "Wrist",
+      "sets": 4,
+      "reps": 15,
+      "durationSeconds": 84,
+      "difficultyLevel": "beginner"
+    }
+  ],
+  "startDate": "2024-10-28T13:59:38.671412",
+  "endDate": null,
+  "status": "active",
+  "goals": {
+    "primary": "Prevent re-injury",
+    "bodyPart": "Wrist",
+    "painReduction": "high"
+  },
+  "lastUpdated": "2024-10-28T13:59:38.671412",
+  "isDynamicallyAdjusted": false
+}

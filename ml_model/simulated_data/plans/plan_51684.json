@@ -1,0 +1,49 @@
+{
+  "id": "plan_51684",
+  "userId": "patient_1024",
+  "therapistId": "therapist_7144",
+  "title": "Neck Rehabilitation Plan",
+  "description": "Personalized rehabilitation plan for Neck recovery",
+  "exercises": [
+    {
+      "id": "ex_neck_1_3382",
+      "name": "Neck Exercise 6",
+      "description": "Description for neck exercise 6",
+      "bodyPart": "Neck",
+      "sets": 3,
+      "reps": 15,
+      "durationSeconds": 85,
+      "difficultyLevel": "beginner"
+    },
+    {
+      "id": "ex_neck_2_3078",
+      "name": "Neck Exercise 4",
+      "description": "Description for neck exercise 4",
+      "bodyPart": "Neck",
+      "sets": 3,
+      "reps": 13,
+      "durationSeconds": 54,
+      "difficultyLevel": "beginner"
+    },
+    {
+      "id": "ex_neck_3_9668",
+      "name": "Neck Exercise 5",
+      "description": "Description for neck exercise 5",
+      "bodyPart": "Neck",
+      "sets": 2,
+      "reps": 8,
+      "durationSeconds": 60,
+      "difficultyLevel": "beginner"
+    }
+  ],
+  "startDate": "2024-07-26T13:59:38.698986",
+  "endDate": null,
+  "status": "active",
+  "goals": {
+    "primary": "Return to sports",
+    "bodyPart": "Neck",
+    "painReduction": "high"
+  },
+  "lastUpdated": "2024-07-26T13:59:38.698986",
+  "isDynamicallyAdjusted": true
+}

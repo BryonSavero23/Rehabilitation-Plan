@@ -1,0 +1,24 @@
+{
+  "id": "patient_5254",
+  "name": "William Martin",
+  "email": "patient_5254@outlook.com",
+  "role": "patient",
+  "profileImageUrl": null,
+  "medicalHistory": {
+    "previousInjuries": "Meniscus tear",
+    "surgicalHistory": "Rotator cuff repair",
+    "medications": "Pain relievers",
+    "allergies": "Aspirin"
+  },
+  "physicalCondition": {
+    "bodyPart": "Elbow",
+    "painLevel": 2,
+    "mobilityLimitations": "Limited range of motion and strength",
+    "painLocation": "Ligament"
+  },
+  "rehabilitationGoals": [
+    "Post-surgery recovery",
+    "Prevent re-injury"
+  ],
+  "createdAt": "2024-08-19T13:59:38.701987"
+}

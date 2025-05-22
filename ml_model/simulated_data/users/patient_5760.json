@@ -1,0 +1,24 @@
+{
+  "id": "patient_5760",
+  "name": "Elizabeth Miller",
+  "email": "patient_5760@hotmail.com",
+  "role": "patient",
+  "profileImageUrl": null,
+  "medicalHistory": {
+    "previousInjuries": "Meniscus tear",
+    "surgicalHistory": "Arthroscopy",
+    "medications": "Pain relievers",
+    "allergies": "NSAIDs"
+  },
+  "physicalCondition": {
+    "bodyPart": "Shoulder",
+    "painLevel": 7,
+    "mobilityLimitations": "Limited range of motion and strength",
+    "painLocation": "Muscle"
+  },
+  "rehabilitationGoals": [
+    "Improve range of motion",
+    "Increase strength"
+  ],
+  "createdAt": "2024-06-05T13:59:38.711002"
+}

@@ -1,0 +1,24 @@
+{
+  "id": "patient_4296",
+  "name": "Richard Moore",
+  "email": "patient_4296@hotmail.com",
+  "role": "patient",
+  "profileImageUrl": null,
+  "medicalHistory": {
+    "previousInjuries": "Ligament sprain",
+    "surgicalHistory": "Meniscus repair",
+    "medications": "NSAIDs",
+    "allergies": "Aspirin"
+  },
+  "physicalCondition": {
+    "bodyPart": "Wrist",
+    "painLevel": 1,
+    "mobilityLimitations": "Limited range of motion and strength",
+    "painLocation": "Joint"
+  },
+  "rehabilitationGoals": [
+    "Prevent re-injury",
+    "Increase strength"
+  ],
+  "createdAt": "2025-03-11T13:59:38.677924"
+}

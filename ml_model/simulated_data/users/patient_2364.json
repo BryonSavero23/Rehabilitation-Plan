@@ -1,0 +1,25 @@
+{
+  "id": "patient_2364",
+  "name": "Barbara Hernandez",
+  "email": "patient_2364@yahoo.com",
+  "role": "patient",
+  "profileImageUrl": null,
+  "medicalHistory": {
+    "previousInjuries": "Meniscus tear",
+    "surgicalHistory": "ACL reconstruction",
+    "medications": "None",
+    "allergies": "Penicillin"
+  },
+  "physicalCondition": {
+    "bodyPart": "Neck",
+    "painLevel": 8,
+    "mobilityLimitations": "Limited range of motion and strength",
+    "painLocation": "Ligament"
+  },
+  "rehabilitationGoals": [
+    "Increase strength",
+    "Increase strength",
+    "Improve daily function"
+  ],
+  "createdAt": "2024-07-16T13:59:38.659412"
+}

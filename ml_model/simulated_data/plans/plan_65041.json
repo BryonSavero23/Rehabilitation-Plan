@@ -1,0 +1,59 @@
+{
+  "id": "plan_65041",
+  "userId": "patient_8798",
+  "therapistId": "therapist_6083",
+  "title": "Hip Rehabilitation Plan",
+  "description": "Personalized rehabilitation plan for Hip recovery",
+  "exercises": [
+    {
+      "id": "ex_hip_1_1080",
+      "name": "Hip Exercise 3",
+      "description": "Description for hip exercise 3",
+      "bodyPart": "Hip",
+      "sets": 3,
+      "reps": 8,
+      "durationSeconds": 70,
+      "difficultyLevel": "intermediate"
+    },
+    {
+      "id": "ex_hip_2_6153",
+      "name": "Hip Exercise 2",
+      "description": "Description for hip exercise 2",
+      "bodyPart": "Hip",
+      "sets": 2,
+      "reps": 13,
+      "durationSeconds": 85,
+      "difficultyLevel": "intermediate"
+    },
+    {
+      "id": "ex_hip_3_7650",
+      "name": "Hip Exercise 4",
+      "description": "Description for hip exercise 4",
+      "bodyPart": "Hip",
+      "sets": 4,
+      "reps": 15,
+      "durationSeconds": 52,
+      "difficultyLevel": "intermediate"
+    },
+    {
+      "id": "ex_hip_4_9616",
+      "name": "Hip Exercise 1",
+      "description": "Description for hip exercise 1",
+      "bodyPart": "Hip",
+      "sets": 3,
+      "reps": 9,
+      "durationSeconds": 52,
+      "difficultyLevel": "intermediate"
+    }
+  ],
+  "startDate": "2024-05-02T13:59:38.693456",
+  "endDate": null,
+  "status": "active",
+  "goals": {
+    "primary": "Post-surgery recovery",
+    "bodyPart": "Hip",
+    "painReduction": "medium"
+  },
+  "lastUpdated": "2024-05-02T13:59:38.693456",
+  "isDynamicallyAdjusted": true
+}

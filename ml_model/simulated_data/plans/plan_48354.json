@@ -1,0 +1,69 @@
+{
+  "id": "plan_48354",
+  "userId": "patient_6258",
+  "therapistId": "therapist_7144",
+  "title": "Knee Rehabilitation Plan",
+  "description": "Personalized rehabilitation plan for Knee recovery",
+  "exercises": [
+    {
+      "id": "ex_knee_1_8606",
+      "name": "Terminal Knee Extensions",
+      "description": "Extend your knee against resistance",
+      "bodyPart": "Knee",
+      "sets": 4,
+      "reps": 9,
+      "durationSeconds": 86,
+      "difficultyLevel": "intermediate"
+    },
+    {
+      "id": "ex_knee_2_2599",
+      "name": "Step-Ups",
+      "description": "Step up onto a platform with one leg, then the other",
+      "bodyPart": "Knee",
+      "sets": 4,
+      "reps": 14,
+      "durationSeconds": 69,
+      "difficultyLevel": "intermediate"
+    },
+    {
+      "id": "ex_knee_3_9466",
+      "name": "Straight Leg Raises",
+      "description": "Lie flat on your back and lift your leg straight up",
+      "bodyPart": "Knee",
+      "sets": 3,
+      "reps": 10,
+      "durationSeconds": 63,
+      "difficultyLevel": "intermediate"
+    },
+    {
+      "id": "ex_knee_4_8336",
+      "name": "Hamstring Curls",
+      "description": "Lie face down and bend your knee, bringing your heel toward your buttock",
+      "bodyPart": "Knee",
+      "sets": 3,
+      "reps": 12,
+      "durationSeconds": 54,
+      "difficultyLevel": "intermediate"
+    },
+    {
+      "id": "ex_knee_5_7563",
+      "name": "Wall Squats",
+      "description": "Stand with your back against a wall and bend your knees",
+      "bodyPart": "Knee",
+      "sets": 3,
+      "reps": 13,
+      "durationSeconds": 62,
+      "difficultyLevel": "intermediate"
+    }
+  ],
+  "startDate": "2025-02-21T13:59:38.725518",
+  "endDate": null,
+  "status": "completed",
+  "goals": {
+    "primary": "Post-surgery recovery",
+    "bodyPart": "Knee",
+    "painReduction": "medium"
+  },
+  "lastUpdated": "2025-02-21T13:59:38.725518",
+  "isDynamicallyAdjusted": false
+}

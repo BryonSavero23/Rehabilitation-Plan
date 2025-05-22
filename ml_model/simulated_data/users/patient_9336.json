@@ -1,0 +1,24 @@
+{
+  "id": "patient_9336",
+  "name": "William Moore",
+  "email": "patient_9336@hotmail.com",
+  "role": "patient",
+  "profileImageUrl": null,
+  "medicalHistory": {
+    "previousInjuries": "Ligament sprain",
+    "surgicalHistory": "None",
+    "medications": "Muscle relaxants",
+    "allergies": "Penicillin"
+  },
+  "physicalCondition": {
+    "bodyPart": "Neck",
+    "painLevel": 6,
+    "mobilityLimitations": "Limited range of motion and strength",
+    "painLocation": "Muscle"
+  },
+  "rehabilitationGoals": [
+    "Pain reduction",
+    "Improve daily function"
+  ],
+  "createdAt": "2024-10-05T13:59:38.728517"
+}

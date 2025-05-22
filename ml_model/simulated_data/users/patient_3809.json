@@ -1,0 +1,25 @@
+{
+  "id": "patient_3809",
+  "name": "Patricia Martin",
+  "email": "patient_3809@example.com",
+  "role": "patient",
+  "profileImageUrl": null,
+  "medicalHistory": {
+    "previousInjuries": "None",
+    "surgicalHistory": "ACL reconstruction",
+    "medications": "Muscle relaxants",
+    "allergies": "None"
+  },
+  "physicalCondition": {
+    "bodyPart": "Ankle",
+    "painLevel": 1,
+    "mobilityLimitations": "Limited range of motion and strength",
+    "painLocation": "Joint"
+  },
+  "rehabilitationGoals": [
+    "Return to sports",
+    "Improve range of motion",
+    "Pain reduction"
+  ],
+  "createdAt": "2025-02-04T13:59:38.694458"
+}

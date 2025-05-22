@@ -1,0 +1,24 @@
+{
+  "id": "patient_6499",
+  "name": "John Garcia",
+  "email": "patient_6499@outlook.com",
+  "role": "patient",
+  "profileImageUrl": null,
+  "medicalHistory": {
+    "previousInjuries": "ACL tear",
+    "surgicalHistory": "Arthroscopy",
+    "medications": "Anti-inflammatory medication",
+    "allergies": "Aspirin"
+  },
+  "physicalCondition": {
+    "bodyPart": "Wrist",
+    "painLevel": 4,
+    "mobilityLimitations": "Limited range of motion and strength",
+    "painLocation": "Ligament"
+  },
+  "rehabilitationGoals": [
+    "Prevent re-injury",
+    "Increase strength"
+  ],
+  "createdAt": "2024-09-07T13:59:38.709992"
+}

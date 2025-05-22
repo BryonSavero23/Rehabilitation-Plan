@@ -1,0 +1,24 @@
+{
+  "id": "patient_4687",
+  "name": "John Johnson",
+  "email": "patient_4687@gmail.com",
+  "role": "patient",
+  "profileImageUrl": null,
+  "medicalHistory": {
+    "previousInjuries": "Muscle strain",
+    "surgicalHistory": "Meniscus repair",
+    "medications": "None",
+    "allergies": "Aspirin"
+  },
+  "physicalCondition": {
+    "bodyPart": "Neck",
+    "painLevel": 10,
+    "mobilityLimitations": "Limited range of motion and strength",
+    "painLocation": "Tendon"
+  },
+  "rehabilitationGoals": [
+    "Post-surgery recovery",
+    "Post-surgery recovery"
+  ],
+  "createdAt": "2024-12-26T13:59:38.668413"
+}

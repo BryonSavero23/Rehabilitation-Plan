@@ -1,0 +1,23 @@
+{
+  "id": "patient_6083",
+  "name": "Jennifer Johnson",
+  "email": "patient_6083@hotmail.com",
+  "role": "patient",
+  "profileImageUrl": null,
+  "medicalHistory": {
+    "previousInjuries": "Tendonitis",
+    "surgicalHistory": "Meniscus repair",
+    "medications": "NSAIDs",
+    "allergies": "Penicillin"
+  },
+  "physicalCondition": {
+    "bodyPart": "Knee",
+    "painLevel": 2,
+    "mobilityLimitations": "Limited range of motion and strength",
+    "painLocation": "Joint"
+  },
+  "rehabilitationGoals": [
+    "Improve daily function"
+  ],
+  "createdAt": "2024-05-03T13:59:38.722518"
+}

@@ -1,0 +1,24 @@
+{
+  "id": "patient_4454",
+  "name": "Linda Gonzalez",
+  "email": "patient_4454@example.com",
+  "role": "patient",
+  "profileImageUrl": null,
+  "medicalHistory": {
+    "previousInjuries": "Ankle sprain",
+    "surgicalHistory": "Joint replacement",
+    "medications": "Muscle relaxants",
+    "allergies": "NSAIDs"
+  },
+  "physicalCondition": {
+    "bodyPart": "Wrist",
+    "painLevel": 6,
+    "mobilityLimitations": "Limited range of motion and strength",
+    "painLocation": "Ligament"
+  },
+  "rehabilitationGoals": [
+    "Pain reduction",
+    "Improve daily function"
+  ],
+  "createdAt": "2024-12-05T13:59:38.660413"
+}

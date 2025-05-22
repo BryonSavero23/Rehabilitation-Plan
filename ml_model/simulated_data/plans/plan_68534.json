@@ -1,0 +1,49 @@
+{
+  "id": "plan_68534",
+  "userId": "patient_7253",
+  "therapistId": "therapist_2230",
+  "title": "Neck Rehabilitation Plan",
+  "description": "Personalized rehabilitation plan for Neck recovery",
+  "exercises": [
+    {
+      "id": "ex_neck_1_8502",
+      "name": "Neck Exercise 2",
+      "description": "Description for neck exercise 2",
+      "bodyPart": "Neck",
+      "sets": 2,
+      "reps": 14,
+      "durationSeconds": 50,
+      "difficultyLevel": "advanced"
+    },
+    {
+      "id": "ex_neck_2_5063",
+      "name": "Neck Exercise 4",
+      "description": "Description for neck exercise 4",
+      "bodyPart": "Neck",
+      "sets": 2,
+      "reps": 13,
+      "durationSeconds": 52,
+      "difficultyLevel": "advanced"
+    },
+    {
+      "id": "ex_neck_3_6536",
+      "name": "Neck Exercise 3",
+      "description": "Description for neck exercise 3",
+      "bodyPart": "Neck",
+      "sets": 3,
+      "reps": 15,
+      "durationSeconds": 73,
+      "difficultyLevel": "advanced"
+    }
+  ],
+  "startDate": "2024-08-04T13:59:38.703984",
+  "endDate": null,
+  "status": "completed",
+  "goals": {
+    "primary": "Improve range of motion",
+    "bodyPart": "Neck",
+    "painReduction": "low"
+  },
+  "lastUpdated": "2024-08-04T13:59:38.703984",
+  "isDynamicallyAdjusted": true
+}

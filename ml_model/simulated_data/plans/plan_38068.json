@@ -1,0 +1,79 @@
+{
+  "id": "plan_38068",
+  "userId": "patient_6248",
+  "therapistId": "therapist_2230",
+  "title": "Ankle Rehabilitation Plan",
+  "description": "Personalized rehabilitation plan for Ankle recovery",
+  "exercises": [
+    {
+      "id": "ex_ankle_1_1067",
+      "name": "Ankle Circles",
+      "description": "Rotate your ankle in circles",
+      "bodyPart": "Ankle",
+      "sets": 4,
+      "reps": 13,
+      "durationSeconds": 65,
+      "difficultyLevel": "intermediate"
+    },
+    {
+      "id": "ex_ankle_2_3483",
+      "name": "Ankle Pumps",
+      "description": "Move your foot up and down",
+      "bodyPart": "Ankle",
+      "sets": 4,
+      "reps": 12,
+      "durationSeconds": 79,
+      "difficultyLevel": "intermediate"
+    },
+    {
+      "id": "ex_ankle_3_9710",
+      "name": "Toe Raises",
+      "description": "Stand and lift your toes off the ground",
+      "bodyPart": "Ankle",
+      "sets": 3,
+      "reps": 15,
+      "durationSeconds": 62,
+      "difficultyLevel": "intermediate"
+    },
+    {
+      "id": "ex_ankle_4_7373",
+      "name": "Resistance Band Eversion",
+      "description": "Turn foot outward against resistance",
+      "bodyPart": "Ankle",
+      "sets": 3,
+      "reps": 14,
+      "durationSeconds": 82,
+      "difficultyLevel": "intermediate"
+    },
+    {
+      "id": "ex_ankle_5_2366",
+      "name": "Heel Raises",
+      "description": "Stand and rise up on your toes",
+      "bodyPart": "Ankle",
+      "sets": 2,
+      "reps": 9,
+      "durationSeconds": 58,
+      "difficultyLevel": "intermediate"
+    },
+    {
+      "id": "ex_ankle_6_6025",
+      "name": "Resistance Band Inversion",
+      "description": "Turn foot inward against resistance",
+      "bodyPart": "Ankle",
+      "sets": 4,
+      "reps": 8,
+      "durationSeconds": 45,
+      "difficultyLevel": "intermediate"
+    }
+  ],
+  "startDate": "2025-01-11T13:59:38.672414",
+  "endDate": null,
+  "status": "active",
+  "goals": {
+    "primary": "Improve range of motion",
+    "bodyPart": "Ankle",
+    "painReduction": "medium"
+  },
+  "lastUpdated": "2025-01-11T13:59:38.672414",
+  "isDynamicallyAdjusted": false
+}

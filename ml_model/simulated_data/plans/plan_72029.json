@@ -1,0 +1,49 @@
+{
+  "id": "plan_72029",
+  "userId": "patient_6001",
+  "therapistId": "therapist_3161",
+  "title": "Wrist Rehabilitation Plan",
+  "description": "Personalized rehabilitation plan for Wrist recovery",
+  "exercises": [
+    {
+      "id": "ex_wrist_1_2849",
+      "name": "Wrist Exercise 1",
+      "description": "Description for wrist exercise 1",
+      "bodyPart": "Wrist",
+      "sets": 2,
+      "reps": 10,
+      "durationSeconds": 40,
+      "difficultyLevel": "advanced"
+    },
+    {
+      "id": "ex_wrist_2_4938",
+      "name": "Wrist Exercise 5",
+      "description": "Description for wrist exercise 5",
+      "bodyPart": "Wrist",
+      "sets": 2,
+      "reps": 14,
+      "durationSeconds": 85,
+      "difficultyLevel": "advanced"
+    },
+    {
+      "id": "ex_wrist_3_7907",
+      "name": "Wrist Exercise 6",
+      "description": "Description for wrist exercise 6",
+      "bodyPart": "Wrist",
+      "sets": 2,
+      "reps": 10,
+      "durationSeconds": 56,
+      "difficultyLevel": "advanced"
+    }
+  ],
+  "startDate": "2025-02-17T13:59:38.663413",
+  "endDate": null,
+  "status": "completed",
+  "goals": {
+    "primary": "Improve daily function",
+    "bodyPart": "Wrist",
+    "painReduction": "low"
+  },
+  "lastUpdated": "2025-02-17T13:59:38.663413",
+  "isDynamicallyAdjusted": true
+}

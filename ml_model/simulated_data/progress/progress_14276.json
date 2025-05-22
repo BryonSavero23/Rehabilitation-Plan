@@ -1,0 +1,33 @@
+{
+  "id": "progress_14276",
+  "userId": "patient_9027",
+  "planId": "plan_78877",
+  "date": "2024-05-27T13:59:38.689456",
+  "exerciseLogs": [
+    {
+      "exerciseId": "ex_elbow_2_3661",
+      "exerciseName": "Elbow Exercise 6",
+      "setsCompleted": 2,
+      "repsCompleted": 3,
+      "durationSeconds": 64,
+      "painLevel": 6,
+      "notes": null
+    },
+    {
+      "exerciseId": "ex_elbow_3_1074",
+      "exerciseName": "Elbow Exercise 3",
+      "setsCompleted": 3,
+      "repsCompleted": 10,
+      "durationSeconds": 43,
+      "painLevel": 6,
+      "notes": "Getting easier"
+    }
+  ],
+  "metrics": {
+    "elbow_rom": 175,
+    "elbow_strength": 8
+  },
+  "feedback": null,
+  "overallRating": 3,
+  "adherencePercentage": 62
+}

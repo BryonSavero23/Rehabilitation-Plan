@@ -1,0 +1,23 @@
+{
+  "id": "patient_7120",
+  "name": "David Hernandez",
+  "email": "patient_7120@yahoo.com",
+  "role": "patient",
+  "profileImageUrl": null,
+  "medicalHistory": {
+    "previousInjuries": "Tendonitis",
+    "surgicalHistory": "Arthroscopy",
+    "medications": "Muscle relaxants",
+    "allergies": "Penicillin"
+  },
+  "physicalCondition": {
+    "bodyPart": "Shoulder",
+    "painLevel": 6,
+    "mobilityLimitations": "Limited range of motion and strength",
+    "painLocation": "Joint"
+  },
+  "rehabilitationGoals": [
+    "Improve range of motion"
+  ],
+  "createdAt": "2024-06-25T13:59:38.691458"
+}

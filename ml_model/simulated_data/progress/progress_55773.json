@@ -1,0 +1,33 @@
+{
+  "id": "progress_55773",
+  "userId": "patient_8755",
+  "planId": "plan_47554",
+  "date": "2024-05-21T13:59:38.665413",
+  "exerciseLogs": [
+    {
+      "exerciseId": "ex_knee_2_8566",
+      "exerciseName": "Step-Ups",
+      "setsCompleted": 2,
+      "repsCompleted": 2,
+      "durationSeconds": 73,
+      "painLevel": 6,
+      "notes": "Getting easier"
+    },
+    {
+      "exerciseId": "ex_knee_3_1601",
+      "exerciseName": "Knee Extensions",
+      "setsCompleted": 2,
+      "repsCompleted": 2,
+      "durationSeconds": 49,
+      "painLevel": 3,
+      "notes": "Getting easier"
+    }
+  ],
+  "metrics": {
+    "knee_rom": 94,
+    "knee_strength": 5
+  },
+  "feedback": "Still experiencing pain during certain movements",
+  "overallRating": 1,
+  "adherencePercentage": 44
+}

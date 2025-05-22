@@ -1,0 +1,42 @@
+{
+  "id": "progress_46653",
+  "userId": "patient_2004",
+  "planId": "plan_64231",
+  "date": "2025-04-02T13:59:38.686938",
+  "exerciseLogs": [
+    {
+      "exerciseId": "ex_knee_1_7646",
+      "exerciseName": "Wall Squats",
+      "setsCompleted": 1,
+      "repsCompleted": 3,
+      "durationSeconds": 50,
+      "painLevel": 10,
+      "notes": "Felt good"
+    },
+    {
+      "exerciseId": "ex_knee_2_2233",
+      "exerciseName": "Terminal Knee Extensions",
+      "setsCompleted": 1,
+      "repsCompleted": 9,
+      "durationSeconds": 58,
+      "painLevel": 8,
+      "notes": "Felt good"
+    },
+    {
+      "exerciseId": "ex_knee_3_5427",
+      "exerciseName": "Step-Ups",
+      "setsCompleted": 1,
+      "repsCompleted": 3,
+      "durationSeconds": 34,
+      "painLevel": 3,
+      "notes": "Too challenging"
+    }
+  ],
+  "metrics": {
+    "knee_rom": 105,
+    "knee_strength": 3
+  },
+  "feedback": "Need modifications for some exercises",
+  "overallRating": 5,
+  "adherencePercentage": 37
+}

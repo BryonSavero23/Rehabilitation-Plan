@@ -1,0 +1,24 @@
+{
+  "id": "progress_55217",
+  "userId": "patient_5888",
+  "planId": "plan_90250",
+  "date": "2024-11-23T13:59:38.671412",
+  "exerciseLogs": [
+    {
+      "exerciseId": "ex_wrist_2_5011",
+      "exerciseName": "Wrist Exercise 4",
+      "setsCompleted": 2,
+      "repsCompleted": 15,
+      "durationSeconds": 35,
+      "painLevel": 5,
+      "notes": "Felt good"
+    }
+  ],
+  "metrics": {
+    "wrist_rom": 162,
+    "wrist_strength": 7
+  },
+  "feedback": "Feeling improvement in range of motion",
+  "overallRating": 3,
+  "adherencePercentage": 18
+}

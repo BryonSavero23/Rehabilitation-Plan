@@ -1,0 +1,60 @@
+{
+  "id": "progress_23467",
+  "userId": "patient_5760",
+  "planId": "plan_11821",
+  "date": "2024-07-27T13:59:38.711002",
+  "exerciseLogs": [
+    {
+      "exerciseId": "ex_shoulder_1_3674",
+      "exerciseName": "Internal Rotation",
+      "setsCompleted": 2,
+      "repsCompleted": 8,
+      "durationSeconds": 87,
+      "painLevel": 10,
+      "notes": "Felt good"
+    },
+    {
+      "exerciseId": "ex_shoulder_2_6765",
+      "exerciseName": "Wall Crawl",
+      "setsCompleted": 3,
+      "repsCompleted": 2,
+      "durationSeconds": 71,
+      "painLevel": 3,
+      "notes": "Too challenging"
+    },
+    {
+      "exerciseId": "ex_shoulder_3_6368",
+      "exerciseName": "Shoulder Flexion",
+      "setsCompleted": 1,
+      "repsCompleted": 6,
+      "durationSeconds": 58,
+      "painLevel": 8,
+      "notes": "Getting easier"
+    },
+    {
+      "exerciseId": "ex_shoulder_4_5109",
+      "exerciseName": "External Rotation",
+      "setsCompleted": 1,
+      "repsCompleted": 6,
+      "durationSeconds": 41,
+      "painLevel": 2,
+      "notes": "Felt good"
+    },
+    {
+      "exerciseId": "ex_shoulder_5_6258",
+      "exerciseName": "Shoulder Abduction",
+      "setsCompleted": 2,
+      "repsCompleted": 12,
+      "durationSeconds": 35,
+      "painLevel": 10,
+      "notes": "Too challenging"
+    }
+  ],
+  "metrics": {
+    "shoulder_rom": 92,
+    "shoulder_strength": 3
+  },
+  "feedback": "Exercises are getting easier to perform",
+  "overallRating": 4,
+  "adherencePercentage": 47
+}

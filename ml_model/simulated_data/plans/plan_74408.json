@@ -1,0 +1,79 @@
+{
+  "id": "plan_74408",
+  "userId": "patient_4034",
+  "therapistId": "therapist_8797",
+  "title": "Hip Rehabilitation Plan",
+  "description": "Personalized rehabilitation plan for Hip recovery",
+  "exercises": [
+    {
+      "id": "ex_hip_1_3808",
+      "name": "Hip Exercise 6",
+      "description": "Description for hip exercise 6",
+      "bodyPart": "Hip",
+      "sets": 3,
+      "reps": 8,
+      "durationSeconds": 83,
+      "difficultyLevel": "advanced"
+    },
+    {
+      "id": "ex_hip_2_9613",
+      "name": "Hip Exercise 1",
+      "description": "Description for hip exercise 1",
+      "bodyPart": "Hip",
+      "sets": 3,
+      "reps": 11,
+      "durationSeconds": 34,
+      "difficultyLevel": "advanced"
+    },
+    {
+      "id": "ex_hip_3_8969",
+      "name": "Hip Exercise 5",
+      "description": "Description for hip exercise 5",
+      "bodyPart": "Hip",
+      "sets": 3,
+      "reps": 15,
+      "durationSeconds": 47,
+      "difficultyLevel": "advanced"
+    },
+    {
+      "id": "ex_hip_4_5199",
+      "name": "Hip Exercise 2",
+      "description": "Description for hip exercise 2",
+      "bodyPart": "Hip",
+      "sets": 4,
+      "reps": 9,
+      "durationSeconds": 32,
+      "difficultyLevel": "advanced"
+    },
+    {
+      "id": "ex_hip_5_2516",
+      "name": "Hip Exercise 4",
+      "description": "Description for hip exercise 4",
+      "bodyPart": "Hip",
+      "sets": 2,
+      "reps": 10,
+      "durationSeconds": 54,
+      "difficultyLevel": "advanced"
+    },
+    {
+      "id": "ex_hip_6_7563",
+      "name": "Hip Exercise 3",
+      "description": "Description for hip exercise 3",
+      "bodyPart": "Hip",
+      "sets": 4,
+      "reps": 14,
+      "durationSeconds": 82,
+      "difficultyLevel": "advanced"
+    }
+  ],
+  "startDate": "2024-08-08T13:59:38.657413",
+  "endDate": null,
+  "status": "completed",
+  "goals": {
+    "primary": "Prevent re-injury",
+    "bodyPart": "Hip",
+    "painReduction": "low"
+  },
+  "lastUpdated": "2024-08-08T13:59:38.657413",
+  "isDynamicallyAdjusted": false
+}

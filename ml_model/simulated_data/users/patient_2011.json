@@ -1,0 +1,24 @@
+{
+  "id": "patient_2011",
+  "name": "Robert Garcia",
+  "email": "patient_2011@example.com",
+  "role": "patient",
+  "profileImageUrl": null,
+  "medicalHistory": {
+    "previousInjuries": "None",
+    "surgicalHistory": "ACL reconstruction",
+    "medications": "Anti-inflammatory medication",
+    "allergies": "Aspirin"
+  },
+  "physicalCondition": {
+    "bodyPart": "Knee",
+    "painLevel": 6,
+    "mobilityLimitations": "Limited range of motion and strength",
+    "painLocation": "Joint"
+  },
+  "rehabilitationGoals": [
+    "Improve range of motion",
+    "Prevent re-injury"
+  ],
+  "createdAt": "2024-09-14T13:59:38.695455"
+}

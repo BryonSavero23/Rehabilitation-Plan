@@ -1,0 +1,59 @@
+{
+  "id": "plan_19900",
+  "userId": "patient_1287",
+  "therapistId": "therapist_8961",
+  "title": "Neck Rehabilitation Plan",
+  "description": "Personalized rehabilitation plan for Neck recovery",
+  "exercises": [
+    {
+      "id": "ex_neck_1_2586",
+      "name": "Neck Exercise 3",
+      "description": "Description for neck exercise 3",
+      "bodyPart": "Neck",
+      "sets": 3,
+      "reps": 13,
+      "durationSeconds": 52,
+      "difficultyLevel": "intermediate"
+    },
+    {
+      "id": "ex_neck_2_5091",
+      "name": "Neck Exercise 1",
+      "description": "Description for neck exercise 1",
+      "bodyPart": "Neck",
+      "sets": 4,
+      "reps": 9,
+      "durationSeconds": 34,
+      "difficultyLevel": "intermediate"
+    },
+    {
+      "id": "ex_neck_3_3466",
+      "name": "Neck Exercise 2",
+      "description": "Description for neck exercise 2",
+      "bodyPart": "Neck",
+      "sets": 4,
+      "reps": 11,
+      "durationSeconds": 60,
+      "difficultyLevel": "intermediate"
+    },
+    {
+      "id": "ex_neck_4_3421",
+      "name": "Neck Exercise 5",
+      "description": "Description for neck exercise 5",
+      "bodyPart": "Neck",
+      "sets": 4,
+      "reps": 13,
+      "durationSeconds": 79,
+      "difficultyLevel": "intermediate"
+    }
+  ],
+  "startDate": "2024-10-05T13:59:38.666414",
+  "endDate": null,
+  "status": "completed",
+  "goals": {
+    "primary": "Increase strength",
+    "bodyPart": "Neck",
+    "painReduction": "medium"
+  },
+  "lastUpdated": "2024-10-05T13:59:38.666414",
+  "isDynamicallyAdjusted": true
+}

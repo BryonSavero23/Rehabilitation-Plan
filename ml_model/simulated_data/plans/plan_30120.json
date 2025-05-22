@@ -1,0 +1,59 @@
+{
+  "id": "plan_30120",
+  "userId": "patient_2260",
+  "therapistId": "therapist_2230",
+  "title": "Ankle Rehabilitation Plan",
+  "description": "Personalized rehabilitation plan for Ankle recovery",
+  "exercises": [
+    {
+      "id": "ex_ankle_1_4513",
+      "name": "Ankle Pumps",
+      "description": "Move your foot up and down",
+      "bodyPart": "Ankle",
+      "sets": 3,
+      "reps": 14,
+      "durationSeconds": 86,
+      "difficultyLevel": "intermediate"
+    },
+    {
+      "id": "ex_ankle_2_3272",
+      "name": "Resistance Band Inversion",
+      "description": "Turn foot inward against resistance",
+      "bodyPart": "Ankle",
+      "sets": 4,
+      "reps": 8,
+      "durationSeconds": 57,
+      "difficultyLevel": "intermediate"
+    },
+    {
+      "id": "ex_ankle_3_6114",
+      "name": "Heel Raises",
+      "description": "Stand and rise up on your toes",
+      "bodyPart": "Ankle",
+      "sets": 3,
+      "reps": 14,
+      "durationSeconds": 65,
+      "difficultyLevel": "intermediate"
+    },
+    {
+      "id": "ex_ankle_4_8157",
+      "name": "Resistance Band Eversion",
+      "description": "Turn foot outward against resistance",
+      "bodyPart": "Ankle",
+      "sets": 4,
+      "reps": 10,
+      "durationSeconds": 46,
+      "difficultyLevel": "intermediate"
+    }
+  ],
+  "startDate": "2024-12-13T13:59:38.729520",
+  "endDate": null,
+  "status": "paused",
+  "goals": {
+    "primary": "Improve range of motion",
+    "bodyPart": "Ankle",
+    "painReduction": "medium"
+  },
+  "lastUpdated": "2024-12-13T13:59:38.729520",
+  "isDynamicallyAdjusted": false
+}

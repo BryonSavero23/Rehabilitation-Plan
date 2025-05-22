@@ -1,0 +1,24 @@
+{
+  "id": "progress_57105",
+  "userId": "patient_9027",
+  "planId": "plan_78877",
+  "date": "2024-06-01T13:59:38.689456",
+  "exerciseLogs": [
+    {
+      "exerciseId": "ex_elbow_2_3661",
+      "exerciseName": "Elbow Exercise 6",
+      "setsCompleted": 2,
+      "repsCompleted": 11,
+      "durationSeconds": 64,
+      "painLevel": 7,
+      "notes": null
+    }
+  ],
+  "metrics": {
+    "elbow_rom": 115,
+    "elbow_strength": 5
+  },
+  "feedback": "Feeling improvement in range of motion",
+  "overallRating": 3,
+  "adherencePercentage": 25
+}

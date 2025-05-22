@@ -1,0 +1,59 @@
+{
+  "id": "plan_75755",
+  "userId": "patient_4931",
+  "therapistId": "therapist_8142",
+  "title": "Back Rehabilitation Plan",
+  "description": "Personalized rehabilitation plan for Back recovery",
+  "exercises": [
+    {
+      "id": "ex_back_1_6800",
+      "name": "Back Exercise 6",
+      "description": "Description for back exercise 6",
+      "bodyPart": "Back",
+      "sets": 3,
+      "reps": 10,
+      "durationSeconds": 37,
+      "difficultyLevel": "intermediate"
+    },
+    {
+      "id": "ex_back_2_8858",
+      "name": "Back Exercise 2",
+      "description": "Description for back exercise 2",
+      "bodyPart": "Back",
+      "sets": 2,
+      "reps": 9,
+      "durationSeconds": 56,
+      "difficultyLevel": "intermediate"
+    },
+    {
+      "id": "ex_back_3_1773",
+      "name": "Back Exercise 1",
+      "description": "Description for back exercise 1",
+      "bodyPart": "Back",
+      "sets": 4,
+      "reps": 15,
+      "durationSeconds": 38,
+      "difficultyLevel": "intermediate"
+    },
+    {
+      "id": "ex_back_4_6077",
+      "name": "Back Exercise 5",
+      "description": "Description for back exercise 5",
+      "bodyPart": "Back",
+      "sets": 3,
+      "reps": 13,
+      "durationSeconds": 43,
+      "difficultyLevel": "intermediate"
+    }
+  ],
+  "startDate": "2024-09-26T13:59:38.679936",
+  "endDate": null,
+  "status": "completed",
+  "goals": {
+    "primary": "Improve range of motion",
+    "bodyPart": "Back",
+    "painReduction": "medium"
+  },
+  "lastUpdated": "2024-09-26T13:59:38.679936",
+  "isDynamicallyAdjusted": true
+}

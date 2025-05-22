@@ -1,0 +1,69 @@
+{
+  "id": "progress_36610",
+  "userId": "patient_9776",
+  "planId": "plan_72746",
+  "date": "2024-05-14T13:59:38.728517",
+  "exerciseLogs": [
+    {
+      "exerciseId": "ex_hip_1_4691",
+      "exerciseName": "Hip Exercise 6",
+      "setsCompleted": 2,
+      "repsCompleted": 9,
+      "durationSeconds": 50,
+      "painLevel": 6,
+      "notes": null
+    },
+    {
+      "exerciseId": "ex_hip_2_6352",
+      "exerciseName": "Hip Exercise 1",
+      "setsCompleted": 3,
+      "repsCompleted": 2,
+      "durationSeconds": 84,
+      "painLevel": 1,
+      "notes": null
+    },
+    {
+      "exerciseId": "ex_hip_3_3491",
+      "exerciseName": "Hip Exercise 3",
+      "setsCompleted": 3,
+      "repsCompleted": 8,
+      "durationSeconds": 69,
+      "painLevel": 7,
+      "notes": "Too challenging"
+    },
+    {
+      "exerciseId": "ex_hip_4_5404",
+      "exerciseName": "Hip Exercise 4",
+      "setsCompleted": 4,
+      "repsCompleted": 9,
+      "durationSeconds": 34,
+      "painLevel": 3,
+      "notes": "Getting easier"
+    },
+    {
+      "exerciseId": "ex_hip_5_1679",
+      "exerciseName": "Hip Exercise 2",
+      "setsCompleted": 2,
+      "repsCompleted": 12,
+      "durationSeconds": 54,
+      "painLevel": 2,
+      "notes": null
+    },
+    {
+      "exerciseId": "ex_hip_6_4345",
+      "exerciseName": "Hip Exercise 5",
+      "setsCompleted": 3,
+      "repsCompleted": 6,
+      "durationSeconds": 80,
+      "painLevel": 2,
+      "notes": null
+    }
+  ],
+  "metrics": {
+    "hip_rom": 90,
+    "hip_strength": 5
+  },
+  "feedback": "Need modifications for some exercises",
+  "overallRating": 5,
+  "adherencePercentage": 94
+}

@@ -1,0 +1,69 @@
+{
+  "id": "progress_14784",
+  "userId": "patient_9306",
+  "planId": "plan_23007",
+  "date": "2025-01-28T13:59:38.732038",
+  "exerciseLogs": [
+    {
+      "exerciseId": "ex_back_1_6263",
+      "exerciseName": "Back Exercise 3",
+      "setsCompleted": 3,
+      "repsCompleted": 5,
+      "durationSeconds": 59,
+      "painLevel": 10,
+      "notes": null
+    },
+    {
+      "exerciseId": "ex_back_2_3570",
+      "exerciseName": "Back Exercise 5",
+      "setsCompleted": 1,
+      "repsCompleted": 4,
+      "durationSeconds": 72,
+      "painLevel": 8,
+      "notes": null
+    },
+    {
+      "exerciseId": "ex_back_3_4425",
+      "exerciseName": "Back Exercise 4",
+      "setsCompleted": 1,
+      "repsCompleted": 2,
+      "durationSeconds": 39,
+      "painLevel": 5,
+      "notes": "Felt good"
+    },
+    {
+      "exerciseId": "ex_back_4_7500",
+      "exerciseName": "Back Exercise 6",
+      "setsCompleted": 1,
+      "repsCompleted": 7,
+      "durationSeconds": 67,
+      "painLevel": 5,
+      "notes": "Too challenging"
+    },
+    {
+      "exerciseId": "ex_back_5_4761",
+      "exerciseName": "Back Exercise 2",
+      "setsCompleted": 1,
+      "repsCompleted": 1,
+      "durationSeconds": 83,
+      "painLevel": 5,
+      "notes": "Felt good"
+    },
+    {
+      "exerciseId": "ex_back_6_8751",
+      "exerciseName": "Back Exercise 1",
+      "setsCompleted": 2,
+      "repsCompleted": 6,
+      "durationSeconds": 48,
+      "painLevel": 5,
+      "notes": "Felt good"
+    }
+  ],
+  "metrics": {
+    "back_rom": 62,
+    "back_strength": 3
+  },
+  "feedback": "Need modifications for some exercises",
+  "overallRating": 2,
+  "adherencePercentage": 47
+}

@@ -1,0 +1,25 @@
+{
+  "id": "patient_2813",
+  "name": "Susan Brown",
+  "email": "patient_2813@outlook.com",
+  "role": "patient",
+  "profileImageUrl": null,
+  "medicalHistory": {
+    "previousInjuries": "Tendonitis",
+    "surgicalHistory": "Joint replacement",
+    "medications": "Pain relievers",
+    "allergies": "None"
+  },
+  "physicalCondition": {
+    "bodyPart": "Ankle",
+    "painLevel": 2,
+    "mobilityLimitations": "Limited range of motion and strength",
+    "painLocation": "Muscle"
+  },
+  "rehabilitationGoals": [
+    "Improve daily function",
+    "Improve range of motion",
+    "Improve daily function"
+  ],
+  "createdAt": "2024-12-12T13:59:38.686938"
+}

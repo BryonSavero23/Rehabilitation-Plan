@@ -1,0 +1,59 @@
+{
+  "id": "plan_52422",
+  "userId": "patient_3334",
+  "therapistId": "therapist_8142",
+  "title": "Ankle Rehabilitation Plan",
+  "description": "Personalized rehabilitation plan for Ankle recovery",
+  "exercises": [
+    {
+      "id": "ex_ankle_1_3007",
+      "name": "Heel Raises",
+      "description": "Stand and rise up on your toes",
+      "bodyPart": "Ankle",
+      "sets": 3,
+      "reps": 11,
+      "durationSeconds": 43,
+      "difficultyLevel": "intermediate"
+    },
+    {
+      "id": "ex_ankle_2_3893",
+      "name": "Ankle Pumps",
+      "description": "Move your foot up and down",
+      "bodyPart": "Ankle",
+      "sets": 2,
+      "reps": 14,
+      "durationSeconds": 88,
+      "difficultyLevel": "intermediate"
+    },
+    {
+      "id": "ex_ankle_3_9414",
+      "name": "Toe Raises",
+      "description": "Stand and lift your toes off the ground",
+      "bodyPart": "Ankle",
+      "sets": 4,
+      "reps": 15,
+      "durationSeconds": 66,
+      "difficultyLevel": "intermediate"
+    },
+    {
+      "id": "ex_ankle_4_8428",
+      "name": "Resistance Band Eversion",
+      "description": "Turn foot outward against resistance",
+      "bodyPart": "Ankle",
+      "sets": 3,
+      "reps": 14,
+      "durationSeconds": 32,
+      "difficultyLevel": "intermediate"
+    }
+  ],
+  "startDate": "2024-11-23T13:59:38.679936",
+  "endDate": null,
+  "status": "completed",
+  "goals": {
+    "primary": "Increase strength",
+    "bodyPart": "Ankle",
+    "painReduction": "medium"
+  },
+  "lastUpdated": "2024-11-23T13:59:38.679936",
+  "isDynamicallyAdjusted": true
+}

@@ -1,0 +1,69 @@
+{
+  "id": "plan_70632",
+  "userId": "patient_6891",
+  "therapistId": null,
+  "title": "Ankle Rehabilitation Plan",
+  "description": "Personalized rehabilitation plan for Ankle recovery",
+  "exercises": [
+    {
+      "id": "ex_ankle_1_4811",
+      "name": "Toe Raises",
+      "description": "Stand and lift your toes off the ground",
+      "bodyPart": "Ankle",
+      "sets": 4,
+      "reps": 15,
+      "durationSeconds": 89,
+      "difficultyLevel": "intermediate"
+    },
+    {
+      "id": "ex_ankle_2_8256",
+      "name": "Heel Raises",
+      "description": "Stand and rise up on your toes",
+      "bodyPart": "Ankle",
+      "sets": 4,
+      "reps": 11,
+      "durationSeconds": 84,
+      "difficultyLevel": "intermediate"
+    },
+    {
+      "id": "ex_ankle_3_8879",
+      "name": "Ankle Circles",
+      "description": "Rotate your ankle in circles",
+      "bodyPart": "Ankle",
+      "sets": 2,
+      "reps": 10,
+      "durationSeconds": 55,
+      "difficultyLevel": "intermediate"
+    },
+    {
+      "id": "ex_ankle_4_4508",
+      "name": "Ankle Pumps",
+      "description": "Move your foot up and down",
+      "bodyPart": "Ankle",
+      "sets": 3,
+      "reps": 11,
+      "durationSeconds": 79,
+      "difficultyLevel": "intermediate"
+    },
+    {
+      "id": "ex_ankle_5_1744",
+      "name": "Resistance Band Eversion",
+      "description": "Turn foot outward against resistance",
+      "bodyPart": "Ankle",
+      "sets": 2,
+      "reps": 8,
+      "durationSeconds": 32,
+      "difficultyLevel": "intermediate"
+    }
+  ],
+  "startDate": "2025-03-12T13:59:38.719000",
+  "endDate": null,
+  "status": "active",
+  "goals": {
+    "primary": "Improve range of motion",
+    "bodyPart": "Ankle",
+    "painReduction": "medium"
+  },
+  "lastUpdated": "2025-03-12T13:59:38.719000",
+  "isDynamicallyAdjusted": false
+}

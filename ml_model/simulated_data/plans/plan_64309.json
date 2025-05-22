@@ -1,0 +1,79 @@
+{
+  "id": "plan_64309",
+  "userId": "patient_1351",
+  "therapistId": "therapist_6083",
+  "title": "Ankle Rehabilitation Plan",
+  "description": "Personalized rehabilitation plan for Ankle recovery",
+  "exercises": [
+    {
+      "id": "ex_ankle_1_4683",
+      "name": "Toe Raises",
+      "description": "Stand and lift your toes off the ground",
+      "bodyPart": "Ankle",
+      "sets": 3,
+      "reps": 15,
+      "durationSeconds": 53,
+      "difficultyLevel": "beginner"
+    },
+    {
+      "id": "ex_ankle_2_2412",
+      "name": "Ankle Pumps",
+      "description": "Move your foot up and down",
+      "bodyPart": "Ankle",
+      "sets": 2,
+      "reps": 8,
+      "durationSeconds": 35,
+      "difficultyLevel": "beginner"
+    },
+    {
+      "id": "ex_ankle_3_9066",
+      "name": "Resistance Band Inversion",
+      "description": "Turn foot inward against resistance",
+      "bodyPart": "Ankle",
+      "sets": 2,
+      "reps": 15,
+      "durationSeconds": 57,
+      "difficultyLevel": "beginner"
+    },
+    {
+      "id": "ex_ankle_4_8977",
+      "name": "Resistance Band Eversion",
+      "description": "Turn foot outward against resistance",
+      "bodyPart": "Ankle",
+      "sets": 2,
+      "reps": 11,
+      "durationSeconds": 53,
+      "difficultyLevel": "beginner"
+    },
+    {
+      "id": "ex_ankle_5_6176",
+      "name": "Ankle Circles",
+      "description": "Rotate your ankle in circles",
+      "bodyPart": "Ankle",
+      "sets": 3,
+      "reps": 10,
+      "durationSeconds": 68,
+      "difficultyLevel": "beginner"
+    },
+    {
+      "id": "ex_ankle_6_5339",
+      "name": "Heel Raises",
+      "description": "Stand and rise up on your toes",
+      "bodyPart": "Ankle",
+      "sets": 3,
+      "reps": 10,
+      "durationSeconds": 83,
+      "difficultyLevel": "beginner"
+    }
+  ],
+  "startDate": "2024-12-06T13:59:38.726518",
+  "endDate": null,
+  "status": "active",
+  "goals": {
+    "primary": "Prevent re-injury",
+    "bodyPart": "Ankle",
+    "painReduction": "high"
+  },
+  "lastUpdated": "2024-12-06T13:59:38.726518",
+  "isDynamicallyAdjusted": true
+}

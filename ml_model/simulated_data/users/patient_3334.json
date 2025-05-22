@@ -1,0 +1,23 @@
+{
+  "id": "patient_3334",
+  "name": "John Taylor",
+  "email": "patient_3334@hotmail.com",
+  "role": "patient",
+  "profileImageUrl": null,
+  "medicalHistory": {
+    "previousInjuries": "ACL tear",
+    "surgicalHistory": "None",
+    "medications": "NSAIDs",
+    "allergies": "None"
+  },
+  "physicalCondition": {
+    "bodyPart": "Ankle",
+    "painLevel": 7,
+    "mobilityLimitations": "Limited range of motion and strength",
+    "painLocation": "Joint"
+  },
+  "rehabilitationGoals": [
+    "Increase strength"
+  ],
+  "createdAt": "2024-11-08T13:59:38.679936"
+}

@@ -1,0 +1,25 @@
+{
+  "id": "patient_7538",
+  "name": "Charles Rodriguez",
+  "email": "patient_7538@gmail.com",
+  "role": "patient",
+  "profileImageUrl": null,
+  "medicalHistory": {
+    "previousInjuries": "Fracture",
+    "surgicalHistory": "Fracture fixation",
+    "medications": "Pain relievers",
+    "allergies": "Latex"
+  },
+  "physicalCondition": {
+    "bodyPart": "Wrist",
+    "painLevel": 9,
+    "mobilityLimitations": "Limited range of motion and strength",
+    "painLocation": "Joint"
+  },
+  "rehabilitationGoals": [
+    "Prevent re-injury",
+    "Pain reduction",
+    "Post-surgery recovery"
+  ],
+  "createdAt": "2025-02-03T13:59:38.712999"
+}

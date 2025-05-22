@@ -1,0 +1,60 @@
+{
+  "id": "progress_20571",
+  "userId": "patient_4351",
+  "planId": "plan_29802",
+  "date": "2025-03-11T13:59:38.684932",
+  "exerciseLogs": [
+    {
+      "exerciseId": "ex_shoulder_1_6810",
+      "exerciseName": "Wall Crawl",
+      "setsCompleted": 2,
+      "repsCompleted": 3,
+      "durationSeconds": 75,
+      "painLevel": 10,
+      "notes": null
+    },
+    {
+      "exerciseId": "ex_shoulder_2_4487",
+      "exerciseName": "External Rotation",
+      "setsCompleted": 3,
+      "repsCompleted": 12,
+      "durationSeconds": 63,
+      "painLevel": 1,
+      "notes": "Felt good"
+    },
+    {
+      "exerciseId": "ex_shoulder_3_2908",
+      "exerciseName": "Shoulder Flexion",
+      "setsCompleted": 1,
+      "repsCompleted": 11,
+      "durationSeconds": 49,
+      "painLevel": 9,
+      "notes": null
+    },
+    {
+      "exerciseId": "ex_shoulder_4_2472",
+      "exerciseName": "Pendulum Exercise",
+      "setsCompleted": 3,
+      "repsCompleted": 4,
+      "durationSeconds": 46,
+      "painLevel": 4,
+      "notes": null
+    },
+    {
+      "exerciseId": "ex_shoulder_6_5254",
+      "exerciseName": "Internal Rotation",
+      "setsCompleted": 2,
+      "repsCompleted": 3,
+      "durationSeconds": 53,
+      "painLevel": 10,
+      "notes": "Getting easier"
+    }
+  ],
+  "metrics": {
+    "shoulder_rom": 101,
+    "shoulder_strength": 9
+  },
+  "feedback": "Feeling improvement in range of motion",
+  "overallRating": 2,
+  "adherencePercentage": 64
+}

@@ -1,0 +1,69 @@
+{
+  "id": "plan_18040",
+  "userId": "patient_7662",
+  "therapistId": "therapist_8142",
+  "title": "Elbow Rehabilitation Plan",
+  "description": "Personalized rehabilitation plan for Elbow recovery",
+  "exercises": [
+    {
+      "id": "ex_elbow_1_5226",
+      "name": "Elbow Exercise 1",
+      "description": "Description for elbow exercise 1",
+      "bodyPart": "Elbow",
+      "sets": 4,
+      "reps": 11,
+      "durationSeconds": 73,
+      "difficultyLevel": "beginner"
+    },
+    {
+      "id": "ex_elbow_2_7573",
+      "name": "Elbow Exercise 5",
+      "description": "Description for elbow exercise 5",
+      "bodyPart": "Elbow",
+      "sets": 2,
+      "reps": 15,
+      "durationSeconds": 88,
+      "difficultyLevel": "beginner"
+    },
+    {
+      "id": "ex_elbow_3_2717",
+      "name": "Elbow Exercise 6",
+      "description": "Description for elbow exercise 6",
+      "bodyPart": "Elbow",
+      "sets": 2,
+      "reps": 11,
+      "durationSeconds": 81,
+      "difficultyLevel": "beginner"
+    },
+    {
+      "id": "ex_elbow_4_7213",
+      "name": "Elbow Exercise 4",
+      "description": "Description for elbow exercise 4",
+      "bodyPart": "Elbow",
+      "sets": 3,
+      "reps": 10,
+      "durationSeconds": 85,
+      "difficultyLevel": "beginner"
+    },
+    {
+      "id": "ex_elbow_5_6324",
+      "name": "Elbow Exercise 2",
+      "description": "Description for elbow exercise 2",
+      "bodyPart": "Elbow",
+      "sets": 2,
+      "reps": 12,
+      "durationSeconds": 85,
+      "difficultyLevel": "beginner"
+    }
+  ],
+  "startDate": "2025-03-07T13:59:38.678933",
+  "endDate": null,
+  "status": "completed",
+  "goals": {
+    "primary": "Post-surgery recovery",
+    "bodyPart": "Elbow",
+    "painReduction": "high"
+  },
+  "lastUpdated": "2025-03-07T13:59:38.678933",
+  "isDynamicallyAdjusted": true
+}

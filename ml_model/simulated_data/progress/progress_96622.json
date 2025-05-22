@@ -1,0 +1,51 @@
+{
+  "id": "progress_96622",
+  "userId": "patient_1571",
+  "planId": "plan_81276",
+  "date": "2025-01-31T13:59:38.721518",
+  "exerciseLogs": [
+    {
+      "exerciseId": "ex_ankle_1_9123",
+      "exerciseName": "Resistance Band Inversion",
+      "setsCompleted": 4,
+      "repsCompleted": 7,
+      "durationSeconds": 85,
+      "painLevel": 7,
+      "notes": "Getting easier"
+    },
+    {
+      "exerciseId": "ex_ankle_2_8276",
+      "exerciseName": "Heel Raises",
+      "setsCompleted": 2,
+      "repsCompleted": 10,
+      "durationSeconds": 58,
+      "painLevel": 2,
+      "notes": null
+    },
+    {
+      "exerciseId": "ex_ankle_3_9321",
+      "exerciseName": "Ankle Pumps",
+      "setsCompleted": 1,
+      "repsCompleted": 1,
+      "durationSeconds": 89,
+      "painLevel": 7,
+      "notes": "Felt good"
+    },
+    {
+      "exerciseId": "ex_ankle_4_4499",
+      "exerciseName": "Ankle Circles",
+      "setsCompleted": 3,
+      "repsCompleted": 7,
+      "durationSeconds": 38,
+      "painLevel": 2,
+      "notes": "Felt good"
+    }
+  ],
+  "metrics": {
+    "ankle_rom": 144,
+    "ankle_strength": 3
+  },
+  "feedback": null,
+  "overallRating": 3,
+  "adherencePercentage": 76
+}

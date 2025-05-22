@@ -1,0 +1,24 @@
+{
+  "id": "progress_87021",
+  "userId": "patient_4687",
+  "planId": "plan_48057",
+  "date": "2025-02-03T13:59:38.668413",
+  "exerciseLogs": [
+    {
+      "exerciseId": "ex_neck_2_6456",
+      "exerciseName": "Neck Exercise 5",
+      "setsCompleted": 2,
+      "repsCompleted": 9,
+      "durationSeconds": 43,
+      "painLevel": 2,
+      "notes": "Getting easier"
+    }
+  ],
+  "metrics": {
+    "neck_rom": 107,
+    "neck_strength": 9
+  },
+  "feedback": null,
+  "overallRating": 1,
+  "adherencePercentage": 22
+}

@@ -1,0 +1,79 @@
+{
+  "id": "plan_12396",
+  "userId": "patient_6636",
+  "therapistId": "therapist_2230",
+  "title": "Neck Rehabilitation Plan",
+  "description": "Personalized rehabilitation plan for Neck recovery",
+  "exercises": [
+    {
+      "id": "ex_neck_1_9343",
+      "name": "Neck Exercise 4",
+      "description": "Description for neck exercise 4",
+      "bodyPart": "Neck",
+      "sets": 4,
+      "reps": 13,
+      "durationSeconds": 43,
+      "difficultyLevel": "advanced"
+    },
+    {
+      "id": "ex_neck_2_4782",
+      "name": "Neck Exercise 3",
+      "description": "Description for neck exercise 3",
+      "bodyPart": "Neck",
+      "sets": 4,
+      "reps": 11,
+      "durationSeconds": 35,
+      "difficultyLevel": "advanced"
+    },
+    {
+      "id": "ex_neck_3_1846",
+      "name": "Neck Exercise 2",
+      "description": "Description for neck exercise 2",
+      "bodyPart": "Neck",
+      "sets": 3,
+      "reps": 14,
+      "durationSeconds": 87,
+      "difficultyLevel": "advanced"
+    },
+    {
+      "id": "ex_neck_4_5867",
+      "name": "Neck Exercise 6",
+      "description": "Description for neck exercise 6",
+      "bodyPart": "Neck",
+      "sets": 2,
+      "reps": 14,
+      "durationSeconds": 43,
+      "difficultyLevel": "advanced"
+    },
+    {
+      "id": "ex_neck_5_7943",
+      "name": "Neck Exercise 1",
+      "description": "Description for neck exercise 1",
+      "bodyPart": "Neck",
+      "sets": 2,
+      "reps": 14,
+      "durationSeconds": 73,
+      "difficultyLevel": "advanced"
+    },
+    {
+      "id": "ex_neck_6_2455",
+      "name": "Neck Exercise 5",
+      "description": "Description for neck exercise 5",
+      "bodyPart": "Neck",
+      "sets": 3,
+      "reps": 15,
+      "durationSeconds": 37,
+      "difficultyLevel": "advanced"
+    }
+  ],
+  "startDate": "2025-04-10T13:59:38.691458",
+  "endDate": null,
+  "status": "completed",
+  "goals": {
+    "primary": "Return to sports",
+    "bodyPart": "Neck",
+    "painReduction": "low"
+  },
+  "lastUpdated": "2025-04-10T13:59:38.691458",
+  "isDynamicallyAdjusted": false
+}

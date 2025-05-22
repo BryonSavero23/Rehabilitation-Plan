@@ -1,0 +1,24 @@
+{
+  "id": "patient_3656",
+  "name": "Robert Moore",
+  "email": "patient_3656@hotmail.com",
+  "role": "patient",
+  "profileImageUrl": null,
+  "medicalHistory": {
+    "previousInjuries": "Ankle sprain",
+    "surgicalHistory": "Ankle ligament reconstruction",
+    "medications": "NSAIDs",
+    "allergies": "Penicillin"
+  },
+  "physicalCondition": {
+    "bodyPart": "Wrist",
+    "painLevel": 10,
+    "mobilityLimitations": "Limited range of motion and strength",
+    "painLocation": "Joint"
+  },
+  "rehabilitationGoals": [
+    "Increase strength",
+    "Improve range of motion"
+  ],
+  "createdAt": "2024-05-24T13:59:38.675413"
+}

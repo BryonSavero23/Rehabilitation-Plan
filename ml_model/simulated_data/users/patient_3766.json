@@ -1,0 +1,25 @@
+{
+  "id": "patient_3766",
+  "name": "Richard Miller",
+  "email": "patient_3766@example.com",
+  "role": "patient",
+  "profileImageUrl": null,
+  "medicalHistory": {
+    "previousInjuries": "None",
+    "surgicalHistory": "ACL reconstruction",
+    "medications": "Pain relievers",
+    "allergies": "None"
+  },
+  "physicalCondition": {
+    "bodyPart": "Hip",
+    "painLevel": 9,
+    "mobilityLimitations": "Limited range of motion and strength",
+    "painLocation": "Ligament"
+  },
+  "rehabilitationGoals": [
+    "Prevent re-injury",
+    "Return to sports",
+    "Increase strength"
+  ],
+  "createdAt": "2024-12-21T13:59:38.682937"
+}

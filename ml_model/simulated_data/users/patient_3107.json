@@ -1,0 +1,24 @@
+{
+  "id": "patient_3107",
+  "name": "Sarah Hernandez",
+  "email": "patient_3107@gmail.com",
+  "role": "patient",
+  "profileImageUrl": null,
+  "medicalHistory": {
+    "previousInjuries": "Muscle strain",
+    "surgicalHistory": "Meniscus repair",
+    "medications": "NSAIDs",
+    "allergies": "None"
+  },
+  "physicalCondition": {
+    "bodyPart": "Wrist",
+    "painLevel": 5,
+    "mobilityLimitations": "Limited range of motion and strength",
+    "painLocation": "Ligament"
+  },
+  "rehabilitationGoals": [
+    "Post-surgery recovery",
+    "Improve range of motion"
+  ],
+  "createdAt": "2024-10-23T13:59:38.683934"
+}

@@ -1,0 +1,33 @@
+{
+  "id": "progress_46623",
+  "userId": "patient_3809",
+  "planId": "plan_38978",
+  "date": "2025-03-21T13:59:38.694458",
+  "exerciseLogs": [
+    {
+      "exerciseId": "ex_ankle_2_2598",
+      "exerciseName": "Ankle Pumps",
+      "setsCompleted": 2,
+      "repsCompleted": 12,
+      "durationSeconds": 79,
+      "painLevel": 1,
+      "notes": "Felt good"
+    },
+    {
+      "exerciseId": "ex_ankle_3_3336",
+      "exerciseName": "Toe Raises",
+      "setsCompleted": 1,
+      "repsCompleted": 8,
+      "durationSeconds": 42,
+      "painLevel": 4,
+      "notes": "Getting easier"
+    }
+  ],
+  "metrics": {
+    "ankle_rom": 70,
+    "ankle_strength": 10
+  },
+  "feedback": "Need modifications for some exercises",
+  "overallRating": 1,
+  "adherencePercentage": 33
+}

@@ -1,0 +1,69 @@
+{
+  "id": "progress_51326",
+  "userId": "patient_7538",
+  "planId": "plan_94504",
+  "date": "2025-02-26T13:59:38.712999",
+  "exerciseLogs": [
+    {
+      "exerciseId": "ex_wrist_1_9254",
+      "exerciseName": "Wrist Exercise 1",
+      "setsCompleted": 2,
+      "repsCompleted": 6,
+      "durationSeconds": 68,
+      "painLevel": 10,
+      "notes": "Too challenging"
+    },
+    {
+      "exerciseId": "ex_wrist_2_6162",
+      "exerciseName": "Wrist Exercise 2",
+      "setsCompleted": 3,
+      "repsCompleted": 3,
+      "durationSeconds": 82,
+      "painLevel": 4,
+      "notes": "Felt good"
+    },
+    {
+      "exerciseId": "ex_wrist_3_5834",
+      "exerciseName": "Wrist Exercise 4",
+      "setsCompleted": 3,
+      "repsCompleted": 11,
+      "durationSeconds": 67,
+      "painLevel": 5,
+      "notes": "Too challenging"
+    },
+    {
+      "exerciseId": "ex_wrist_4_1114",
+      "exerciseName": "Wrist Exercise 3",
+      "setsCompleted": 4,
+      "repsCompleted": 4,
+      "durationSeconds": 63,
+      "painLevel": 4,
+      "notes": "Getting easier"
+    },
+    {
+      "exerciseId": "ex_wrist_5_1685",
+      "exerciseName": "Wrist Exercise 6",
+      "setsCompleted": 1,
+      "repsCompleted": 2,
+      "durationSeconds": 38,
+      "painLevel": 3,
+      "notes": "Too challenging"
+    },
+    {
+      "exerciseId": "ex_wrist_6_4356",
+      "exerciseName": "Wrist Exercise 5",
+      "setsCompleted": 2,
+      "repsCompleted": 7,
+      "durationSeconds": 54,
+      "painLevel": 10,
+      "notes": "Too challenging"
+    }
+  ],
+  "metrics": {
+    "wrist_rom": 108,
+    "wrist_strength": 5
+  },
+  "feedback": "Feeling improvement in range of motion",
+  "overallRating": 5,
+  "adherencePercentage": 83
+}

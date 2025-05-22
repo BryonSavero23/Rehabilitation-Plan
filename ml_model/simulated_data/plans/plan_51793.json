@@ -1,0 +1,59 @@
+{
+  "id": "plan_51793",
+  "userId": "patient_4454",
+  "therapistId": "therapist_8799",
+  "title": "Wrist Rehabilitation Plan",
+  "description": "Personalized rehabilitation plan for Wrist recovery",
+  "exercises": [
+    {
+      "id": "ex_wrist_1_2844",
+      "name": "Wrist Exercise 1",
+      "description": "Description for wrist exercise 1",
+      "bodyPart": "Wrist",
+      "sets": 2,
+      "reps": 8,
+      "durationSeconds": 53,
+      "difficultyLevel": "intermediate"
+    },
+    {
+      "id": "ex_wrist_2_4141",
+      "name": "Wrist Exercise 3",
+      "description": "Description for wrist exercise 3",
+      "bodyPart": "Wrist",
+      "sets": 2,
+      "reps": 15,
+      "durationSeconds": 44,
+      "difficultyLevel": "intermediate"
+    },
+    {
+      "id": "ex_wrist_3_6337",
+      "name": "Wrist Exercise 4",
+      "description": "Description for wrist exercise 4",
+      "bodyPart": "Wrist",
+      "sets": 2,
+      "reps": 15,
+      "durationSeconds": 39,
+      "difficultyLevel": "intermediate"
+    },
+    {
+      "id": "ex_wrist_4_8677",
+      "name": "Wrist Exercise 5",
+      "description": "Description for wrist exercise 5",
+      "bodyPart": "Wrist",
+      "sets": 4,
+      "reps": 13,
+      "durationSeconds": 45,
+      "difficultyLevel": "intermediate"
+    }
+  ],
+  "startDate": "2024-12-29T13:59:38.660413",
+  "endDate": null,
+  "status": "completed",
+  "goals": {
+    "primary": "Pain reduction",
+    "bodyPart": "Wrist",
+    "painReduction": "medium"
+  },
+  "lastUpdated": "2024-12-29T13:59:38.660413",
+  "isDynamicallyAdjusted": true
+}

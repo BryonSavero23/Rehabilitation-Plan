@@ -1,0 +1,42 @@
+{
+  "id": "progress_13301",
+  "userId": "patient_1594",
+  "planId": "plan_82141",
+  "date": "2025-05-08T13:59:38.689456",
+  "exerciseLogs": [
+    {
+      "exerciseId": "ex_shoulder_1_5662",
+      "exerciseName": "Shoulder Flexion",
+      "setsCompleted": 1,
+      "repsCompleted": 8,
+      "durationSeconds": 34,
+      "painLevel": 3,
+      "notes": "Felt good"
+    },
+    {
+      "exerciseId": "ex_shoulder_2_9200",
+      "exerciseName": "Shoulder Abduction",
+      "setsCompleted": 1,
+      "repsCompleted": 5,
+      "durationSeconds": 82,
+      "painLevel": 3,
+      "notes": "Getting easier"
+    },
+    {
+      "exerciseId": "ex_shoulder_5_7658",
+      "exerciseName": "Internal Rotation",
+      "setsCompleted": 3,
+      "repsCompleted": 9,
+      "durationSeconds": 50,
+      "painLevel": 3,
+      "notes": null
+    }
+  ],
+  "metrics": {
+    "shoulder_rom": 165,
+    "shoulder_strength": 6
+  },
+  "feedback": null,
+  "overallRating": 2,
+  "adherencePercentage": 33
+}

@@ -1,0 +1,60 @@
+{
+  "id": "progress_27386",
+  "userId": "patient_2090",
+  "planId": "plan_32555",
+  "date": "2025-02-27T13:59:38.685936",
+  "exerciseLogs": [
+    {
+      "exerciseId": "ex_elbow_1_8729",
+      "exerciseName": "Elbow Exercise 3",
+      "setsCompleted": 3,
+      "repsCompleted": 3,
+      "durationSeconds": 65,
+      "painLevel": 6,
+      "notes": null
+    },
+    {
+      "exerciseId": "ex_elbow_2_8178",
+      "exerciseName": "Elbow Exercise 4",
+      "setsCompleted": 2,
+      "repsCompleted": 2,
+      "durationSeconds": 33,
+      "painLevel": 7,
+      "notes": "Felt good"
+    },
+    {
+      "exerciseId": "ex_elbow_3_7225",
+      "exerciseName": "Elbow Exercise 5",
+      "setsCompleted": 1,
+      "repsCompleted": 10,
+      "durationSeconds": 31,
+      "painLevel": 6,
+      "notes": "Too challenging"
+    },
+    {
+      "exerciseId": "ex_elbow_4_1094",
+      "exerciseName": "Elbow Exercise 2",
+      "setsCompleted": 2,
+      "repsCompleted": 15,
+      "durationSeconds": 51,
+      "painLevel": 9,
+      "notes": "Felt good"
+    },
+    {
+      "exerciseId": "ex_elbow_5_3605",
+      "exerciseName": "Elbow Exercise 1",
+      "setsCompleted": 1,
+      "repsCompleted": 6,
+      "durationSeconds": 75,
+      "painLevel": 8,
+      "notes": "Too challenging"
+    }
+  ],
+  "metrics": {
+    "elbow_rom": 119,
+    "elbow_strength": 10
+  },
+  "feedback": "Exercises are getting easier to perform",
+  "overallRating": 2,
+  "adherencePercentage": 60
+}

@@ -1,0 +1,25 @@
+{
+  "id": "patient_6804",
+  "name": "Jessica Miller",
+  "email": "patient_6804@outlook.com",
+  "role": "patient",
+  "profileImageUrl": null,
+  "medicalHistory": {
+    "previousInjuries": "Tendonitis",
+    "surgicalHistory": "Fracture fixation",
+    "medications": "Pain relievers",
+    "allergies": "Latex"
+  },
+  "physicalCondition": {
+    "bodyPart": "Elbow",
+    "painLevel": 8,
+    "mobilityLimitations": "Limited range of motion and strength",
+    "painLocation": "Ligament"
+  },
+  "rehabilitationGoals": [
+    "Prevent re-injury",
+    "Increase strength",
+    "Post-surgery recovery"
+  ],
+  "createdAt": "2024-10-13T13:59:38.733037"
+}

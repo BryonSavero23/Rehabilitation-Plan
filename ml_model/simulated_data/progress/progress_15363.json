@@ -1,0 +1,51 @@
+{
+  "id": "progress_15363",
+  "userId": "patient_3221",
+  "planId": "plan_36058",
+  "date": "2025-01-12T13:59:38.669413",
+  "exerciseLogs": [
+    {
+      "exerciseId": "ex_elbow_2_9795",
+      "exerciseName": "Elbow Exercise 4",
+      "setsCompleted": 3,
+      "repsCompleted": 8,
+      "durationSeconds": 65,
+      "painLevel": 6,
+      "notes": null
+    },
+    {
+      "exerciseId": "ex_elbow_3_4178",
+      "exerciseName": "Elbow Exercise 1",
+      "setsCompleted": 2,
+      "repsCompleted": 8,
+      "durationSeconds": 74,
+      "painLevel": 3,
+      "notes": "Need to modify"
+    },
+    {
+      "exerciseId": "ex_elbow_4_1248",
+      "exerciseName": "Elbow Exercise 5",
+      "setsCompleted": 3,
+      "repsCompleted": 7,
+      "durationSeconds": 52,
+      "painLevel": 4,
+      "notes": "Too challenging"
+    },
+    {
+      "exerciseId": "ex_elbow_5_4334",
+      "exerciseName": "Elbow Exercise 6",
+      "setsCompleted": 2,
+      "repsCompleted": 13,
+      "durationSeconds": 38,
+      "painLevel": 6,
+      "notes": "Felt good"
+    }
+  ],
+  "metrics": {
+    "elbow_rom": 133,
+    "elbow_strength": 3
+  },
+  "feedback": "Need modifications for some exercises",
+  "overallRating": 3,
+  "adherencePercentage": 62
+}

@@ -1,0 +1,25 @@
+{
+  "id": "patient_5888",
+  "name": "Mary Gonzalez",
+  "email": "patient_5888@hotmail.com",
+  "role": "patient",
+  "profileImageUrl": null,
+  "medicalHistory": {
+    "previousInjuries": "Fracture",
+    "surgicalHistory": "Arthroscopy",
+    "medications": "Pain relievers",
+    "allergies": "Penicillin"
+  },
+  "physicalCondition": {
+    "bodyPart": "Wrist",
+    "painLevel": 9,
+    "mobilityLimitations": "Limited range of motion and strength",
+    "painLocation": "Joint"
+  },
+  "rehabilitationGoals": [
+    "Prevent re-injury",
+    "Improve range of motion",
+    "Improve range of motion"
+  ],
+  "createdAt": "2024-10-07T13:59:38.671412"
+}

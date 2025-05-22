@@ -1,0 +1,42 @@
+{
+  "id": "progress_95656",
+  "userId": "patient_7962",
+  "planId": "plan_77535",
+  "date": "2024-11-22T13:59:38.670412",
+  "exerciseLogs": [
+    {
+      "exerciseId": "ex_ankle_3_8731",
+      "exerciseName": "Ankle Circles",
+      "setsCompleted": 1,
+      "repsCompleted": 7,
+      "durationSeconds": 89,
+      "painLevel": 5,
+      "notes": null
+    },
+    {
+      "exerciseId": "ex_ankle_4_6790",
+      "exerciseName": "Resistance Band Inversion",
+      "setsCompleted": 3,
+      "repsCompleted": 9,
+      "durationSeconds": 43,
+      "painLevel": 7,
+      "notes": null
+    },
+    {
+      "exerciseId": "ex_ankle_5_8802",
+      "exerciseName": "Resistance Band Eversion",
+      "setsCompleted": 1,
+      "repsCompleted": 1,
+      "durationSeconds": 40,
+      "painLevel": 8,
+      "notes": "Getting easier"
+    }
+  ],
+  "metrics": {
+    "ankle_rom": 89,
+    "ankle_strength": 10
+  },
+  "feedback": "Need modifications for some exercises",
+  "overallRating": 4,
+  "adherencePercentage": 41
+}

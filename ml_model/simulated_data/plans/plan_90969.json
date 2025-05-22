@@ -1,0 +1,49 @@
+{
+  "id": "plan_90969",
+  "userId": "patient_2260",
+  "therapistId": "therapist_1776",
+  "title": "Ankle Rehabilitation Plan",
+  "description": "Personalized rehabilitation plan for Ankle recovery",
+  "exercises": [
+    {
+      "id": "ex_ankle_1_9781",
+      "name": "Ankle Circles",
+      "description": "Rotate your ankle in circles",
+      "bodyPart": "Ankle",
+      "sets": 4,
+      "reps": 11,
+      "durationSeconds": 85,
+      "difficultyLevel": "intermediate"
+    },
+    {
+      "id": "ex_ankle_2_6163",
+      "name": "Resistance Band Inversion",
+      "description": "Turn foot inward against resistance",
+      "bodyPart": "Ankle",
+      "sets": 3,
+      "reps": 14,
+      "durationSeconds": 61,
+      "difficultyLevel": "intermediate"
+    },
+    {
+      "id": "ex_ankle_3_6295",
+      "name": "Ankle Pumps",
+      "description": "Move your foot up and down",
+      "bodyPart": "Ankle",
+      "sets": 4,
+      "reps": 15,
+      "durationSeconds": 72,
+      "difficultyLevel": "intermediate"
+    }
+  ],
+  "startDate": "2024-12-14T13:59:38.729520",
+  "endDate": null,
+  "status": "active",
+  "goals": {
+    "primary": "Improve range of motion",
+    "bodyPart": "Ankle",
+    "painReduction": "medium"
+  },
+  "lastUpdated": "2024-12-14T13:59:38.729520",
+  "isDynamicallyAdjusted": false
+}

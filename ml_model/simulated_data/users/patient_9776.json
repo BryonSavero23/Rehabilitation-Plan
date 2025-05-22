@@ -1,0 +1,25 @@
+{
+  "id": "patient_9776",
+  "name": "Patricia Williams",
+  "email": "patient_9776@outlook.com",
+  "role": "patient",
+  "profileImageUrl": null,
+  "medicalHistory": {
+    "previousInjuries": "Meniscus tear",
+    "surgicalHistory": "Arthroscopy",
+    "medications": "Muscle relaxants",
+    "allergies": "NSAIDs"
+  },
+  "physicalCondition": {
+    "bodyPart": "Hip",
+    "painLevel": 6,
+    "mobilityLimitations": "Limited range of motion and strength",
+    "painLocation": "Tendon"
+  },
+  "rehabilitationGoals": [
+    "Improve range of motion",
+    "Pain reduction",
+    "Return to sports"
+  ],
+  "createdAt": "2024-05-01T13:59:38.728517"
+}

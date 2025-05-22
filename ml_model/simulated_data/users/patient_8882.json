@@ -1,0 +1,25 @@
+{
+  "id": "patient_8882",
+  "name": "Joseph Jackson",
+  "email": "patient_8882@example.com",
+  "role": "patient",
+  "profileImageUrl": null,
+  "medicalHistory": {
+    "previousInjuries": "Meniscus tear",
+    "surgicalHistory": "ACL reconstruction",
+    "medications": "Pain relievers",
+    "allergies": "None"
+  },
+  "physicalCondition": {
+    "bodyPart": "Wrist",
+    "painLevel": 8,
+    "mobilityLimitations": "Limited range of motion and strength",
+    "painLocation": "Ligament"
+  },
+  "rehabilitationGoals": [
+    "Prevent re-injury",
+    "Prevent re-injury",
+    "Increase strength"
+  ],
+  "createdAt": "2025-03-07T13:59:38.708486"
+}

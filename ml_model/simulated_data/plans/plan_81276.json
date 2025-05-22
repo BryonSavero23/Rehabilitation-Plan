@@ -1,0 +1,59 @@
+{
+  "id": "plan_81276",
+  "userId": "patient_1571",
+  "therapistId": "therapist_3161",
+  "title": "Ankle Rehabilitation Plan",
+  "description": "Personalized rehabilitation plan for Ankle recovery",
+  "exercises": [
+    {
+      "id": "ex_ankle_1_9123",
+      "name": "Resistance Band Inversion",
+      "description": "Turn foot inward against resistance",
+      "bodyPart": "Ankle",
+      "sets": 4,
+      "reps": 8,
+      "durationSeconds": 85,
+      "difficultyLevel": "beginner"
+    },
+    {
+      "id": "ex_ankle_2_8276",
+      "name": "Heel Raises",
+      "description": "Stand and rise up on your toes",
+      "bodyPart": "Ankle",
+      "sets": 3,
+      "reps": 14,
+      "durationSeconds": 58,
+      "difficultyLevel": "beginner"
+    },
+    {
+      "id": "ex_ankle_3_9321",
+      "name": "Ankle Pumps",
+      "description": "Move your foot up and down",
+      "bodyPart": "Ankle",
+      "sets": 2,
+      "reps": 8,
+      "durationSeconds": 89,
+      "difficultyLevel": "beginner"
+    },
+    {
+      "id": "ex_ankle_4_4499",
+      "name": "Ankle Circles",
+      "description": "Rotate your ankle in circles",
+      "bodyPart": "Ankle",
+      "sets": 4,
+      "reps": 9,
+      "durationSeconds": 38,
+      "difficultyLevel": "beginner"
+    }
+  ],
+  "startDate": "2025-01-07T13:59:38.721518",
+  "endDate": null,
+  "status": "active",
+  "goals": {
+    "primary": "Increase strength",
+    "bodyPart": "Ankle",
+    "painReduction": "high"
+  },
+  "lastUpdated": "2025-01-07T13:59:38.721518",
+  "isDynamicallyAdjusted": false
+}

@@ -1,0 +1,69 @@
+{
+  "id": "progress_25532",
+  "userId": "patient_9306",
+  "planId": "plan_23007",
+  "date": "2025-03-04T13:59:38.732038",
+  "exerciseLogs": [
+    {
+      "exerciseId": "ex_back_1_6263",
+      "exerciseName": "Back Exercise 3",
+      "setsCompleted": 3,
+      "repsCompleted": 7,
+      "durationSeconds": 59,
+      "painLevel": 3,
+      "notes": "Need to modify"
+    },
+    {
+      "exerciseId": "ex_back_2_3570",
+      "exerciseName": "Back Exercise 5",
+      "setsCompleted": 1,
+      "repsCompleted": 13,
+      "durationSeconds": 72,
+      "painLevel": 2,
+      "notes": null
+    },
+    {
+      "exerciseId": "ex_back_3_4425",
+      "exerciseName": "Back Exercise 4",
+      "setsCompleted": 4,
+      "repsCompleted": 5,
+      "durationSeconds": 39,
+      "painLevel": 7,
+      "notes": "Felt good"
+    },
+    {
+      "exerciseId": "ex_back_4_7500",
+      "exerciseName": "Back Exercise 6",
+      "setsCompleted": 2,
+      "repsCompleted": 4,
+      "durationSeconds": 67,
+      "painLevel": 6,
+      "notes": "Too challenging"
+    },
+    {
+      "exerciseId": "ex_back_5_4761",
+      "exerciseName": "Back Exercise 2",
+      "setsCompleted": 3,
+      "repsCompleted": 1,
+      "durationSeconds": 83,
+      "painLevel": 5,
+      "notes": "Need to modify"
+    },
+    {
+      "exerciseId": "ex_back_6_8751",
+      "exerciseName": "Back Exercise 1",
+      "setsCompleted": 2,
+      "repsCompleted": 6,
+      "durationSeconds": 48,
+      "painLevel": 8,
+      "notes": "Too challenging"
+    }
+  ],
+  "metrics": {
+    "back_rom": 157,
+    "back_strength": 6
+  },
+  "feedback": "Exercises are getting easier to perform",
+  "overallRating": 4,
+  "adherencePercentage": 78
+}

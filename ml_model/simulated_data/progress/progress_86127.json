@@ -1,0 +1,42 @@
+{
+  "id": "progress_86127",
+  "userId": "patient_1918",
+  "planId": "plan_26766",
+  "date": "2025-01-18T13:59:38.702986",
+  "exerciseLogs": [
+    {
+      "exerciseId": "ex_knee_1_8260",
+      "exerciseName": "Step-Ups",
+      "setsCompleted": 1,
+      "repsCompleted": 11,
+      "durationSeconds": 34,
+      "painLevel": 10,
+      "notes": "Need to modify"
+    },
+    {
+      "exerciseId": "ex_knee_2_4447",
+      "exerciseName": "Straight Leg Raises",
+      "setsCompleted": 4,
+      "repsCompleted": 9,
+      "durationSeconds": 36,
+      "painLevel": 3,
+      "notes": "Too challenging"
+    },
+    {
+      "exerciseId": "ex_knee_3_7397",
+      "exerciseName": "Hamstring Curls",
+      "setsCompleted": 2,
+      "repsCompleted": 6,
+      "durationSeconds": 53,
+      "painLevel": 1,
+      "notes": "Need to modify"
+    }
+  ],
+  "metrics": {
+    "knee_rom": 79,
+    "knee_strength": 9
+  },
+  "feedback": "Feeling improvement in range of motion",
+  "overallRating": 3,
+  "adherencePercentage": 53
+}

@@ -1,0 +1,24 @@
+{
+  "id": "patient_9781",
+  "name": "Linda Gonzalez",
+  "email": "patient_9781@example.com",
+  "role": "patient",
+  "profileImageUrl": null,
+  "medicalHistory": {
+    "previousInjuries": "None",
+    "surgicalHistory": "Rotator cuff repair",
+    "medications": "None",
+    "allergies": "NSAIDs"
+  },
+  "physicalCondition": {
+    "bodyPart": "Shoulder",
+    "painLevel": 1,
+    "mobilityLimitations": "Limited range of motion and strength",
+    "painLocation": "Tendon"
+  },
+  "rehabilitationGoals": [
+    "Prevent re-injury",
+    "Improve daily function"
+  ],
+  "createdAt": "2024-09-14T13:59:38.655405"
+}

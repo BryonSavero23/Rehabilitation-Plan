@@ -1,0 +1,24 @@
+{
+  "id": "patient_9306",
+  "name": "Robert Miller",
+  "email": "patient_9306@yahoo.com",
+  "role": "patient",
+  "profileImageUrl": null,
+  "medicalHistory": {
+    "previousInjuries": "Tendonitis",
+    "surgicalHistory": "Fracture fixation",
+    "medications": "None",
+    "allergies": "None"
+  },
+  "physicalCondition": {
+    "bodyPart": "Back",
+    "painLevel": 6,
+    "mobilityLimitations": "Limited range of motion and strength",
+    "painLocation": "Muscle"
+  },
+  "rehabilitationGoals": [
+    "Pain reduction",
+    "Return to sports"
+  ],
+  "createdAt": "2024-12-26T13:59:38.732038"
+}

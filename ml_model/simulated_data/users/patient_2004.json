@@ -1,0 +1,23 @@
+{
+  "id": "patient_2004",
+  "name": "Jessica Rodriguez",
+  "email": "patient_2004@hotmail.com",
+  "role": "patient",
+  "profileImageUrl": null,
+  "medicalHistory": {
+    "previousInjuries": "ACL tear",
+    "surgicalHistory": "Joint replacement",
+    "medications": "Pain relievers",
+    "allergies": "None"
+  },
+  "physicalCondition": {
+    "bodyPart": "Knee",
+    "painLevel": 3,
+    "mobilityLimitations": "Limited range of motion and strength",
+    "painLocation": "Muscle"
+  },
+  "rehabilitationGoals": [
+    "Improve range of motion"
+  ],
+  "createdAt": "2025-02-27T13:59:38.686938"
+}

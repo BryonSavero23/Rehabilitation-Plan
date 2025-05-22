@@ -1,0 +1,60 @@
+{
+  "id": "progress_96106",
+  "userId": "patient_5760",
+  "planId": "plan_30784",
+  "date": "2024-08-03T13:59:38.711002",
+  "exerciseLogs": [
+    {
+      "exerciseId": "ex_shoulder_1_8426",
+      "exerciseName": "Shoulder Abduction",
+      "setsCompleted": 1,
+      "repsCompleted": 6,
+      "durationSeconds": 64,
+      "painLevel": 4,
+      "notes": "Too challenging"
+    },
+    {
+      "exerciseId": "ex_shoulder_2_5897",
+      "exerciseName": "Pendulum Exercise",
+      "setsCompleted": 1,
+      "repsCompleted": 1,
+      "durationSeconds": 34,
+      "painLevel": 5,
+      "notes": "Need to modify"
+    },
+    {
+      "exerciseId": "ex_shoulder_3_2266",
+      "exerciseName": "External Rotation",
+      "setsCompleted": 2,
+      "repsCompleted": 7,
+      "durationSeconds": 39,
+      "painLevel": 8,
+      "notes": "Getting easier"
+    },
+    {
+      "exerciseId": "ex_shoulder_4_5903",
+      "exerciseName": "Wall Crawl",
+      "setsCompleted": 3,
+      "repsCompleted": 7,
+      "durationSeconds": 77,
+      "painLevel": 5,
+      "notes": "Getting easier"
+    },
+    {
+      "exerciseId": "ex_shoulder_5_6414",
+      "exerciseName": "Shoulder Flexion",
+      "setsCompleted": 3,
+      "repsCompleted": 4,
+      "durationSeconds": 86,
+      "painLevel": 4,
+      "notes": "Getting easier"
+    }
+  ],
+  "metrics": {
+    "shoulder_rom": 96,
+    "shoulder_strength": 3
+  },
+  "feedback": "Still experiencing pain during certain movements",
+  "overallRating": 4,
+  "adherencePercentage": 55
+}

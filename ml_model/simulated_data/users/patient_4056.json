@@ -1,0 +1,24 @@
+{
+  "id": "patient_4056",
+  "name": "John Brown",
+  "email": "patient_4056@outlook.com",
+  "role": "patient",
+  "profileImageUrl": null,
+  "medicalHistory": {
+    "previousInjuries": "Meniscus tear",
+    "surgicalHistory": "Fracture fixation",
+    "medications": "Pain relievers",
+    "allergies": "Latex"
+  },
+  "physicalCondition": {
+    "bodyPart": "Ankle",
+    "painLevel": 2,
+    "mobilityLimitations": "Limited range of motion and strength",
+    "painLocation": "Ligament"
+  },
+  "rehabilitationGoals": [
+    "Increase strength",
+    "Improve daily function"
+  ],
+  "createdAt": "2024-11-27T13:59:38.715999"
+}

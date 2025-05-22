@@ -1,0 +1,23 @@
+{
+  "id": "patient_5319",
+  "name": "Jessica Jones",
+  "email": "patient_5319@gmail.com",
+  "role": "patient",
+  "profileImageUrl": null,
+  "medicalHistory": {
+    "previousInjuries": "ACL tear",
+    "surgicalHistory": "Meniscus repair",
+    "medications": "Pain relievers",
+    "allergies": "Aspirin"
+  },
+  "physicalCondition": {
+    "bodyPart": "Knee",
+    "painLevel": 2,
+    "mobilityLimitations": "Limited range of motion and strength",
+    "painLocation": "Tendon"
+  },
+  "rehabilitationGoals": [
+    "Improve range of motion"
+  ],
+  "createdAt": "2024-05-16T13:59:38.719000"
+}

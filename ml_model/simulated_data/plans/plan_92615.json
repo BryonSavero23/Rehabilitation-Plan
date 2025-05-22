@@ -1,0 +1,69 @@
+{
+  "id": "plan_92615",
+  "userId": "patient_8723",
+  "therapistId": "therapist_2230",
+  "title": "Knee Rehabilitation Plan",
+  "description": "Personalized rehabilitation plan for Knee recovery",
+  "exercises": [
+    {
+      "id": "ex_knee_1_7267",
+      "name": "Step-Ups",
+      "description": "Step up onto a platform with one leg, then the other",
+      "bodyPart": "Knee",
+      "sets": 3,
+      "reps": 13,
+      "durationSeconds": 41,
+      "difficultyLevel": "beginner"
+    },
+    {
+      "id": "ex_knee_2_5945",
+      "name": "Terminal Knee Extensions",
+      "description": "Extend your knee against resistance",
+      "bodyPart": "Knee",
+      "sets": 2,
+      "reps": 10,
+      "durationSeconds": 49,
+      "difficultyLevel": "beginner"
+    },
+    {
+      "id": "ex_knee_3_6278",
+      "name": "Knee Extensions",
+      "description": "Sit in a chair and straighten your knee",
+      "bodyPart": "Knee",
+      "sets": 4,
+      "reps": 12,
+      "durationSeconds": 42,
+      "difficultyLevel": "beginner"
+    },
+    {
+      "id": "ex_knee_4_2464",
+      "name": "Straight Leg Raises",
+      "description": "Lie flat on your back and lift your leg straight up",
+      "bodyPart": "Knee",
+      "sets": 2,
+      "reps": 12,
+      "durationSeconds": 31,
+      "difficultyLevel": "beginner"
+    },
+    {
+      "id": "ex_knee_5_3807",
+      "name": "Hamstring Curls",
+      "description": "Lie face down and bend your knee, bringing your heel toward your buttock",
+      "bodyPart": "Knee",
+      "sets": 2,
+      "reps": 9,
+      "durationSeconds": 49,
+      "difficultyLevel": "beginner"
+    }
+  ],
+  "startDate": "2024-05-11T13:59:38.724518",
+  "endDate": null,
+  "status": "completed",
+  "goals": {
+    "primary": "Improve daily function",
+    "bodyPart": "Knee",
+    "painReduction": "high"
+  },
+  "lastUpdated": "2024-05-11T13:59:38.724518",
+  "isDynamicallyAdjusted": true
+}

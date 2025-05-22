@@ -1,0 +1,60 @@
+{
+  "id": "progress_15470",
+  "userId": "patient_9910",
+  "planId": "plan_94943",
+  "date": "2024-07-27T13:59:38.723516",
+  "exerciseLogs": [
+    {
+      "exerciseId": "ex_neck_1_1669",
+      "exerciseName": "Neck Exercise 2",
+      "setsCompleted": 2,
+      "repsCompleted": 7,
+      "durationSeconds": 63,
+      "painLevel": 2,
+      "notes": "Need to modify"
+    },
+    {
+      "exerciseId": "ex_neck_2_1165",
+      "exerciseName": "Neck Exercise 5",
+      "setsCompleted": 2,
+      "repsCompleted": 1,
+      "durationSeconds": 57,
+      "painLevel": 8,
+      "notes": "Felt good"
+    },
+    {
+      "exerciseId": "ex_neck_3_7258",
+      "exerciseName": "Neck Exercise 6",
+      "setsCompleted": 1,
+      "repsCompleted": 10,
+      "durationSeconds": 59,
+      "painLevel": 4,
+      "notes": "Need to modify"
+    },
+    {
+      "exerciseId": "ex_neck_4_7263",
+      "exerciseName": "Neck Exercise 3",
+      "setsCompleted": 2,
+      "repsCompleted": 2,
+      "durationSeconds": 48,
+      "painLevel": 3,
+      "notes": null
+    },
+    {
+      "exerciseId": "ex_neck_5_4718",
+      "exerciseName": "Neck Exercise 1",
+      "setsCompleted": 3,
+      "repsCompleted": 6,
+      "durationSeconds": 31,
+      "painLevel": 1,
+      "notes": null
+    }
+  ],
+  "metrics": {
+    "neck_rom": 153,
+    "neck_strength": 7
+  },
+  "feedback": "Need modifications for some exercises",
+  "overallRating": 3,
+  "adherencePercentage": 83
+}

@@ -1,0 +1,24 @@
+{
+  "id": "patient_5148",
+  "name": "Sarah Johnson",
+  "email": "patient_5148@example.com",
+  "role": "patient",
+  "profileImageUrl": null,
+  "medicalHistory": {
+    "previousInjuries": "Dislocation",
+    "surgicalHistory": "Rotator cuff repair",
+    "medications": "NSAIDs",
+    "allergies": "NSAIDs"
+  },
+  "physicalCondition": {
+    "bodyPart": "Shoulder",
+    "painLevel": 9,
+    "mobilityLimitations": "Limited range of motion and strength",
+    "painLocation": "Ligament"
+  },
+  "rehabilitationGoals": [
+    "Improve range of motion",
+    "Increase strength"
+  ],
+  "createdAt": "2025-02-12T13:59:38.727518"
+}

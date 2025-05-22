@@ -1,0 +1,23 @@
+{
+  "id": "patient_2260",
+  "name": "John Williams",
+  "email": "patient_2260@example.com",
+  "role": "patient",
+  "profileImageUrl": null,
+  "medicalHistory": {
+    "previousInjuries": "Ankle sprain",
+    "surgicalHistory": "ACL reconstruction",
+    "medications": "Anti-inflammatory medication",
+    "allergies": "Latex"
+  },
+  "physicalCondition": {
+    "bodyPart": "Ankle",
+    "painLevel": 6,
+    "mobilityLimitations": "Limited range of motion and strength",
+    "painLocation": "Muscle"
+  },
+  "rehabilitationGoals": [
+    "Improve range of motion"
+  ],
+  "createdAt": "2024-12-02T13:59:38.729520"
+}

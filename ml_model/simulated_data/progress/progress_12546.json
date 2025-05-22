@@ -1,0 +1,42 @@
+{
+  "id": "progress_12546",
+  "userId": "patient_8798",
+  "planId": "plan_65041",
+  "date": "2024-05-28T13:59:38.693456",
+  "exerciseLogs": [
+    {
+      "exerciseId": "ex_hip_1_1080",
+      "exerciseName": "Hip Exercise 3",
+      "setsCompleted": 2,
+      "repsCompleted": 2,
+      "durationSeconds": 70,
+      "painLevel": 1,
+      "notes": "Getting easier"
+    },
+    {
+      "exerciseId": "ex_hip_3_7650",
+      "exerciseName": "Hip Exercise 4",
+      "setsCompleted": 2,
+      "repsCompleted": 1,
+      "durationSeconds": 52,
+      "painLevel": 2,
+      "notes": null
+    },
+    {
+      "exerciseId": "ex_hip_4_9616",
+      "exerciseName": "Hip Exercise 1",
+      "setsCompleted": 2,
+      "repsCompleted": 6,
+      "durationSeconds": 52,
+      "painLevel": 4,
+      "notes": "Felt good"
+    }
+  ],
+  "metrics": {
+    "hip_rom": 157,
+    "hip_strength": 10
+  },
+  "feedback": "Still experiencing pain during certain movements",
+  "overallRating": 2,
+  "adherencePercentage": 50
+}

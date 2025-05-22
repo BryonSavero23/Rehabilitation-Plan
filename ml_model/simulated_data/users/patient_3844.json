@@ -1,0 +1,24 @@
+{
+  "id": "patient_3844",
+  "name": "Joseph Taylor",
+  "email": "patient_3844@example.com",
+  "role": "patient",
+  "profileImageUrl": null,
+  "medicalHistory": {
+    "previousInjuries": "None",
+    "surgicalHistory": "Meniscus repair",
+    "medications": "Muscle relaxants",
+    "allergies": "None"
+  },
+  "physicalCondition": {
+    "bodyPart": "Shoulder",
+    "painLevel": 8,
+    "mobilityLimitations": "Limited range of motion and strength",
+    "painLocation": "Ligament"
+  },
+  "rehabilitationGoals": [
+    "Improve range of motion",
+    "Improve range of motion"
+  ],
+  "createdAt": "2024-09-05T13:59:38.681936"
+}

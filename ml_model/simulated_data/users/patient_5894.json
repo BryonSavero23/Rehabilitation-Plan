@@ -1,0 +1,25 @@
+{
+  "id": "patient_5894",
+  "name": "Mary Davis",
+  "email": "patient_5894@gmail.com",
+  "role": "patient",
+  "profileImageUrl": null,
+  "medicalHistory": {
+    "previousInjuries": "Ligament sprain",
+    "surgicalHistory": "Meniscus repair",
+    "medications": "NSAIDs",
+    "allergies": "Penicillin"
+  },
+  "physicalCondition": {
+    "bodyPart": "Back",
+    "painLevel": 10,
+    "mobilityLimitations": "Limited range of motion and strength",
+    "painLocation": "Ligament"
+  },
+  "rehabilitationGoals": [
+    "Improve daily function",
+    "Return to sports",
+    "Improve daily function"
+  ],
+  "createdAt": "2024-04-05T13:59:38.706985"
+}

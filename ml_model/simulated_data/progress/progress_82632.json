@@ -1,0 +1,60 @@
+{
+  "id": "progress_82632",
+  "userId": "patient_3441",
+  "planId": "plan_70154",
+  "date": "2024-07-17T13:59:38.688446",
+  "exerciseLogs": [
+    {
+      "exerciseId": "ex_elbow_1_4050",
+      "exerciseName": "Elbow Exercise 3",
+      "setsCompleted": 2,
+      "repsCompleted": 14,
+      "durationSeconds": 39,
+      "painLevel": 1,
+      "notes": "Too challenging"
+    },
+    {
+      "exerciseId": "ex_elbow_2_1937",
+      "exerciseName": "Elbow Exercise 4",
+      "setsCompleted": 4,
+      "repsCompleted": 7,
+      "durationSeconds": 49,
+      "painLevel": 3,
+      "notes": "Need to modify"
+    },
+    {
+      "exerciseId": "ex_elbow_3_4240",
+      "exerciseName": "Elbow Exercise 2",
+      "setsCompleted": 1,
+      "repsCompleted": 2,
+      "durationSeconds": 53,
+      "painLevel": 8,
+      "notes": "Need to modify"
+    },
+    {
+      "exerciseId": "ex_elbow_4_3270",
+      "exerciseName": "Elbow Exercise 1",
+      "setsCompleted": 4,
+      "repsCompleted": 11,
+      "durationSeconds": 40,
+      "painLevel": 2,
+      "notes": "Felt good"
+    },
+    {
+      "exerciseId": "ex_elbow_5_9810",
+      "exerciseName": "Elbow Exercise 5",
+      "setsCompleted": 2,
+      "repsCompleted": 10,
+      "durationSeconds": 71,
+      "painLevel": 10,
+      "notes": "Too challenging"
+    }
+  ],
+  "metrics": {
+    "elbow_rom": 167,
+    "elbow_strength": 10
+  },
+  "feedback": "Feeling improvement in range of motion",
+  "overallRating": 3,
+  "adherencePercentage": 86
+}

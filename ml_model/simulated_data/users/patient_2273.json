@@ -1,0 +1,23 @@
+{
+  "id": "patient_2273",
+  "name": "David Lopez",
+  "email": "patient_2273@outlook.com",
+  "role": "patient",
+  "profileImageUrl": null,
+  "medicalHistory": {
+    "previousInjuries": "Dislocation",
+    "surgicalHistory": "Rotator cuff repair",
+    "medications": "None",
+    "allergies": "NSAIDs"
+  },
+  "physicalCondition": {
+    "bodyPart": "Elbow",
+    "painLevel": 8,
+    "mobilityLimitations": "Limited range of motion and strength",
+    "painLocation": "Tendon"
+  },
+  "rehabilitationGoals": [
+    "Post-surgery recovery"
+  ],
+  "createdAt": "2024-05-20T13:59:38.704984"
+}

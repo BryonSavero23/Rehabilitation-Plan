@@ -1,0 +1,23 @@
+{
+  "id": "patient_9318",
+  "name": "Richard Williams",
+  "email": "patient_9318@example.com",
+  "role": "patient",
+  "profileImageUrl": null,
+  "medicalHistory": {
+    "previousInjuries": "Ankle sprain",
+    "surgicalHistory": "Ankle ligament reconstruction",
+    "medications": "NSAIDs",
+    "allergies": "None"
+  },
+  "physicalCondition": {
+    "bodyPart": "Knee",
+    "painLevel": 6,
+    "mobilityLimitations": "Limited range of motion and strength",
+    "painLocation": "Joint"
+  },
+  "rehabilitationGoals": [
+    "Pain reduction"
+  ],
+  "createdAt": "2025-01-20T13:59:38.667410"
+}

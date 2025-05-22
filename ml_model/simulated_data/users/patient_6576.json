@@ -1,0 +1,23 @@
+{
+  "id": "patient_6576",
+  "name": "Susan Martinez",
+  "email": "patient_6576@gmail.com",
+  "role": "patient",
+  "profileImageUrl": null,
+  "medicalHistory": {
+    "previousInjuries": "Tendonitis",
+    "surgicalHistory": "Rotator cuff repair",
+    "medications": "None",
+    "allergies": "Penicillin"
+  },
+  "physicalCondition": {
+    "bodyPart": "Neck",
+    "painLevel": 8,
+    "mobilityLimitations": "Limited range of motion and strength",
+    "painLocation": "Ligament"
+  },
+  "rehabilitationGoals": [
+    "Increase strength"
+  ],
+  "createdAt": "2024-06-22T13:59:38.732038"
+}

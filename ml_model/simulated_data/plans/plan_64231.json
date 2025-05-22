@@ -1,0 +1,49 @@
+{
+  "id": "plan_64231",
+  "userId": "patient_2004",
+  "therapistId": "therapist_8799",
+  "title": "Knee Rehabilitation Plan",
+  "description": "Personalized rehabilitation plan for Knee recovery",
+  "exercises": [
+    {
+      "id": "ex_knee_1_7646",
+      "name": "Wall Squats",
+      "description": "Stand with your back against a wall and bend your knees",
+      "bodyPart": "Knee",
+      "sets": 3,
+      "reps": 9,
+      "durationSeconds": 50,
+      "difficultyLevel": "advanced"
+    },
+    {
+      "id": "ex_knee_2_2233",
+      "name": "Terminal Knee Extensions",
+      "description": "Extend your knee against resistance",
+      "bodyPart": "Knee",
+      "sets": 2,
+      "reps": 14,
+      "durationSeconds": 58,
+      "difficultyLevel": "advanced"
+    },
+    {
+      "id": "ex_knee_3_5427",
+      "name": "Step-Ups",
+      "description": "Step up onto a platform with one leg, then the other",
+      "bodyPart": "Knee",
+      "sets": 3,
+      "reps": 11,
+      "durationSeconds": 34,
+      "difficultyLevel": "advanced"
+    }
+  ],
+  "startDate": "2025-03-28T13:59:38.686938",
+  "endDate": null,
+  "status": "paused",
+  "goals": {
+    "primary": "Improve range of motion",
+    "bodyPart": "Knee",
+    "painReduction": "low"
+  },
+  "lastUpdated": "2025-03-28T13:59:38.686938",
+  "isDynamicallyAdjusted": false
+}

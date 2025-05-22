@@ -1,0 +1,60 @@
+{
+  "id": "progress_23759",
+  "userId": "patient_9776",
+  "planId": "plan_48962",
+  "date": "2024-06-16T13:59:38.728517",
+  "exerciseLogs": [
+    {
+      "exerciseId": "ex_hip_1_2526",
+      "exerciseName": "Hip Exercise 4",
+      "setsCompleted": 2,
+      "repsCompleted": 5,
+      "durationSeconds": 50,
+      "painLevel": 5,
+      "notes": "Felt good"
+    },
+    {
+      "exerciseId": "ex_hip_2_3905",
+      "exerciseName": "Hip Exercise 1",
+      "setsCompleted": 1,
+      "repsCompleted": 1,
+      "durationSeconds": 42,
+      "painLevel": 3,
+      "notes": "Felt good"
+    },
+    {
+      "exerciseId": "ex_hip_3_3419",
+      "exerciseName": "Hip Exercise 5",
+      "setsCompleted": 1,
+      "repsCompleted": 9,
+      "durationSeconds": 57,
+      "painLevel": 1,
+      "notes": "Getting easier"
+    },
+    {
+      "exerciseId": "ex_hip_4_7403",
+      "exerciseName": "Hip Exercise 3",
+      "setsCompleted": 1,
+      "repsCompleted": 11,
+      "durationSeconds": 43,
+      "painLevel": 2,
+      "notes": "Need to modify"
+    },
+    {
+      "exerciseId": "ex_hip_5_3393",
+      "exerciseName": "Hip Exercise 2",
+      "setsCompleted": 1,
+      "repsCompleted": 6,
+      "durationSeconds": 59,
+      "painLevel": 1,
+      "notes": "Getting easier"
+    }
+  ],
+  "metrics": {
+    "hip_rom": 121,
+    "hip_strength": 8
+  },
+  "feedback": "Feeling improvement in range of motion",
+  "overallRating": 4,
+  "adherencePercentage": 50
+}

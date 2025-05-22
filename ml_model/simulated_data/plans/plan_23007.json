@@ -1,0 +1,79 @@
+{
+  "id": "plan_23007",
+  "userId": "patient_9306",
+  "therapistId": "therapist_6083",
+  "title": "Back Rehabilitation Plan",
+  "description": "Personalized rehabilitation plan for Back recovery",
+  "exercises": [
+    {
+      "id": "ex_back_1_6263",
+      "name": "Back Exercise 3",
+      "description": "Description for back exercise 3",
+      "bodyPart": "Back",
+      "sets": 4,
+      "reps": 10,
+      "durationSeconds": 59,
+      "difficultyLevel": "intermediate"
+    },
+    {
+      "id": "ex_back_2_3570",
+      "name": "Back Exercise 5",
+      "description": "Description for back exercise 5",
+      "bodyPart": "Back",
+      "sets": 2,
+      "reps": 15,
+      "durationSeconds": 72,
+      "difficultyLevel": "intermediate"
+    },
+    {
+      "id": "ex_back_3_4425",
+      "name": "Back Exercise 4",
+      "description": "Description for back exercise 4",
+      "bodyPart": "Back",
+      "sets": 4,
+      "reps": 10,
+      "durationSeconds": 39,
+      "difficultyLevel": "intermediate"
+    },
+    {
+      "id": "ex_back_4_7500",
+      "name": "Back Exercise 6",
+      "description": "Description for back exercise 6",
+      "bodyPart": "Back",
+      "sets": 2,
+      "reps": 15,
+      "durationSeconds": 67,
+      "difficultyLevel": "intermediate"
+    },
+    {
+      "id": "ex_back_5_4761",
+      "name": "Back Exercise 2",
+      "description": "Description for back exercise 2",
+      "bodyPart": "Back",
+      "sets": 4,
+      "reps": 8,
+      "durationSeconds": 83,
+      "difficultyLevel": "intermediate"
+    },
+    {
+      "id": "ex_back_6_8751",
+      "name": "Back Exercise 1",
+      "description": "Description for back exercise 1",
+      "bodyPart": "Back",
+      "sets": 3,
+      "reps": 10,
+      "durationSeconds": 48,
+      "difficultyLevel": "intermediate"
+    }
+  ],
+  "startDate": "2025-01-24T13:59:38.732038",
+  "endDate": null,
+  "status": "paused",
+  "goals": {
+    "primary": "Pain reduction",
+    "bodyPart": "Back",
+    "painReduction": "medium"
+  },
+  "lastUpdated": "2025-01-24T13:59:38.732038",
+  "isDynamicallyAdjusted": false
+}

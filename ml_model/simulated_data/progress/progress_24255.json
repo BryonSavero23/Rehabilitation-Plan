@@ -1,0 +1,24 @@
+{
+  "id": "progress_24255",
+  "userId": "patient_8262",
+  "planId": "plan_90829",
+  "date": "2024-11-22T13:59:38.664412",
+  "exerciseLogs": [
+    {
+      "exerciseId": "ex_wrist_1_6334",
+      "exerciseName": "Wrist Exercise 3",
+      "setsCompleted": 1,
+      "repsCompleted": 6,
+      "durationSeconds": 48,
+      "painLevel": 8,
+      "notes": "Too challenging"
+    }
+  ],
+  "metrics": {
+    "wrist_rom": 114,
+    "wrist_strength": 8
+  },
+  "feedback": "Need modifications for some exercises",
+  "overallRating": 1,
+  "adherencePercentage": 14
+}

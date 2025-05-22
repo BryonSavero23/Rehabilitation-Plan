@@ -1,0 +1,23 @@
+{
+  "id": "patient_6455",
+  "name": "Susan Williams",
+  "email": "patient_6455@example.com",
+  "role": "patient",
+  "profileImageUrl": null,
+  "medicalHistory": {
+    "previousInjuries": "Tendonitis",
+    "surgicalHistory": "Fracture fixation",
+    "medications": "Muscle relaxants",
+    "allergies": "None"
+  },
+  "physicalCondition": {
+    "bodyPart": "Shoulder",
+    "painLevel": 9,
+    "mobilityLimitations": "Limited range of motion and strength",
+    "painLocation": "Joint"
+  },
+  "rehabilitationGoals": [
+    "Improve daily function"
+  ],
+  "createdAt": "2024-12-07T13:59:38.707986"
+}

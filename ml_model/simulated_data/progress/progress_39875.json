@@ -1,0 +1,42 @@
+{
+  "id": "progress_39875",
+  "userId": "patient_2260",
+  "planId": "plan_90969",
+  "date": "2025-02-07T13:59:38.729520",
+  "exerciseLogs": [
+    {
+      "exerciseId": "ex_ankle_1_9781",
+      "exerciseName": "Ankle Circles",
+      "setsCompleted": 3,
+      "repsCompleted": 7,
+      "durationSeconds": 85,
+      "painLevel": 2,
+      "notes": "Need to modify"
+    },
+    {
+      "exerciseId": "ex_ankle_2_6163",
+      "exerciseName": "Resistance Band Inversion",
+      "setsCompleted": 3,
+      "repsCompleted": 6,
+      "durationSeconds": 61,
+      "painLevel": 2,
+      "notes": null
+    },
+    {
+      "exerciseId": "ex_ankle_3_6295",
+      "exerciseName": "Ankle Pumps",
+      "setsCompleted": 4,
+      "repsCompleted": 9,
+      "durationSeconds": 72,
+      "painLevel": 8,
+      "notes": "Felt good"
+    }
+  ],
+  "metrics": {
+    "ankle_rom": 125,
+    "ankle_strength": 8
+  },
+  "feedback": "Exercises are getting easier to perform",
+  "overallRating": 1,
+  "adherencePercentage": 90
+}

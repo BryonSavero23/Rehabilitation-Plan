@@ -1,0 +1,59 @@
+{
+  "id": "plan_58492",
+  "userId": "patient_5894",
+  "therapistId": "therapist_3161",
+  "title": "Back Rehabilitation Plan",
+  "description": "Personalized rehabilitation plan for Back recovery",
+  "exercises": [
+    {
+      "id": "ex_back_1_9140",
+      "name": "Back Exercise 4",
+      "description": "Description for back exercise 4",
+      "bodyPart": "Back",
+      "sets": 4,
+      "reps": 12,
+      "durationSeconds": 50,
+      "difficultyLevel": "beginner"
+    },
+    {
+      "id": "ex_back_2_2770",
+      "name": "Back Exercise 3",
+      "description": "Description for back exercise 3",
+      "bodyPart": "Back",
+      "sets": 4,
+      "reps": 13,
+      "durationSeconds": 46,
+      "difficultyLevel": "beginner"
+    },
+    {
+      "id": "ex_back_3_4723",
+      "name": "Back Exercise 6",
+      "description": "Description for back exercise 6",
+      "bodyPart": "Back",
+      "sets": 2,
+      "reps": 9,
+      "durationSeconds": 81,
+      "difficultyLevel": "beginner"
+    },
+    {
+      "id": "ex_back_4_9500",
+      "name": "Back Exercise 1",
+      "description": "Description for back exercise 1",
+      "bodyPart": "Back",
+      "sets": 4,
+      "reps": 15,
+      "durationSeconds": 56,
+      "difficultyLevel": "beginner"
+    }
+  ],
+  "startDate": "2024-04-26T13:59:38.706985",
+  "endDate": null,
+  "status": "active",
+  "goals": {
+    "primary": "Improve daily function",
+    "bodyPart": "Back",
+    "painReduction": "high"
+  },
+  "lastUpdated": "2024-04-26T13:59:38.706985",
+  "isDynamicallyAdjusted": false
+}

@@ -1,0 +1,23 @@
+{
+  "id": "patient_3423",
+  "name": "Richard Taylor",
+  "email": "patient_3423@yahoo.com",
+  "role": "patient",
+  "profileImageUrl": null,
+  "medicalHistory": {
+    "previousInjuries": "Fracture",
+    "surgicalHistory": "Ankle ligament reconstruction",
+    "medications": "NSAIDs",
+    "allergies": "Penicillin"
+  },
+  "physicalCondition": {
+    "bodyPart": "Elbow",
+    "painLevel": 3,
+    "mobilityLimitations": "Limited range of motion and strength",
+    "painLocation": "Muscle"
+  },
+  "rehabilitationGoals": [
+    "Increase strength"
+  ],
+  "createdAt": "2025-03-17T13:59:38.704984"
+}

@@ -1,0 +1,25 @@
+{
+  "id": "patient_8373",
+  "name": "Joseph Jones",
+  "email": "patient_8373@gmail.com",
+  "role": "patient",
+  "profileImageUrl": null,
+  "medicalHistory": {
+    "previousInjuries": "Rotator cuff injury",
+    "surgicalHistory": "Fracture fixation",
+    "medications": "Anti-inflammatory medication",
+    "allergies": "Aspirin"
+  },
+  "physicalCondition": {
+    "bodyPart": "Neck",
+    "painLevel": 2,
+    "mobilityLimitations": "Limited range of motion and strength",
+    "painLocation": "Ligament"
+  },
+  "rehabilitationGoals": [
+    "Increase strength",
+    "Increase strength",
+    "Improve range of motion"
+  ],
+  "createdAt": "2024-10-19T13:59:38.714007"
+}

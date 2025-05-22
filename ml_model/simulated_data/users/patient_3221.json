@@ -1,0 +1,24 @@
+{
+  "id": "patient_3221",
+  "name": "Sarah Smith",
+  "email": "patient_3221@yahoo.com",
+  "role": "patient",
+  "profileImageUrl": null,
+  "medicalHistory": {
+    "previousInjuries": "ACL tear",
+    "surgicalHistory": "Joint replacement",
+    "medications": "Anti-inflammatory medication",
+    "allergies": "None"
+  },
+  "physicalCondition": {
+    "bodyPart": "Elbow",
+    "painLevel": 10,
+    "mobilityLimitations": "Limited range of motion and strength",
+    "painLocation": "Ligament"
+  },
+  "rehabilitationGoals": [
+    "Prevent re-injury",
+    "Post-surgery recovery"
+  ],
+  "createdAt": "2024-11-05T13:59:38.669413"
+}

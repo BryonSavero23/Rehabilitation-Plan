@@ -1,0 +1,60 @@
+{
+  "id": "progress_45771",
+  "userId": "patient_5649",
+  "planId": "plan_48593",
+  "date": "2024-05-26T13:59:38.697977",
+  "exerciseLogs": [
+    {
+      "exerciseId": "ex_knee_1_5232",
+      "exerciseName": "Step-Ups",
+      "setsCompleted": 3,
+      "repsCompleted": 10,
+      "durationSeconds": 68,
+      "painLevel": 10,
+      "notes": null
+    },
+    {
+      "exerciseId": "ex_knee_2_4736",
+      "exerciseName": "Hamstring Curls",
+      "setsCompleted": 1,
+      "repsCompleted": 11,
+      "durationSeconds": 73,
+      "painLevel": 5,
+      "notes": "Too challenging"
+    },
+    {
+      "exerciseId": "ex_knee_3_4320",
+      "exerciseName": "Straight Leg Raises",
+      "setsCompleted": 1,
+      "repsCompleted": 4,
+      "durationSeconds": 84,
+      "painLevel": 7,
+      "notes": null
+    },
+    {
+      "exerciseId": "ex_knee_4_7001",
+      "exerciseName": "Terminal Knee Extensions",
+      "setsCompleted": 1,
+      "repsCompleted": 9,
+      "durationSeconds": 77,
+      "painLevel": 6,
+      "notes": null
+    },
+    {
+      "exerciseId": "ex_knee_5_2828",
+      "exerciseName": "Wall Squats",
+      "setsCompleted": 2,
+      "repsCompleted": 10,
+      "durationSeconds": 47,
+      "painLevel": 8,
+      "notes": "Need to modify"
+    }
+  ],
+  "metrics": {
+    "knee_rom": 110,
+    "knee_strength": 8
+  },
+  "feedback": "Feeling improvement in range of motion",
+  "overallRating": 3,
+  "adherencePercentage": 47
+}

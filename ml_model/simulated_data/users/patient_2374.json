@@ -1,0 +1,25 @@
+{
+  "id": "patient_2374",
+  "name": "Linda Rodriguez",
+  "email": "patient_2374@example.com",
+  "role": "patient",
+  "profileImageUrl": null,
+  "medicalHistory": {
+    "previousInjuries": "Ligament sprain",
+    "surgicalHistory": "None",
+    "medications": "Anti-inflammatory medication",
+    "allergies": "Penicillin"
+  },
+  "physicalCondition": {
+    "bodyPart": "Hip",
+    "painLevel": 7,
+    "mobilityLimitations": "Limited range of motion and strength",
+    "painLocation": "Tendon"
+  },
+  "rehabilitationGoals": [
+    "Improve range of motion",
+    "Return to sports",
+    "Pain reduction"
+  ],
+  "createdAt": "2025-03-12T13:59:38.699985"
+}

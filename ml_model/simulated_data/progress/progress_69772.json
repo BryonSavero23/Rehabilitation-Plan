@@ -1,0 +1,42 @@
+{
+  "id": "progress_69772",
+  "userId": "patient_2813",
+  "planId": "plan_70614",
+  "date": "2025-01-24T13:59:38.686938",
+  "exerciseLogs": [
+    {
+      "exerciseId": "ex_ankle_3_1290",
+      "exerciseName": "Ankle Circles",
+      "setsCompleted": 1,
+      "repsCompleted": 4,
+      "durationSeconds": 80,
+      "painLevel": 6,
+      "notes": "Too challenging"
+    },
+    {
+      "exerciseId": "ex_ankle_4_7502",
+      "exerciseName": "Toe Raises",
+      "setsCompleted": 3,
+      "repsCompleted": 8,
+      "durationSeconds": 37,
+      "painLevel": 4,
+      "notes": "Need to modify"
+    },
+    {
+      "exerciseId": "ex_ankle_5_7211",
+      "exerciseName": "Resistance Band Inversion",
+      "setsCompleted": 2,
+      "repsCompleted": 4,
+      "durationSeconds": 49,
+      "painLevel": 6,
+      "notes": "Need to modify"
+    }
+  ],
+  "metrics": {
+    "ankle_rom": 67,
+    "ankle_strength": 9
+  },
+  "feedback": null,
+  "overallRating": 3,
+  "adherencePercentage": 42
+}

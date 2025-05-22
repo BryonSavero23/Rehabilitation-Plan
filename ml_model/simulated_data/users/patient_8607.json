@@ -1,0 +1,25 @@
+{
+  "id": "patient_8607",
+  "name": "Thomas Lopez",
+  "email": "patient_8607@gmail.com",
+  "role": "patient",
+  "profileImageUrl": null,
+  "medicalHistory": {
+    "previousInjuries": "Fracture",
+    "surgicalHistory": "None",
+    "medications": "Anti-inflammatory medication",
+    "allergies": "Penicillin"
+  },
+  "physicalCondition": {
+    "bodyPart": "Back",
+    "painLevel": 10,
+    "mobilityLimitations": "Limited range of motion and strength",
+    "painLocation": "Joint"
+  },
+  "rehabilitationGoals": [
+    "Improve daily function",
+    "Increase strength",
+    "Improve range of motion"
+  ],
+  "createdAt": "2024-12-31T13:59:38.731028"
+}

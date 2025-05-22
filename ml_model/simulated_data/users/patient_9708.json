@@ -1,0 +1,24 @@
+{
+  "id": "patient_9708",
+  "name": "Patricia Williams",
+  "email": "patient_9708@example.com",
+  "role": "patient",
+  "profileImageUrl": null,
+  "medicalHistory": {
+    "previousInjuries": "Meniscus tear",
+    "surgicalHistory": "Fracture fixation",
+    "medications": "None",
+    "allergies": "Latex"
+  },
+  "physicalCondition": {
+    "bodyPart": "Knee",
+    "painLevel": 4,
+    "mobilityLimitations": "Limited range of motion and strength",
+    "painLocation": "Joint"
+  },
+  "rehabilitationGoals": [
+    "Increase strength",
+    "Improve range of motion"
+  ],
+  "createdAt": "2024-05-02T13:59:38.705984"
+}

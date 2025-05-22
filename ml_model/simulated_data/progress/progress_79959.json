@@ -1,0 +1,60 @@
+{
+  "id": "progress_79959",
+  "userId": "patient_9910",
+  "planId": "plan_60606",
+  "date": "2024-07-03T13:59:38.723516",
+  "exerciseLogs": [
+    {
+      "exerciseId": "ex_neck_1_8625",
+      "exerciseName": "Neck Exercise 2",
+      "setsCompleted": 2,
+      "repsCompleted": 7,
+      "durationSeconds": 82,
+      "painLevel": 3,
+      "notes": "Felt good"
+    },
+    {
+      "exerciseId": "ex_neck_2_1030",
+      "exerciseName": "Neck Exercise 1",
+      "setsCompleted": 2,
+      "repsCompleted": 4,
+      "durationSeconds": 63,
+      "painLevel": 7,
+      "notes": "Getting easier"
+    },
+    {
+      "exerciseId": "ex_neck_3_4069",
+      "exerciseName": "Neck Exercise 5",
+      "setsCompleted": 3,
+      "repsCompleted": 10,
+      "durationSeconds": 83,
+      "painLevel": 9,
+      "notes": "Too challenging"
+    },
+    {
+      "exerciseId": "ex_neck_4_2753",
+      "exerciseName": "Neck Exercise 6",
+      "setsCompleted": 1,
+      "repsCompleted": 9,
+      "durationSeconds": 32,
+      "painLevel": 1,
+      "notes": null
+    },
+    {
+      "exerciseId": "ex_neck_5_7279",
+      "exerciseName": "Neck Exercise 3",
+      "setsCompleted": 1,
+      "repsCompleted": 1,
+      "durationSeconds": 60,
+      "painLevel": 5,
+      "notes": "Felt good"
+    }
+  ],
+  "metrics": {
+    "neck_rom": 132,
+    "neck_strength": 9
+  },
+  "feedback": "Still experiencing pain during certain movements",
+  "overallRating": 4,
+  "adherencePercentage": 60
+}

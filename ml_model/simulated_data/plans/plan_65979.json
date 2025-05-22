@@ -1,0 +1,49 @@
+{
+  "id": "plan_65979",
+  "userId": "patient_5644",
+  "therapistId": "therapist_2343",
+  "title": "Back Rehabilitation Plan",
+  "description": "Personalized rehabilitation plan for Back recovery",
+  "exercises": [
+    {
+      "id": "ex_back_1_9247",
+      "name": "Back Exercise 2",
+      "description": "Description for back exercise 2",
+      "bodyPart": "Back",
+      "sets": 3,
+      "reps": 13,
+      "durationSeconds": 31,
+      "difficultyLevel": "advanced"
+    },
+    {
+      "id": "ex_back_2_1344",
+      "name": "Back Exercise 1",
+      "description": "Description for back exercise 1",
+      "bodyPart": "Back",
+      "sets": 4,
+      "reps": 9,
+      "durationSeconds": 34,
+      "difficultyLevel": "advanced"
+    },
+    {
+      "id": "ex_back_3_9936",
+      "name": "Back Exercise 5",
+      "description": "Description for back exercise 5",
+      "bodyPart": "Back",
+      "sets": 4,
+      "reps": 12,
+      "durationSeconds": 66,
+      "difficultyLevel": "advanced"
+    }
+  ],
+  "startDate": "2024-11-21T13:59:38.701987",
+  "endDate": null,
+  "status": "completed",
+  "goals": {
+    "primary": "Prevent re-injury",
+    "bodyPart": "Back",
+    "painReduction": "low"
+  },
+  "lastUpdated": "2024-11-21T13:59:38.701987",
+  "isDynamicallyAdjusted": false
+}

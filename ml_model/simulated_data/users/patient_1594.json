@@ -1,0 +1,25 @@
+{
+  "id": "patient_1594",
+  "name": "Patricia Rodriguez",
+  "email": "patient_1594@yahoo.com",
+  "role": "patient",
+  "profileImageUrl": null,
+  "medicalHistory": {
+    "previousInjuries": "Fracture",
+    "surgicalHistory": "ACL reconstruction",
+    "medications": "Pain relievers",
+    "allergies": "Penicillin"
+  },
+  "physicalCondition": {
+    "bodyPart": "Shoulder",
+    "painLevel": 5,
+    "mobilityLimitations": "Limited range of motion and strength",
+    "painLocation": "Joint"
+  },
+  "rehabilitationGoals": [
+    "Pain reduction",
+    "Improve daily function",
+    "Increase strength"
+  ],
+  "createdAt": "2025-03-30T13:59:38.689456"
+}

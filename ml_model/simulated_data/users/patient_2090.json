@@ -1,0 +1,23 @@
+{
+  "id": "patient_2090",
+  "name": "Charles Anderson",
+  "email": "patient_2090@outlook.com",
+  "role": "patient",
+  "profileImageUrl": null,
+  "medicalHistory": {
+    "previousInjuries": "Ligament sprain",
+    "surgicalHistory": "Rotator cuff repair",
+    "medications": "Anti-inflammatory medication",
+    "allergies": "NSAIDs"
+  },
+  "physicalCondition": {
+    "bodyPart": "Elbow",
+    "painLevel": 1,
+    "mobilityLimitations": "Limited range of motion and strength",
+    "painLocation": "Ligament"
+  },
+  "rehabilitationGoals": [
+    "Improve daily function"
+  ],
+  "createdAt": "2024-12-29T13:59:38.685936"
+}

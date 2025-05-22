@@ -1,0 +1,23 @@
+{
+  "id": "patient_8262",
+  "name": "Charles Hernandez",
+  "email": "patient_8262@gmail.com",
+  "role": "patient",
+  "profileImageUrl": null,
+  "medicalHistory": {
+    "previousInjuries": "Muscle strain",
+    "surgicalHistory": "Fracture fixation",
+    "medications": "Pain relievers",
+    "allergies": "Latex"
+  },
+  "physicalCondition": {
+    "bodyPart": "Wrist",
+    "painLevel": 7,
+    "mobilityLimitations": "Limited range of motion and strength",
+    "painLocation": "Ligament"
+  },
+  "rehabilitationGoals": [
+    "Prevent re-injury"
+  ],
+  "createdAt": "2024-11-04T13:59:38.664412"
+}

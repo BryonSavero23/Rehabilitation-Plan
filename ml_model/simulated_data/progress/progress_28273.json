@@ -1,0 +1,51 @@
+{
+  "id": "progress_28273",
+  "userId": "patient_9708",
+  "planId": "plan_24063",
+  "date": "2024-06-12T13:59:38.705984",
+  "exerciseLogs": [
+    {
+      "exerciseId": "ex_knee_1_8373",
+      "exerciseName": "Terminal Knee Extensions",
+      "setsCompleted": 2,
+      "repsCompleted": 6,
+      "durationSeconds": 90,
+      "painLevel": 5,
+      "notes": "Felt good"
+    },
+    {
+      "exerciseId": "ex_knee_2_9981",
+      "exerciseName": "Step-Ups",
+      "setsCompleted": 2,
+      "repsCompleted": 4,
+      "durationSeconds": 38,
+      "painLevel": 8,
+      "notes": "Felt good"
+    },
+    {
+      "exerciseId": "ex_knee_4_4870",
+      "exerciseName": "Straight Leg Raises",
+      "setsCompleted": 1,
+      "repsCompleted": 3,
+      "durationSeconds": 88,
+      "painLevel": 4,
+      "notes": "Need to modify"
+    },
+    {
+      "exerciseId": "ex_knee_5_1083",
+      "exerciseName": "Hamstring Curls",
+      "setsCompleted": 1,
+      "repsCompleted": 11,
+      "durationSeconds": 60,
+      "painLevel": 9,
+      "notes": "Need to modify"
+    }
+  ],
+  "metrics": {
+    "knee_rom": 118,
+    "knee_strength": 3
+  },
+  "feedback": "Exercises are getting easier to perform",
+  "overallRating": 5,
+  "adherencePercentage": 46
+}

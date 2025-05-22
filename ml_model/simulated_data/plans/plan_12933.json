@@ -1,0 +1,79 @@
+{
+  "id": "plan_12933",
+  "userId": "patient_4351",
+  "therapistId": "therapist_8799",
+  "title": "Shoulder Rehabilitation Plan",
+  "description": "Personalized rehabilitation plan for Shoulder recovery",
+  "exercises": [
+    {
+      "id": "ex_shoulder_1_8556",
+      "name": "Shoulder Abduction",
+      "description": "Raise your arm out to the side",
+      "bodyPart": "Shoulder",
+      "sets": 3,
+      "reps": 13,
+      "durationSeconds": 48,
+      "difficultyLevel": "advanced"
+    },
+    {
+      "id": "ex_shoulder_2_2136",
+      "name": "Internal Rotation",
+      "description": "With elbow at side, rotate arm inward",
+      "bodyPart": "Shoulder",
+      "sets": 3,
+      "reps": 8,
+      "durationSeconds": 68,
+      "difficultyLevel": "advanced"
+    },
+    {
+      "id": "ex_shoulder_3_4369",
+      "name": "Pendulum Exercise",
+      "description": "Lean forward and let your arm hang, make small circles",
+      "bodyPart": "Shoulder",
+      "sets": 4,
+      "reps": 15,
+      "durationSeconds": 50,
+      "difficultyLevel": "advanced"
+    },
+    {
+      "id": "ex_shoulder_4_7889",
+      "name": "Wall Crawl",
+      "description": "Face a wall and walk your fingers up the wall",
+      "bodyPart": "Shoulder",
+      "sets": 2,
+      "reps": 13,
+      "durationSeconds": 46,
+      "difficultyLevel": "advanced"
+    },
+    {
+      "id": "ex_shoulder_5_9466",
+      "name": "Shoulder Flexion",
+      "description": "Raise your arm forward and upward",
+      "bodyPart": "Shoulder",
+      "sets": 3,
+      "reps": 12,
+      "durationSeconds": 80,
+      "difficultyLevel": "advanced"
+    },
+    {
+      "id": "ex_shoulder_6_5852",
+      "name": "External Rotation",
+      "description": "With elbow at side, rotate arm outward",
+      "bodyPart": "Shoulder",
+      "sets": 2,
+      "reps": 12,
+      "durationSeconds": 84,
+      "difficultyLevel": "advanced"
+    }
+  ],
+  "startDate": "2025-03-31T13:59:38.684932",
+  "endDate": null,
+  "status": "paused",
+  "goals": {
+    "primary": "Increase strength",
+    "bodyPart": "Shoulder",
+    "painReduction": "low"
+  },
+  "lastUpdated": "2025-03-31T13:59:38.684932",
+  "isDynamicallyAdjusted": false
+}

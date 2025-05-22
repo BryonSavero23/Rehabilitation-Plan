@@ -1,0 +1,60 @@
+{
+  "id": "progress_49956",
+  "userId": "patient_1571",
+  "planId": "plan_94745",
+  "date": "2025-01-20T13:59:38.721518",
+  "exerciseLogs": [
+    {
+      "exerciseId": "ex_ankle_1_3120",
+      "exerciseName": "Toe Raises",
+      "setsCompleted": 3,
+      "repsCompleted": 13,
+      "durationSeconds": 62,
+      "painLevel": 2,
+      "notes": "Getting easier"
+    },
+    {
+      "exerciseId": "ex_ankle_2_3460",
+      "exerciseName": "Ankle Circles",
+      "setsCompleted": 1,
+      "repsCompleted": 9,
+      "durationSeconds": 85,
+      "painLevel": 5,
+      "notes": "Too challenging"
+    },
+    {
+      "exerciseId": "ex_ankle_3_2270",
+      "exerciseName": "Resistance Band Inversion",
+      "setsCompleted": 3,
+      "repsCompleted": 2,
+      "durationSeconds": 89,
+      "painLevel": 5,
+      "notes": "Need to modify"
+    },
+    {
+      "exerciseId": "ex_ankle_4_4289",
+      "exerciseName": "Resistance Band Eversion",
+      "setsCompleted": 1,
+      "repsCompleted": 11,
+      "durationSeconds": 85,
+      "painLevel": 3,
+      "notes": "Getting easier"
+    },
+    {
+      "exerciseId": "ex_ankle_5_2155",
+      "exerciseName": "Ankle Pumps",
+      "setsCompleted": 1,
+      "repsCompleted": 8,
+      "durationSeconds": 34,
+      "painLevel": 5,
+      "notes": null
+    }
+  ],
+  "metrics": {
+    "ankle_rom": 132,
+    "ankle_strength": 8
+  },
+  "feedback": "Still experiencing pain during certain movements",
+  "overallRating": 4,
+  "adherencePercentage": 60
+}

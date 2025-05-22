@@ -1,0 +1,42 @@
+{
+  "id": "progress_68147",
+  "userId": "patient_6639",
+  "planId": "plan_50159",
+  "date": "2024-05-12T13:59:38.717000",
+  "exerciseLogs": [
+    {
+      "exerciseId": "ex_ankle_1_7137",
+      "exerciseName": "Resistance Band Inversion",
+      "setsCompleted": 4,
+      "repsCompleted": 2,
+      "durationSeconds": 66,
+      "painLevel": 3,
+      "notes": null
+    },
+    {
+      "exerciseId": "ex_ankle_2_6975",
+      "exerciseName": "Ankle Pumps",
+      "setsCompleted": 2,
+      "repsCompleted": 2,
+      "durationSeconds": 90,
+      "painLevel": 1,
+      "notes": "Need to modify"
+    },
+    {
+      "exerciseId": "ex_ankle_3_5476",
+      "exerciseName": "Toe Raises",
+      "setsCompleted": 2,
+      "repsCompleted": 6,
+      "durationSeconds": 83,
+      "painLevel": 10,
+      "notes": "Too challenging"
+    }
+  ],
+  "metrics": {
+    "ankle_rom": 87,
+    "ankle_strength": 10
+  },
+  "feedback": "Exercises are getting easier to perform",
+  "overallRating": 3,
+  "adherencePercentage": 66
+}

@@ -1,0 +1,25 @@
+{
+  "id": "patient_8239",
+  "name": "Jessica Smith",
+  "email": "patient_8239@hotmail.com",
+  "role": "patient",
+  "profileImageUrl": null,
+  "medicalHistory": {
+    "previousInjuries": "None",
+    "surgicalHistory": "ACL reconstruction",
+    "medications": "Muscle relaxants",
+    "allergies": "NSAIDs"
+  },
+  "physicalCondition": {
+    "bodyPart": "Back",
+    "painLevel": 2,
+    "mobilityLimitations": "Limited range of motion and strength",
+    "painLocation": "Muscle"
+  },
+  "rehabilitationGoals": [
+    "Post-surgery recovery",
+    "Increase strength",
+    "Return to sports"
+  ],
+  "createdAt": "2024-12-26T13:59:38.673412"
+}

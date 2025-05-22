@@ -1,0 +1,59 @@
+{
+  "id": "plan_68551",
+  "userId": "patient_2374",
+  "therapistId": "therapist_2230",
+  "title": "Hip Rehabilitation Plan",
+  "description": "Personalized rehabilitation plan for Hip recovery",
+  "exercises": [
+    {
+      "id": "ex_hip_1_1820",
+      "name": "Hip Exercise 1",
+      "description": "Description for hip exercise 1",
+      "bodyPart": "Hip",
+      "sets": 4,
+      "reps": 12,
+      "durationSeconds": 79,
+      "difficultyLevel": "intermediate"
+    },
+    {
+      "id": "ex_hip_2_7800",
+      "name": "Hip Exercise 6",
+      "description": "Description for hip exercise 6",
+      "bodyPart": "Hip",
+      "sets": 4,
+      "reps": 15,
+      "durationSeconds": 50,
+      "difficultyLevel": "intermediate"
+    },
+    {
+      "id": "ex_hip_3_2520",
+      "name": "Hip Exercise 2",
+      "description": "Description for hip exercise 2",
+      "bodyPart": "Hip",
+      "sets": 3,
+      "reps": 15,
+      "durationSeconds": 36,
+      "difficultyLevel": "intermediate"
+    },
+    {
+      "id": "ex_hip_4_8634",
+      "name": "Hip Exercise 4",
+      "description": "Description for hip exercise 4",
+      "bodyPart": "Hip",
+      "sets": 2,
+      "reps": 12,
+      "durationSeconds": 69,
+      "difficultyLevel": "intermediate"
+    }
+  ],
+  "startDate": "2025-04-04T13:59:38.699985",
+  "endDate": null,
+  "status": "completed",
+  "goals": {
+    "primary": "Improve range of motion",
+    "bodyPart": "Hip",
+    "painReduction": "medium"
+  },
+  "lastUpdated": "2025-04-04T13:59:38.699985",
+  "isDynamicallyAdjusted": true
+}

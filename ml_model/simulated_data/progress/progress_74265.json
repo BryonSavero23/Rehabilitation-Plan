@@ -1,0 +1,60 @@
+{
+  "id": "progress_74265",
+  "userId": "patient_8239",
+  "planId": "plan_38410",
+  "date": "2025-02-24T13:59:38.673412",
+  "exerciseLogs": [
+    {
+      "exerciseId": "ex_back_1_9137",
+      "exerciseName": "Back Exercise 3",
+      "setsCompleted": 3,
+      "repsCompleted": 4,
+      "durationSeconds": 37,
+      "painLevel": 6,
+      "notes": "Too challenging"
+    },
+    {
+      "exerciseId": "ex_back_2_7433",
+      "exerciseName": "Back Exercise 1",
+      "setsCompleted": 1,
+      "repsCompleted": 12,
+      "durationSeconds": 83,
+      "painLevel": 2,
+      "notes": "Getting easier"
+    },
+    {
+      "exerciseId": "ex_back_3_6307",
+      "exerciseName": "Back Exercise 6",
+      "setsCompleted": 3,
+      "repsCompleted": 2,
+      "durationSeconds": 50,
+      "painLevel": 3,
+      "notes": "Too challenging"
+    },
+    {
+      "exerciseId": "ex_back_4_7902",
+      "exerciseName": "Back Exercise 5",
+      "setsCompleted": 2,
+      "repsCompleted": 5,
+      "durationSeconds": 70,
+      "painLevel": 2,
+      "notes": null
+    },
+    {
+      "exerciseId": "ex_back_5_7538",
+      "exerciseName": "Back Exercise 4",
+      "setsCompleted": 2,
+      "repsCompleted": 12,
+      "durationSeconds": 82,
+      "painLevel": 7,
+      "notes": "Too challenging"
+    }
+  ],
+  "metrics": {
+    "back_rom": 168,
+    "back_strength": 8
+  },
+  "feedback": "Feeling improvement in range of motion",
+  "overallRating": 4,
+  "adherencePercentage": 78
+}

@@ -1,0 +1,24 @@
+{
+  "id": "patient_2660",
+  "name": "Richard Lopez",
+  "email": "patient_2660@hotmail.com",
+  "role": "patient",
+  "profileImageUrl": null,
+  "medicalHistory": {
+    "previousInjuries": "Rotator cuff injury",
+    "surgicalHistory": "Arthroscopy",
+    "medications": "None",
+    "allergies": "Latex"
+  },
+  "physicalCondition": {
+    "bodyPart": "Hip",
+    "painLevel": 7,
+    "mobilityLimitations": "Limited range of motion and strength",
+    "painLocation": "Muscle"
+  },
+  "rehabilitationGoals": [
+    "Pain reduction",
+    "Return to sports"
+  ],
+  "createdAt": "2025-02-26T13:59:38.694458"
+}

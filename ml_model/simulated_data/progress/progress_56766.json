@@ -1,0 +1,51 @@
+{
+  "id": "progress_56766",
+  "userId": "patient_2345",
+  "planId": "plan_46303",
+  "date": "2025-01-11T13:59:38.684932",
+  "exerciseLogs": [
+    {
+      "exerciseId": "ex_shoulder_1_2661",
+      "exerciseName": "External Rotation",
+      "setsCompleted": 1,
+      "repsCompleted": 5,
+      "durationSeconds": 38,
+      "painLevel": 10,
+      "notes": "Felt good"
+    },
+    {
+      "exerciseId": "ex_shoulder_2_4870",
+      "exerciseName": "Shoulder Flexion",
+      "setsCompleted": 3,
+      "repsCompleted": 1,
+      "durationSeconds": 88,
+      "painLevel": 1,
+      "notes": "Felt good"
+    },
+    {
+      "exerciseId": "ex_shoulder_3_7282",
+      "exerciseName": "Wall Crawl",
+      "setsCompleted": 1,
+      "repsCompleted": 6,
+      "durationSeconds": 77,
+      "painLevel": 5,
+      "notes": "Need to modify"
+    },
+    {
+      "exerciseId": "ex_shoulder_4_1281",
+      "exerciseName": "Shoulder Abduction",
+      "setsCompleted": 1,
+      "repsCompleted": 7,
+      "durationSeconds": 31,
+      "painLevel": 6,
+      "notes": "Getting easier"
+    }
+  ],
+  "metrics": {
+    "shoulder_rom": 109,
+    "shoulder_strength": 8
+  },
+  "feedback": "Need modifications for some exercises",
+  "overallRating": 2,
+  "adherencePercentage": 60
+}

@@ -1,0 +1,42 @@
+{
+  "id": "progress_96767",
+  "userId": "patient_6083",
+  "planId": "plan_72024",
+  "date": "2024-06-19T13:59:38.722518",
+  "exerciseLogs": [
+    {
+      "exerciseId": "ex_knee_3_1733",
+      "exerciseName": "Terminal Knee Extensions",
+      "setsCompleted": 1,
+      "repsCompleted": 10,
+      "durationSeconds": 85,
+      "painLevel": 9,
+      "notes": null
+    },
+    {
+      "exerciseId": "ex_knee_4_9632",
+      "exerciseName": "Straight Leg Raises",
+      "setsCompleted": 1,
+      "repsCompleted": 3,
+      "durationSeconds": 70,
+      "painLevel": 10,
+      "notes": "Getting easier"
+    },
+    {
+      "exerciseId": "ex_knee_5_3038",
+      "exerciseName": "Knee Extensions",
+      "setsCompleted": 2,
+      "repsCompleted": 1,
+      "durationSeconds": 71,
+      "painLevel": 2,
+      "notes": "Felt good"
+    }
+  ],
+  "metrics": {
+    "knee_rom": 107,
+    "knee_strength": 5
+  },
+  "feedback": "Exercises are getting easier to perform",
+  "overallRating": 2,
+  "adherencePercentage": 25
+}

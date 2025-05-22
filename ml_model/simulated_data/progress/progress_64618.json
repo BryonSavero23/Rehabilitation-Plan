@@ -1,0 +1,42 @@
+{
+  "id": "progress_64618",
+  "userId": "patient_2345",
+  "planId": "plan_46303",
+  "date": "2025-02-12T13:59:38.684932",
+  "exerciseLogs": [
+    {
+      "exerciseId": "ex_shoulder_1_2661",
+      "exerciseName": "External Rotation",
+      "setsCompleted": 1,
+      "repsCompleted": 13,
+      "durationSeconds": 38,
+      "painLevel": 5,
+      "notes": "Too challenging"
+    },
+    {
+      "exerciseId": "ex_shoulder_2_4870",
+      "exerciseName": "Shoulder Flexion",
+      "setsCompleted": 3,
+      "repsCompleted": 10,
+      "durationSeconds": 88,
+      "painLevel": 3,
+      "notes": "Need to modify"
+    },
+    {
+      "exerciseId": "ex_shoulder_3_7282",
+      "exerciseName": "Wall Crawl",
+      "setsCompleted": 1,
+      "repsCompleted": 13,
+      "durationSeconds": 77,
+      "painLevel": 9,
+      "notes": "Getting easier"
+    }
+  ],
+  "metrics": {
+    "shoulder_rom": 112,
+    "shoulder_strength": 7
+  },
+  "feedback": "Still experiencing pain during certain movements",
+  "overallRating": 1,
+  "adherencePercentage": 50
+}

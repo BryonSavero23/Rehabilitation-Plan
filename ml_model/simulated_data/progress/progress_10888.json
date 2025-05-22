@@ -1,0 +1,60 @@
+{
+  "id": "progress_10888",
+  "userId": "patient_9910",
+  "planId": "plan_94943",
+  "date": "2024-07-08T13:59:38.723516",
+  "exerciseLogs": [
+    {
+      "exerciseId": "ex_neck_1_1669",
+      "exerciseName": "Neck Exercise 2",
+      "setsCompleted": 2,
+      "repsCompleted": 9,
+      "durationSeconds": 63,
+      "painLevel": 3,
+      "notes": null
+    },
+    {
+      "exerciseId": "ex_neck_2_1165",
+      "exerciseName": "Neck Exercise 5",
+      "setsCompleted": 1,
+      "repsCompleted": 4,
+      "durationSeconds": 57,
+      "painLevel": 6,
+      "notes": null
+    },
+    {
+      "exerciseId": "ex_neck_3_7258",
+      "exerciseName": "Neck Exercise 6",
+      "setsCompleted": 1,
+      "repsCompleted": 11,
+      "durationSeconds": 59,
+      "painLevel": 6,
+      "notes": null
+    },
+    {
+      "exerciseId": "ex_neck_4_7263",
+      "exerciseName": "Neck Exercise 3",
+      "setsCompleted": 2,
+      "repsCompleted": 9,
+      "durationSeconds": 48,
+      "painLevel": 9,
+      "notes": "Getting easier"
+    },
+    {
+      "exerciseId": "ex_neck_5_4718",
+      "exerciseName": "Neck Exercise 1",
+      "setsCompleted": 2,
+      "repsCompleted": 1,
+      "durationSeconds": 31,
+      "painLevel": 8,
+      "notes": "Too challenging"
+    }
+  ],
+  "metrics": {
+    "neck_rom": 108,
+    "neck_strength": 3
+  },
+  "feedback": "Feeling improvement in range of motion",
+  "overallRating": 1,
+  "adherencePercentage": 66
+}

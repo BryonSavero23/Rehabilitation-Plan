@@ -1,0 +1,33 @@
+{
+  "id": "progress_36909",
+  "userId": "patient_2813",
+  "planId": "plan_47319",
+  "date": "2025-02-20T13:59:38.686938",
+  "exerciseLogs": [
+    {
+      "exerciseId": "ex_ankle_1_6124",
+      "exerciseName": "Ankle Circles",
+      "setsCompleted": 2,
+      "repsCompleted": 3,
+      "durationSeconds": 45,
+      "painLevel": 5,
+      "notes": "Too challenging"
+    },
+    {
+      "exerciseId": "ex_ankle_2_5854",
+      "exerciseName": "Heel Raises",
+      "setsCompleted": 1,
+      "repsCompleted": 11,
+      "durationSeconds": 32,
+      "painLevel": 1,
+      "notes": null
+    }
+  ],
+  "metrics": {
+    "ankle_rom": 114,
+    "ankle_strength": 10
+  },
+  "feedback": "Exercises are getting easier to perform",
+  "overallRating": 5,
+  "adherencePercentage": 37
+}

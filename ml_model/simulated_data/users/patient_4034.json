@@ -1,0 +1,25 @@
+{
+  "id": "patient_4034",
+  "name": "Joseph Miller",
+  "email": "patient_4034@gmail.com",
+  "role": "patient",
+  "profileImageUrl": null,
+  "medicalHistory": {
+    "previousInjuries": "ACL tear",
+    "surgicalHistory": "Arthroscopy",
+    "medications": "None",
+    "allergies": "None"
+  },
+  "physicalCondition": {
+    "bodyPart": "Hip",
+    "painLevel": 2,
+    "mobilityLimitations": "Limited range of motion and strength",
+    "painLocation": "Joint"
+  },
+  "rehabilitationGoals": [
+    "Prevent re-injury",
+    "Return to sports",
+    "Improve range of motion"
+  ],
+  "createdAt": "2024-07-30T13:59:38.657413"
+}

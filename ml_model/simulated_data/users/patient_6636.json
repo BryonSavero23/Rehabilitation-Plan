@@ -1,0 +1,24 @@
+{
+  "id": "patient_6636",
+  "name": "William Taylor",
+  "email": "patient_6636@outlook.com",
+  "role": "patient",
+  "profileImageUrl": null,
+  "medicalHistory": {
+    "previousInjuries": "None",
+    "surgicalHistory": "Ankle ligament reconstruction",
+    "medications": "Pain relievers",
+    "allergies": "None"
+  },
+  "physicalCondition": {
+    "bodyPart": "Neck",
+    "painLevel": 4,
+    "mobilityLimitations": "Limited range of motion and strength",
+    "painLocation": "Joint"
+  },
+  "rehabilitationGoals": [
+    "Return to sports",
+    "Prevent re-injury"
+  ],
+  "createdAt": "2025-03-21T13:59:38.691458"
+}

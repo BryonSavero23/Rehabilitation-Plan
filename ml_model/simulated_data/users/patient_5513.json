@@ -1,0 +1,23 @@
+{
+  "id": "patient_5513",
+  "name": "Charles Davis",
+  "email": "patient_5513@outlook.com",
+  "role": "patient",
+  "profileImageUrl": null,
+  "medicalHistory": {
+    "previousInjuries": "Fracture",
+    "surgicalHistory": "Fracture fixation",
+    "medications": "None",
+    "allergies": "Latex"
+  },
+  "physicalCondition": {
+    "bodyPart": "Neck",
+    "painLevel": 8,
+    "mobilityLimitations": "Limited range of motion and strength",
+    "painLocation": "Tendon"
+  },
+  "rehabilitationGoals": [
+    "Post-surgery recovery"
+  ],
+  "createdAt": "2025-03-10T13:59:38.700986"
+}

@@ -1,0 +1,24 @@
+{
+  "id": "patient_6639",
+  "name": "Patricia Lopez",
+  "email": "patient_6639@outlook.com",
+  "role": "patient",
+  "profileImageUrl": null,
+  "medicalHistory": {
+    "previousInjuries": "Meniscus tear",
+    "surgicalHistory": "None",
+    "medications": "Pain relievers",
+    "allergies": "Aspirin"
+  },
+  "physicalCondition": {
+    "bodyPart": "Ankle",
+    "painLevel": 9,
+    "mobilityLimitations": "Limited range of motion and strength",
+    "painLocation": "Ligament"
+  },
+  "rehabilitationGoals": [
+    "Prevent re-injury",
+    "Pain reduction"
+  ],
+  "createdAt": "2024-04-30T13:59:38.717000"
+}

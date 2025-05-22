@@ -1,0 +1,33 @@
+{
+  "id": "progress_51480",
+  "userId": "patient_3729",
+  "planId": "plan_25330",
+  "date": "2024-11-29T13:59:38.673412",
+  "exerciseLogs": [
+    {
+      "exerciseId": "ex_ankle_1_3478",
+      "exerciseName": "Resistance Band Eversion",
+      "setsCompleted": 1,
+      "repsCompleted": 5,
+      "durationSeconds": 64,
+      "painLevel": 7,
+      "notes": "Felt good"
+    },
+    {
+      "exerciseId": "ex_ankle_2_6355",
+      "exerciseName": "Heel Raises",
+      "setsCompleted": 1,
+      "repsCompleted": 10,
+      "durationSeconds": 41,
+      "painLevel": 8,
+      "notes": "Too challenging"
+    }
+  ],
+  "metrics": {
+    "ankle_rom": 124,
+    "ankle_strength": 9
+  },
+  "feedback": null,
+  "overallRating": 3,
+  "adherencePercentage": 22
+}

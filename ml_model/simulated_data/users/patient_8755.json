@@ -1,0 +1,25 @@
+{
+  "id": "patient_8755",
+  "name": "Thomas Martinez",
+  "email": "patient_8755@yahoo.com",
+  "role": "patient",
+  "profileImageUrl": null,
+  "medicalHistory": {
+    "previousInjuries": "Fracture",
+    "surgicalHistory": "Rotator cuff repair",
+    "medications": "Anti-inflammatory medication",
+    "allergies": "Aspirin"
+  },
+  "physicalCondition": {
+    "bodyPart": "Knee",
+    "painLevel": 7,
+    "mobilityLimitations": "Limited range of motion and strength",
+    "painLocation": "Muscle"
+  },
+  "rehabilitationGoals": [
+    "Improve daily function",
+    "Improve range of motion",
+    "Increase strength"
+  ],
+  "createdAt": "2024-04-20T13:59:38.665413"
+}

@@ -1,0 +1,33 @@
+{
+  "id": "progress_66309",
+  "userId": "patient_2813",
+  "planId": "plan_47319",
+  "date": "2025-01-13T13:59:38.686938",
+  "exerciseLogs": [
+    {
+      "exerciseId": "ex_ankle_1_6124",
+      "exerciseName": "Ankle Circles",
+      "setsCompleted": 2,
+      "repsCompleted": 10,
+      "durationSeconds": 45,
+      "painLevel": 4,
+      "notes": null
+    },
+    {
+      "exerciseId": "ex_ankle_3_4142",
+      "exerciseName": "Resistance Band Inversion",
+      "setsCompleted": 1,
+      "repsCompleted": 8,
+      "durationSeconds": 84,
+      "painLevel": 6,
+      "notes": "Need to modify"
+    }
+  ],
+  "metrics": {
+    "ankle_rom": 102,
+    "ankle_strength": 9
+  },
+  "feedback": "Feeling improvement in range of motion",
+  "overallRating": 2,
+  "adherencePercentage": 37
+}

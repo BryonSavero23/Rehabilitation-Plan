@@ -1,0 +1,33 @@
+{
+  "id": "progress_87675",
+  "userId": "patient_2004",
+  "planId": "plan_64231",
+  "date": "2025-04-29T13:59:38.686938",
+  "exerciseLogs": [
+    {
+      "exerciseId": "ex_knee_1_7646",
+      "exerciseName": "Wall Squats",
+      "setsCompleted": 2,
+      "repsCompleted": 7,
+      "durationSeconds": 50,
+      "painLevel": 7,
+      "notes": "Too challenging"
+    },
+    {
+      "exerciseId": "ex_knee_2_2233",
+      "exerciseName": "Terminal Knee Extensions",
+      "setsCompleted": 2,
+      "repsCompleted": 6,
+      "durationSeconds": 58,
+      "painLevel": 2,
+      "notes": "Too challenging"
+    }
+  ],
+  "metrics": {
+    "knee_rom": 86,
+    "knee_strength": 7
+  },
+  "feedback": "Feeling improvement in range of motion",
+  "overallRating": 3,
+  "adherencePercentage": 50
+}

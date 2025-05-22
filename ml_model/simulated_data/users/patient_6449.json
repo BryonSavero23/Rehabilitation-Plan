@@ -1,0 +1,25 @@
+{
+  "id": "patient_6449",
+  "name": "Robert Gonzalez",
+  "email": "patient_6449@outlook.com",
+  "role": "patient",
+  "profileImageUrl": null,
+  "medicalHistory": {
+    "previousInjuries": "Ankle sprain",
+    "surgicalHistory": "Ankle ligament reconstruction",
+    "medications": "None",
+    "allergies": "None"
+  },
+  "physicalCondition": {
+    "bodyPart": "Wrist",
+    "painLevel": 2,
+    "mobilityLimitations": "Limited range of motion and strength",
+    "painLocation": "Muscle"
+  },
+  "rehabilitationGoals": [
+    "Pain reduction",
+    "Improve range of motion",
+    "Return to sports"
+  ],
+  "createdAt": "2024-09-27T13:59:38.660413"
+}

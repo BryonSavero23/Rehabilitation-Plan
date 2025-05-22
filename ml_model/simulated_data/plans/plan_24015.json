@@ -1,0 +1,69 @@
+{
+  "id": "plan_24015",
+  "userId": "patient_9237",
+  "therapistId": "therapist_6083",
+  "title": "Hip Rehabilitation Plan",
+  "description": "Personalized rehabilitation plan for Hip recovery",
+  "exercises": [
+    {
+      "id": "ex_hip_1_1166",
+      "name": "Hip Exercise 5",
+      "description": "Description for hip exercise 5",
+      "bodyPart": "Hip",
+      "sets": 2,
+      "reps": 9,
+      "durationSeconds": 39,
+      "difficultyLevel": "beginner"
+    },
+    {
+      "id": "ex_hip_2_2455",
+      "name": "Hip Exercise 1",
+      "description": "Description for hip exercise 1",
+      "bodyPart": "Hip",
+      "sets": 3,
+      "reps": 12,
+      "durationSeconds": 85,
+      "difficultyLevel": "beginner"
+    },
+    {
+      "id": "ex_hip_3_9130",
+      "name": "Hip Exercise 3",
+      "description": "Description for hip exercise 3",
+      "bodyPart": "Hip",
+      "sets": 4,
+      "reps": 10,
+      "durationSeconds": 42,
+      "difficultyLevel": "beginner"
+    },
+    {
+      "id": "ex_hip_4_6143",
+      "name": "Hip Exercise 4",
+      "description": "Description for hip exercise 4",
+      "bodyPart": "Hip",
+      "sets": 3,
+      "reps": 11,
+      "durationSeconds": 67,
+      "difficultyLevel": "beginner"
+    },
+    {
+      "id": "ex_hip_5_6141",
+      "name": "Hip Exercise 2",
+      "description": "Description for hip exercise 2",
+      "bodyPart": "Hip",
+      "sets": 4,
+      "reps": 10,
+      "durationSeconds": 63,
+      "difficultyLevel": "beginner"
+    }
+  ],
+  "startDate": "2024-09-05T13:59:38.725518",
+  "endDate": null,
+  "status": "active",
+  "goals": {
+    "primary": "Pain reduction",
+    "bodyPart": "Hip",
+    "painReduction": "high"
+  },
+  "lastUpdated": "2024-09-05T13:59:38.725518",
+  "isDynamicallyAdjusted": true
+}

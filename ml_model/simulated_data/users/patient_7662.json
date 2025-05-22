@@ -1,0 +1,23 @@
+{
+  "id": "patient_7662",
+  "name": "Jennifer Jones",
+  "email": "patient_7662@example.com",
+  "role": "patient",
+  "profileImageUrl": null,
+  "medicalHistory": {
+    "previousInjuries": "Meniscus tear",
+    "surgicalHistory": "Meniscus repair",
+    "medications": "NSAIDs",
+    "allergies": "Aspirin"
+  },
+  "physicalCondition": {
+    "bodyPart": "Elbow",
+    "painLevel": 10,
+    "mobilityLimitations": "Limited range of motion and strength",
+    "painLocation": "Tendon"
+  },
+  "rehabilitationGoals": [
+    "Post-surgery recovery"
+  ],
+  "createdAt": "2025-02-22T13:59:38.678933"
+}

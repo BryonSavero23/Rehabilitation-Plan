@@ -1,0 +1,25 @@
+{
+  "id": "patient_3153",
+  "name": "William Hernandez",
+  "email": "patient_3153@outlook.com",
+  "role": "patient",
+  "profileImageUrl": null,
+  "medicalHistory": {
+    "previousInjuries": "Ankle sprain",
+    "surgicalHistory": "Rotator cuff repair",
+    "medications": "Anti-inflammatory medication",
+    "allergies": "Aspirin"
+  },
+  "physicalCondition": {
+    "bodyPart": "Shoulder",
+    "painLevel": 4,
+    "mobilityLimitations": "Limited range of motion and strength",
+    "painLocation": "Muscle"
+  },
+  "rehabilitationGoals": [
+    "Improve range of motion",
+    "Increase strength",
+    "Return to sports"
+  ],
+  "createdAt": "2024-10-03T13:59:38.658412"
+}

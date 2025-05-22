@@ -1,0 +1,42 @@
+{
+  "id": "progress_84421",
+  "userId": "patient_8755",
+  "planId": "plan_47554",
+  "date": "2024-04-29T13:59:38.665413",
+  "exerciseLogs": [
+    {
+      "exerciseId": "ex_knee_1_6545",
+      "exerciseName": "Terminal Knee Extensions",
+      "setsCompleted": 1,
+      "repsCompleted": 4,
+      "durationSeconds": 47,
+      "painLevel": 5,
+      "notes": "Felt good"
+    },
+    {
+      "exerciseId": "ex_knee_2_8566",
+      "exerciseName": "Step-Ups",
+      "setsCompleted": 4,
+      "repsCompleted": 9,
+      "durationSeconds": 73,
+      "painLevel": 7,
+      "notes": "Need to modify"
+    },
+    {
+      "exerciseId": "ex_knee_3_1601",
+      "exerciseName": "Knee Extensions",
+      "setsCompleted": 1,
+      "repsCompleted": 8,
+      "durationSeconds": 49,
+      "painLevel": 5,
+      "notes": null
+    }
+  ],
+  "metrics": {
+    "knee_rom": 157,
+    "knee_strength": 8
+  },
+  "feedback": null,
+  "overallRating": 3,
+  "adherencePercentage": 66
+}

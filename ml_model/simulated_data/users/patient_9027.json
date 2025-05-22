@@ -1,0 +1,25 @@
+{
+  "id": "patient_9027",
+  "name": "Jessica Wilson",
+  "email": "patient_9027@hotmail.com",
+  "role": "patient",
+  "profileImageUrl": null,
+  "medicalHistory": {
+    "previousInjuries": "Dislocation",
+    "surgicalHistory": "ACL reconstruction",
+    "medications": "Pain relievers",
+    "allergies": "None"
+  },
+  "physicalCondition": {
+    "bodyPart": "Elbow",
+    "painLevel": 8,
+    "mobilityLimitations": "Limited range of motion and strength",
+    "painLocation": "Tendon"
+  },
+  "rehabilitationGoals": [
+    "Improve range of motion",
+    "Improve range of motion",
+    "Prevent re-injury"
+  ],
+  "createdAt": "2024-04-04T13:59:38.689456"
+}

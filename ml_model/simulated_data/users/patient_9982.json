@@ -1,0 +1,23 @@
+{
+  "id": "patient_9982",
+  "name": "Sarah Miller",
+  "email": "patient_9982@example.com",
+  "role": "patient",
+  "profileImageUrl": null,
+  "medicalHistory": {
+    "previousInjuries": "Fracture",
+    "surgicalHistory": "Arthroscopy",
+    "medications": "Pain relievers",
+    "allergies": "Aspirin"
+  },
+  "physicalCondition": {
+    "bodyPart": "Neck",
+    "painLevel": 9,
+    "mobilityLimitations": "Limited range of motion and strength",
+    "painLocation": "Tendon"
+  },
+  "rehabilitationGoals": [
+    "Improve daily function"
+  ],
+  "createdAt": "2024-05-09T13:59:38.662411"
+}

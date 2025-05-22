@@ -1,0 +1,33 @@
+{
+  "id": "progress_17460",
+  "userId": "patient_1918",
+  "planId": "plan_26766",
+  "date": "2024-12-08T13:59:38.702986",
+  "exerciseLogs": [
+    {
+      "exerciseId": "ex_knee_3_7397",
+      "exerciseName": "Hamstring Curls",
+      "setsCompleted": 3,
+      "repsCompleted": 2,
+      "durationSeconds": 53,
+      "painLevel": 6,
+      "notes": "Felt good"
+    },
+    {
+      "exerciseId": "ex_knee_4_7067",
+      "exerciseName": "Knee Extensions",
+      "setsCompleted": 1,
+      "repsCompleted": 5,
+      "durationSeconds": 41,
+      "painLevel": 8,
+      "notes": null
+    }
+  ],
+  "metrics": {
+    "knee_rom": 166,
+    "knee_strength": 8
+  },
+  "feedback": "Still experiencing pain during certain movements",
+  "overallRating": 5,
+  "adherencePercentage": 30
+}

@@ -1,0 +1,79 @@
+{
+  "id": "plan_14623",
+  "userId": "patient_7573",
+  "therapistId": "therapist_2343",
+  "title": "Wrist Rehabilitation Plan",
+  "description": "Personalized rehabilitation plan for Wrist recovery",
+  "exercises": [
+    {
+      "id": "ex_wrist_1_1338",
+      "name": "Wrist Exercise 6",
+      "description": "Description for wrist exercise 6",
+      "bodyPart": "Wrist",
+      "sets": 3,
+      "reps": 11,
+      "durationSeconds": 37,
+      "difficultyLevel": "advanced"
+    },
+    {
+      "id": "ex_wrist_2_4579",
+      "name": "Wrist Exercise 3",
+      "description": "Description for wrist exercise 3",
+      "bodyPart": "Wrist",
+      "sets": 4,
+      "reps": 11,
+      "durationSeconds": 75,
+      "difficultyLevel": "advanced"
+    },
+    {
+      "id": "ex_wrist_3_3718",
+      "name": "Wrist Exercise 5",
+      "description": "Description for wrist exercise 5",
+      "bodyPart": "Wrist",
+      "sets": 2,
+      "reps": 8,
+      "durationSeconds": 73,
+      "difficultyLevel": "advanced"
+    },
+    {
+      "id": "ex_wrist_4_6323",
+      "name": "Wrist Exercise 1",
+      "description": "Description for wrist exercise 1",
+      "bodyPart": "Wrist",
+      "sets": 4,
+      "reps": 10,
+      "durationSeconds": 64,
+      "difficultyLevel": "advanced"
+    },
+    {
+      "id": "ex_wrist_5_4342",
+      "name": "Wrist Exercise 4",
+      "description": "Description for wrist exercise 4",
+      "bodyPart": "Wrist",
+      "sets": 4,
+      "reps": 11,
+      "durationSeconds": 56,
+      "difficultyLevel": "advanced"
+    },
+    {
+      "id": "ex_wrist_6_7722",
+      "name": "Wrist Exercise 2",
+      "description": "Description for wrist exercise 2",
+      "bodyPart": "Wrist",
+      "sets": 3,
+      "reps": 9,
+      "durationSeconds": 39,
+      "difficultyLevel": "advanced"
+    }
+  ],
+  "startDate": "2025-02-02T13:59:38.714007",
+  "endDate": null,
+  "status": "active",
+  "goals": {
+    "primary": "Pain reduction",
+    "bodyPart": "Wrist",
+    "painReduction": "low"
+  },
+  "lastUpdated": "2025-02-02T13:59:38.714007",
+  "isDynamicallyAdjusted": true
+}

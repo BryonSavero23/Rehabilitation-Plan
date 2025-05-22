@@ -1,0 +1,79 @@
+{
+  "id": "plan_53709",
+  "userId": "patient_1463",
+  "therapistId": "therapist_8961",
+  "title": "Wrist Rehabilitation Plan",
+  "description": "Personalized rehabilitation plan for Wrist recovery",
+  "exercises": [
+    {
+      "id": "ex_wrist_1_7101",
+      "name": "Wrist Exercise 4",
+      "description": "Description for wrist exercise 4",
+      "bodyPart": "Wrist",
+      "sets": 4,
+      "reps": 8,
+      "durationSeconds": 40,
+      "difficultyLevel": "intermediate"
+    },
+    {
+      "id": "ex_wrist_2_8085",
+      "name": "Wrist Exercise 5",
+      "description": "Description for wrist exercise 5",
+      "bodyPart": "Wrist",
+      "sets": 2,
+      "reps": 12,
+      "durationSeconds": 81,
+      "difficultyLevel": "intermediate"
+    },
+    {
+      "id": "ex_wrist_3_4324",
+      "name": "Wrist Exercise 3",
+      "description": "Description for wrist exercise 3",
+      "bodyPart": "Wrist",
+      "sets": 3,
+      "reps": 8,
+      "durationSeconds": 35,
+      "difficultyLevel": "intermediate"
+    },
+    {
+      "id": "ex_wrist_4_5508",
+      "name": "Wrist Exercise 6",
+      "description": "Description for wrist exercise 6",
+      "bodyPart": "Wrist",
+      "sets": 2,
+      "reps": 8,
+      "durationSeconds": 80,
+      "difficultyLevel": "intermediate"
+    },
+    {
+      "id": "ex_wrist_5_8468",
+      "name": "Wrist Exercise 1",
+      "description": "Description for wrist exercise 1",
+      "bodyPart": "Wrist",
+      "sets": 2,
+      "reps": 9,
+      "durationSeconds": 73,
+      "difficultyLevel": "intermediate"
+    },
+    {
+      "id": "ex_wrist_6_5793",
+      "name": "Wrist Exercise 2",
+      "description": "Description for wrist exercise 2",
+      "bodyPart": "Wrist",
+      "sets": 2,
+      "reps": 10,
+      "durationSeconds": 74,
+      "difficultyLevel": "intermediate"
+    }
+  ],
+  "startDate": "2025-04-06T13:59:38.676417",
+  "endDate": null,
+  "status": "completed",
+  "goals": {
+    "primary": "Return to sports",
+    "bodyPart": "Wrist",
+    "painReduction": "medium"
+  },
+  "lastUpdated": "2025-04-06T13:59:38.676417",
+  "isDynamicallyAdjusted": false
+}

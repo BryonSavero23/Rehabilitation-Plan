@@ -1,0 +1,79 @@
+{
+  "id": "plan_97640",
+  "userId": "patient_5649",
+  "therapistId": "therapist_8799",
+  "title": "Knee Rehabilitation Plan",
+  "description": "Personalized rehabilitation plan for Knee recovery",
+  "exercises": [
+    {
+      "id": "ex_knee_1_5788",
+      "name": "Hamstring Curls",
+      "description": "Lie face down and bend your knee, bringing your heel toward your buttock",
+      "bodyPart": "Knee",
+      "sets": 3,
+      "reps": 15,
+      "durationSeconds": 43,
+      "difficultyLevel": "beginner"
+    },
+    {
+      "id": "ex_knee_2_7097",
+      "name": "Knee Extensions",
+      "description": "Sit in a chair and straighten your knee",
+      "bodyPart": "Knee",
+      "sets": 4,
+      "reps": 10,
+      "durationSeconds": 44,
+      "difficultyLevel": "beginner"
+    },
+    {
+      "id": "ex_knee_3_2372",
+      "name": "Step-Ups",
+      "description": "Step up onto a platform with one leg, then the other",
+      "bodyPart": "Knee",
+      "sets": 4,
+      "reps": 12,
+      "durationSeconds": 48,
+      "difficultyLevel": "beginner"
+    },
+    {
+      "id": "ex_knee_4_8051",
+      "name": "Terminal Knee Extensions",
+      "description": "Extend your knee against resistance",
+      "bodyPart": "Knee",
+      "sets": 4,
+      "reps": 11,
+      "durationSeconds": 66,
+      "difficultyLevel": "beginner"
+    },
+    {
+      "id": "ex_knee_5_2901",
+      "name": "Wall Squats",
+      "description": "Stand with your back against a wall and bend your knees",
+      "bodyPart": "Knee",
+      "sets": 4,
+      "reps": 10,
+      "durationSeconds": 89,
+      "difficultyLevel": "beginner"
+    },
+    {
+      "id": "ex_knee_6_7982",
+      "name": "Straight Leg Raises",
+      "description": "Lie flat on your back and lift your leg straight up",
+      "bodyPart": "Knee",
+      "sets": 4,
+      "reps": 11,
+      "durationSeconds": 44,
+      "difficultyLevel": "beginner"
+    }
+  ],
+  "startDate": "2024-06-05T13:59:38.697977",
+  "endDate": null,
+  "status": "paused",
+  "goals": {
+    "primary": "Improve range of motion",
+    "bodyPart": "Knee",
+    "painReduction": "high"
+  },
+  "lastUpdated": "2024-06-05T13:59:38.697977",
+  "isDynamicallyAdjusted": false
+}

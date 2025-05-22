@@ -1,0 +1,59 @@
+{
+  "id": "plan_25330",
+  "userId": "patient_3729",
+  "therapistId": "therapist_2343",
+  "title": "Ankle Rehabilitation Plan",
+  "description": "Personalized rehabilitation plan for Ankle recovery",
+  "exercises": [
+    {
+      "id": "ex_ankle_1_3478",
+      "name": "Resistance Band Eversion",
+      "description": "Turn foot outward against resistance",
+      "bodyPart": "Ankle",
+      "sets": 2,
+      "reps": 9,
+      "durationSeconds": 64,
+      "difficultyLevel": "intermediate"
+    },
+    {
+      "id": "ex_ankle_2_6355",
+      "name": "Heel Raises",
+      "description": "Stand and rise up on your toes",
+      "bodyPart": "Ankle",
+      "sets": 2,
+      "reps": 13,
+      "durationSeconds": 41,
+      "difficultyLevel": "intermediate"
+    },
+    {
+      "id": "ex_ankle_3_3436",
+      "name": "Resistance Band Inversion",
+      "description": "Turn foot inward against resistance",
+      "bodyPart": "Ankle",
+      "sets": 3,
+      "reps": 10,
+      "durationSeconds": 44,
+      "difficultyLevel": "intermediate"
+    },
+    {
+      "id": "ex_ankle_4_4992",
+      "name": "Toe Raises",
+      "description": "Stand and lift your toes off the ground",
+      "bodyPart": "Ankle",
+      "sets": 2,
+      "reps": 14,
+      "durationSeconds": 88,
+      "difficultyLevel": "intermediate"
+    }
+  ],
+  "startDate": "2024-11-08T13:59:38.673412",
+  "endDate": null,
+  "status": "paused",
+  "goals": {
+    "primary": "Post-surgery recovery",
+    "bodyPart": "Ankle",
+    "painReduction": "medium"
+  },
+  "lastUpdated": "2024-11-08T13:59:38.673412",
+  "isDynamicallyAdjusted": true
+}

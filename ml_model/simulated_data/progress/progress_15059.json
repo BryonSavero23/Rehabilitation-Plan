@@ -1,0 +1,69 @@
+{
+  "id": "progress_15059",
+  "userId": "patient_9781",
+  "planId": "plan_81078",
+  "date": "2024-10-03T13:59:38.655405",
+  "exerciseLogs": [
+    {
+      "exerciseId": "ex_shoulder_1_9613",
+      "exerciseName": "Shoulder Flexion",
+      "setsCompleted": 4,
+      "repsCompleted": 7,
+      "durationSeconds": 72,
+      "painLevel": 10,
+      "notes": "Need to modify"
+    },
+    {
+      "exerciseId": "ex_shoulder_2_5471",
+      "exerciseName": "Shoulder Abduction",
+      "setsCompleted": 3,
+      "repsCompleted": 7,
+      "durationSeconds": 62,
+      "painLevel": 4,
+      "notes": "Too challenging"
+    },
+    {
+      "exerciseId": "ex_shoulder_3_6325",
+      "exerciseName": "Wall Crawl",
+      "setsCompleted": 1,
+      "repsCompleted": 2,
+      "durationSeconds": 68,
+      "painLevel": 3,
+      "notes": "Need to modify"
+    },
+    {
+      "exerciseId": "ex_shoulder_4_7443",
+      "exerciseName": "External Rotation",
+      "setsCompleted": 1,
+      "repsCompleted": 7,
+      "durationSeconds": 35,
+      "painLevel": 8,
+      "notes": "Too challenging"
+    },
+    {
+      "exerciseId": "ex_shoulder_5_6963",
+      "exerciseName": "Internal Rotation",
+      "setsCompleted": 2,
+      "repsCompleted": 11,
+      "durationSeconds": 60,
+      "painLevel": 1,
+      "notes": null
+    },
+    {
+      "exerciseId": "ex_shoulder_6_7116",
+      "exerciseName": "Pendulum Exercise",
+      "setsCompleted": 1,
+      "repsCompleted": 7,
+      "durationSeconds": 36,
+      "painLevel": 10,
+      "notes": "Felt good"
+    }
+  ],
+  "metrics": {
+    "shoulder_rom": 142,
+    "shoulder_strength": 10
+  },
+  "feedback": "Feeling improvement in range of motion",
+  "overallRating": 3,
+  "adherencePercentage": 70
+}

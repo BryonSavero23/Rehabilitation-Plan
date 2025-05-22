@@ -1,0 +1,24 @@
+{
+  "id": "patient_2345",
+  "name": "Robert Smith",
+  "email": "patient_2345@hotmail.com",
+  "role": "patient",
+  "profileImageUrl": null,
+  "medicalHistory": {
+    "previousInjuries": "Fracture",
+    "surgicalHistory": "Ankle ligament reconstruction",
+    "medications": "NSAIDs",
+    "allergies": "Latex"
+  },
+  "physicalCondition": {
+    "bodyPart": "Shoulder",
+    "painLevel": 10,
+    "mobilityLimitations": "Limited range of motion and strength",
+    "painLocation": "Ligament"
+  },
+  "rehabilitationGoals": [
+    "Return to sports",
+    "Return to sports"
+  ],
+  "createdAt": "2025-01-05T13:59:38.684932"
+}

@@ -1,0 +1,51 @@
+{
+  "id": "progress_15552",
+  "userId": "patient_9318",
+  "planId": "plan_92923",
+  "date": "2025-02-12T13:59:38.667410",
+  "exerciseLogs": [
+    {
+      "exerciseId": "ex_knee_1_9768",
+      "exerciseName": "Knee Extensions",
+      "setsCompleted": 2,
+      "repsCompleted": 7,
+      "durationSeconds": 62,
+      "painLevel": 3,
+      "notes": "Felt good"
+    },
+    {
+      "exerciseId": "ex_knee_2_6847",
+      "exerciseName": "Hamstring Curls",
+      "setsCompleted": 2,
+      "repsCompleted": 4,
+      "durationSeconds": 49,
+      "painLevel": 5,
+      "notes": "Felt good"
+    },
+    {
+      "exerciseId": "ex_knee_4_6920",
+      "exerciseName": "Terminal Knee Extensions",
+      "setsCompleted": 1,
+      "repsCompleted": 5,
+      "durationSeconds": 77,
+      "painLevel": 7,
+      "notes": "Felt good"
+    },
+    {
+      "exerciseId": "ex_knee_5_2847",
+      "exerciseName": "Wall Squats",
+      "setsCompleted": 3,
+      "repsCompleted": 11,
+      "durationSeconds": 58,
+      "painLevel": 1,
+      "notes": null
+    }
+  ],
+  "metrics": {
+    "knee_rom": 168,
+    "knee_strength": 10
+  },
+  "feedback": null,
+  "overallRating": 4,
+  "adherencePercentage": 44
+}

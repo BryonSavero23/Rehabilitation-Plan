@@ -1,0 +1,23 @@
+{
+  "id": "patient_1365",
+  "name": "Robert Wilson",
+  "email": "patient_1365@yahoo.com",
+  "role": "patient",
+  "profileImageUrl": null,
+  "medicalHistory": {
+    "previousInjuries": "Tendonitis",
+    "surgicalHistory": "Ankle ligament reconstruction",
+    "medications": "None",
+    "allergies": "Latex"
+  },
+  "physicalCondition": {
+    "bodyPart": "Neck",
+    "painLevel": 2,
+    "mobilityLimitations": "Limited range of motion and strength",
+    "painLocation": "Joint"
+  },
+  "rehabilitationGoals": [
+    "Improve range of motion"
+  ],
+  "createdAt": "2024-11-13T13:59:38.670412"
+}

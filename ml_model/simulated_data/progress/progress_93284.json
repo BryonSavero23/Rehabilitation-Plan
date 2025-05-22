@@ -1,0 +1,33 @@
+{
+  "id": "progress_93284",
+  "userId": "patient_8957",
+  "planId": "plan_43004",
+  "date": "2024-10-25T13:59:38.697977",
+  "exerciseLogs": [
+    {
+      "exerciseId": "ex_back_1_1986",
+      "exerciseName": "Back Exercise 5",
+      "setsCompleted": 4,
+      "repsCompleted": 8,
+      "durationSeconds": 33,
+      "painLevel": 8,
+      "notes": "Felt good"
+    },
+    {
+      "exerciseId": "ex_back_2_9287",
+      "exerciseName": "Back Exercise 3",
+      "setsCompleted": 3,
+      "repsCompleted": 10,
+      "durationSeconds": 54,
+      "painLevel": 6,
+      "notes": null
+    }
+  ],
+  "metrics": {
+    "back_rom": 106,
+    "back_strength": 7
+  },
+  "feedback": "Exercises are getting easier to perform",
+  "overallRating": 5,
+  "adherencePercentage": 50
+}

@@ -1,0 +1,42 @@
+{
+  "id": "progress_10340",
+  "userId": "patient_9708",
+  "planId": "plan_24063",
+  "date": "2024-06-02T13:59:38.705984",
+  "exerciseLogs": [
+    {
+      "exerciseId": "ex_knee_3_4748",
+      "exerciseName": "Knee Extensions",
+      "setsCompleted": 1,
+      "repsCompleted": 7,
+      "durationSeconds": 86,
+      "painLevel": 4,
+      "notes": null
+    },
+    {
+      "exerciseId": "ex_knee_4_4870",
+      "exerciseName": "Straight Leg Raises",
+      "setsCompleted": 2,
+      "repsCompleted": 8,
+      "durationSeconds": 88,
+      "painLevel": 7,
+      "notes": null
+    },
+    {
+      "exerciseId": "ex_knee_5_1083",
+      "exerciseName": "Hamstring Curls",
+      "setsCompleted": 3,
+      "repsCompleted": 2,
+      "durationSeconds": 60,
+      "painLevel": 3,
+      "notes": "Need to modify"
+    }
+  ],
+  "metrics": {
+    "knee_rom": 108,
+    "knee_strength": 8
+  },
+  "feedback": "Feeling improvement in range of motion",
+  "overallRating": 3,
+  "adherencePercentage": 46
+}

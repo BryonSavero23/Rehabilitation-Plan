@@ -1,0 +1,42 @@
+{
+  "id": "progress_64353",
+  "userId": "patient_8607",
+  "planId": "plan_86254",
+  "date": "2025-03-04T13:59:38.731028",
+  "exerciseLogs": [
+    {
+      "exerciseId": "ex_back_1_9439",
+      "exerciseName": "Back Exercise 3",
+      "setsCompleted": 2,
+      "repsCompleted": 6,
+      "durationSeconds": 88,
+      "painLevel": 10,
+      "notes": "Need to modify"
+    },
+    {
+      "exerciseId": "ex_back_2_3820",
+      "exerciseName": "Back Exercise 6",
+      "setsCompleted": 1,
+      "repsCompleted": 5,
+      "durationSeconds": 53,
+      "painLevel": 9,
+      "notes": "Getting easier"
+    },
+    {
+      "exerciseId": "ex_back_3_1291",
+      "exerciseName": "Back Exercise 1",
+      "setsCompleted": 2,
+      "repsCompleted": 2,
+      "durationSeconds": 50,
+      "painLevel": 10,
+      "notes": "Too challenging"
+    }
+  ],
+  "metrics": {
+    "back_rom": 137,
+    "back_strength": 6
+  },
+  "feedback": "Need modifications for some exercises",
+  "overallRating": 4,
+  "adherencePercentage": 62
+}

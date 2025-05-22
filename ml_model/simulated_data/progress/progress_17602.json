@@ -1,0 +1,51 @@
+{
+  "id": "progress_17602",
+  "userId": "patient_6258",
+  "planId": "plan_39413",
+  "date": "2025-02-01T13:59:38.725518",
+  "exerciseLogs": [
+    {
+      "exerciseId": "ex_knee_1_4374",
+      "exerciseName": "Hamstring Curls",
+      "setsCompleted": 1,
+      "repsCompleted": 14,
+      "durationSeconds": 73,
+      "painLevel": 10,
+      "notes": "Getting easier"
+    },
+    {
+      "exerciseId": "ex_knee_3_2626",
+      "exerciseName": "Knee Extensions",
+      "setsCompleted": 1,
+      "repsCompleted": 4,
+      "durationSeconds": 52,
+      "painLevel": 6,
+      "notes": "Getting easier"
+    },
+    {
+      "exerciseId": "ex_knee_4_1980",
+      "exerciseName": "Straight Leg Raises",
+      "setsCompleted": 1,
+      "repsCompleted": 4,
+      "durationSeconds": 49,
+      "painLevel": 6,
+      "notes": "Felt good"
+    },
+    {
+      "exerciseId": "ex_knee_5_3698",
+      "exerciseName": "Wall Squats",
+      "setsCompleted": 4,
+      "repsCompleted": 5,
+      "durationSeconds": 47,
+      "painLevel": 2,
+      "notes": "Getting easier"
+    }
+  ],
+  "metrics": {
+    "knee_rom": 110,
+    "knee_strength": 10
+  },
+  "feedback": "Feeling improvement in range of motion",
+  "overallRating": 2,
+  "adherencePercentage": 50
+}

@@ -1,0 +1,24 @@
+{
+  "id": "progress_81310",
+  "userId": "patient_3809",
+  "planId": "plan_38978",
+  "date": "2025-03-11T13:59:38.694458",
+  "exerciseLogs": [
+    {
+      "exerciseId": "ex_ankle_2_2598",
+      "exerciseName": "Ankle Pumps",
+      "setsCompleted": 4,
+      "repsCompleted": 2,
+      "durationSeconds": 79,
+      "painLevel": 2,
+      "notes": "Need to modify"
+    }
+  ],
+  "metrics": {
+    "ankle_rom": 166,
+    "ankle_strength": 8
+  },
+  "feedback": "Feeling improvement in range of motion",
+  "overallRating": 2,
+  "adherencePercentage": 44
+}

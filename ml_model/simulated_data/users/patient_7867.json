@@ -1,0 +1,23 @@
+{
+  "id": "patient_7867",
+  "name": "Sarah Rodriguez",
+  "email": "patient_7867@outlook.com",
+  "role": "patient",
+  "profileImageUrl": null,
+  "medicalHistory": {
+    "previousInjuries": "None",
+    "surgicalHistory": "Ankle ligament reconstruction",
+    "medications": "NSAIDs",
+    "allergies": "NSAIDs"
+  },
+  "physicalCondition": {
+    "bodyPart": "Ankle",
+    "painLevel": 5,
+    "mobilityLimitations": "Limited range of motion and strength",
+    "painLocation": "Ligament"
+  },
+  "rehabilitationGoals": [
+    "Increase strength"
+  ],
+  "createdAt": "2025-01-12T13:59:38.712000"
+}

@@ -1,0 +1,24 @@
+{
+  "id": "progress_52626",
+  "userId": "patient_3221",
+  "planId": "plan_85277",
+  "date": "2025-01-11T13:59:38.669413",
+  "exerciseLogs": [
+    {
+      "exerciseId": "ex_elbow_1_8976",
+      "exerciseName": "Elbow Exercise 6",
+      "setsCompleted": 1,
+      "repsCompleted": 12,
+      "durationSeconds": 37,
+      "painLevel": 4,
+      "notes": null
+    }
+  ],
+  "metrics": {
+    "elbow_rom": 61,
+    "elbow_strength": 5
+  },
+  "feedback": "Still experiencing pain during certain movements",
+  "overallRating": 5,
+  "adherencePercentage": 11
+}

@@ -1,0 +1,23 @@
+{
+  "id": "patient_4351",
+  "name": "Jessica Anderson",
+  "email": "patient_4351@outlook.com",
+  "role": "patient",
+  "profileImageUrl": null,
+  "medicalHistory": {
+    "previousInjuries": "None",
+    "surgicalHistory": "None",
+    "medications": "NSAIDs",
+    "allergies": "Latex"
+  },
+  "physicalCondition": {
+    "bodyPart": "Shoulder",
+    "painLevel": 2,
+    "mobilityLimitations": "Limited range of motion and strength",
+    "painLocation": "Joint"
+  },
+  "rehabilitationGoals": [
+    "Increase strength"
+  ],
+  "createdAt": "2025-03-07T13:59:38.684932"
+}
