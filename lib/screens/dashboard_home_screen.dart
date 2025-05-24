@@ -34,21 +34,25 @@ class _DashboardHomeScreenState extends State<DashboardHomeScreen> {
 
     final authService = Provider.of<AuthService>(context, listen: false);
 
-    // Get the user's rehabilitation plans
-    final plansSnapshot = await FirebaseFirestore.instance
-        .collection('users')
-        .doc(authService.currentUser?.uid)
-        .collection('rehabilitation_plans')
-        .orderBy('title')
-        .limit(1)
-        .get();
+    try {
+      // Fix: Use the correct collection path for rehabilitation plans
+      final plansSnapshot = await FirebaseFirestore.instance
+          .collection('rehabilitation_plans')
+          .where('userId', isEqualTo: authService.currentUser?.uid)
+          .orderBy('title')
+          .limit(1)
+          .get();
 
-    if (plansSnapshot.docs.isNotEmpty) {
-      final firstPlan = plansSnapshot.docs.first;
-      setState(() {
-        _selectedPlanId = firstPlan.id;
-        _selectedPlan = RehabilitationPlan.fromJson(firstPlan.data());
-      });
+      if (plansSnapshot.docs.isNotEmpty) {
+        final firstPlan = plansSnapshot.docs.first;
+        setState(() {
+          _selectedPlanId = firstPlan.id;
+          _selectedPlan = RehabilitationPlan.fromJson(firstPlan.data());
+        });
+      }
+    } catch (e) {
+      print('Error loading initial data: $e');
+      // Handle error gracefully
     }
 
     setState(() {
@@ -317,43 +321,150 @@ class _DashboardHomeScreenState extends State<DashboardHomeScreen> {
   }
 
   Widget _buildTherapistChatCard() {
+    final authService = Provider.of<AuthService>(context, listen: false);
+
     return _buildStatCard(
       title: 'Therapist Chat',
       value: 'Tap to chat',
       icon: Icons.chat_bubble_outline,
       color: Colors.teal.shade300,
-      onTap: () {
+      onTap: () async {
+        // Fix: Get actual therapist data instead of hardcoded values
+        await _navigateToTherapistChat(authService);
+      },
+    );
+  }
+
+  Future<void> _navigateToTherapistChat(AuthService authService) async {
+    try {
+      // Get the patient's assigned therapist
+      final therapistSnapshot = await FirebaseFirestore.instance
+          .collection('patients')
+          .doc(authService.currentUser?.uid)
+          .collection('therapists')
+          .limit(1)
+          .get();
+
+      if (therapistSnapshot.docs.isNotEmpty) {
+        final therapistData = therapistSnapshot.docs.first.data();
+        final therapistId = therapistData['id'] ?? '';
+        final therapistName = therapistData['name'] ?? 'Unknown Therapist';
+
+        // Get therapist title from therapist profile
+        String therapistTitle = 'Dr.';
+        try {
+          final therapistProfileDoc = await FirebaseFirestore.instance
+              .collection('therapists')
+              .doc(therapistId)
+              .get();
+
+          if (therapistProfileDoc.exists) {
+            therapistTitle = therapistProfileDoc.data()?['title'] ?? 'Dr.';
+          }
+        } catch (e) {
+          print('Error getting therapist title: $e');
+        }
+
         Navigator.push(
           context,
           MaterialPageRoute(
-            builder: (context) => const TherapistChatScreen(
-              therapistName: "Sarah Johnson",
-              therapistTitle: "Dr.",
+            builder: (context) => TherapistChatScreen(
+              therapistId: therapistId,
+              therapistName: therapistName,
+              therapistTitle: therapistTitle,
+              patientId: authService.currentUser!.uid,
             ),
           ),
+        );
+      } else {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text('No therapist assigned yet'),
+          ),
+        );
+      }
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('Error loading therapist: $e'),
+        ),
+      );
+    }
+  }
+
+  Widget _buildPainLevelCard() {
+    return FutureBuilder<int>(
+      future: _getLatestPainLevel(),
+      builder: (context, snapshot) {
+        int painLevel = snapshot.data ?? 5;
+        bool isImproving = _calculatePainTrend(painLevel);
+
+        return _buildStatCard(
+          title: 'Pain Level',
+          value: painLevel.toString(),
+          icon: Icons.healing,
+          color: Colors.pink.shade300,
+          trailing: Icon(
+            isImproving ? Icons.trending_down : Icons.trending_up,
+            color: isImproving ? Colors.green : Colors.red,
+            size: 16,
+          ),
+          onTap: () {
+            _showPainLevelDialog();
+          },
         );
       },
     );
   }
 
-  Widget _buildPainLevelCard() {
-    // This would be fetched from the latest progress log
-    int painLevel = 6;
-    bool isImproving = true; // This would be calculated from recent progress
+  Future<int> _getLatestPainLevel() async {
+    try {
+      final authService = Provider.of<AuthService>(context, listen: false);
+      final progressSnapshot = await FirebaseFirestore.instance
+          .collection('progressLogs')
+          .where('userId', isEqualTo: authService.currentUser?.uid)
+          .orderBy('date', descending: true)
+          .limit(1)
+          .get();
 
-    return _buildStatCard(
-      title: 'Pain Level',
-      value: painLevel.toString(),
-      icon: Icons.healing,
-      color: Colors.pink.shade300,
-      trailing: Icon(
-        isImproving ? Icons.trending_down : Icons.trending_up,
-        color: isImproving ? Colors.green : Colors.red,
-        size: 16,
+      if (progressSnapshot.docs.isNotEmpty) {
+        final latestLog = progressSnapshot.docs.first.data();
+        final exerciseLogs = latestLog['exerciseLogs'] as List<dynamic>? ?? [];
+
+        if (exerciseLogs.isNotEmpty) {
+          // Calculate average pain level from latest session
+          double totalPain = 0;
+          for (var exercise in exerciseLogs) {
+            totalPain += (exercise['painLevel'] ?? 0);
+          }
+          return (totalPain / exerciseLogs.length).round();
+        }
+      }
+    } catch (e) {
+      print('Error getting pain level: $e');
+    }
+    return 5; // Default pain level
+  }
+
+  bool _calculatePainTrend(int currentPainLevel) {
+    // Simple logic: pain level 5 or below is considered improving
+    return currentPainLevel <= 5;
+  }
+
+  void _showPainLevelDialog() {
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: const Text('Pain Level Tracking'),
+        content: const Text(
+            'Pain level tracking helps monitor your recovery progress. This feature will be enhanced with detailed tracking soon.'),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(context),
+            child: const Text('OK'),
+          ),
+        ],
       ),
-      onTap: () {
-        // Navigate to pain tracking or progress details
-      },
     );
   }
 

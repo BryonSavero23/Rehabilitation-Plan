@@ -1,9 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:personalized_rehabilitation_plans/models/rehabilitation_models.dart';
 import 'package:personalized_rehabilitation_plans/screens/exercise_screen.dart';
+import 'package:personalized_rehabilitation_plans/screens/exercise_recommendation_screen.dart';
+import 'package:personalized_rehabilitation_plans/screens/therapist_chat_screen.dart';
 import 'package:personalized_rehabilitation_plans/services/auth_service.dart';
 import 'package:personalized_rehabilitation_plans/theme/app_theme.dart';
+import 'package:personalized_rehabilitation_plans/widgets/progress_chart_widget.dart';
+import 'package:personalized_rehabilitation_plans/screens/profile/profile_screen.dart';
+import 'package:personalized_rehabilitation_plans/services/progress_service.dart';
 import 'package:provider/provider.dart';
 
 class RehabilitationProgressScreen extends StatefulWidget {
@@ -28,6 +34,8 @@ class RehabilitationProgressScreen extends StatefulWidget {
 class _RehabilitationProgressScreenState
     extends State<RehabilitationProgressScreen> {
   int _selectedDay = 0;
+  int _selectedBottomNavIndex =
+      0; // 0: Activity, 1: Progress Chart, 2: Notification, 3: Profile
   final List<DateTime> _weekDays = [];
   bool _isLoading = false;
 
@@ -91,22 +99,10 @@ class _RehabilitationProgressScreenState
                           topRight: Radius.circular(30),
                         ),
                       ),
-                      child: Column(
-                        children: [
-                          _buildProgressSection(),
-                          _buildCalendar(),
-                          Expanded(
-                            child: SingleChildScrollView(
-                              padding:
-                                  const EdgeInsets.symmetric(horizontal: 16),
-                              child: _buildSessionsForToday(),
-                            ),
-                          ),
-                          _buildBottomNavigation(),
-                        ],
-                      ),
+                      child: _buildBodyContent(),
                     ),
                   ),
+                  _buildBottomNavigation(),
                 ],
               ),
       ),
@@ -161,6 +157,679 @@ class _RehabilitationProgressScreenState
         ],
       ),
     );
+  }
+
+  Widget _buildBodyContent() {
+    switch (_selectedBottomNavIndex) {
+      case 0:
+        return _buildActivityTab();
+      case 1:
+        return _buildProgressChartTab();
+      case 2:
+        return _buildNotificationTab();
+      case 3:
+        return _buildProfileTab();
+      default:
+        return _buildActivityTab();
+    }
+  }
+
+  Widget _buildActivityTab() {
+    return Column(
+      children: [
+        _buildProgressSection(),
+        _buildCalendar(),
+        Expanded(
+          child: SingleChildScrollView(
+            padding: const EdgeInsets.symmetric(horizontal: 16),
+            child: _buildSessionsForToday(),
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget _buildProgressChartTab() {
+    return SingleChildScrollView(
+      padding: const EdgeInsets.all(16.0),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          const Text(
+            'Progress Charts',
+            style: TextStyle(
+              fontSize: 24,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+          const SizedBox(height: 20),
+
+          // Fetch and display progress data
+          Consumer<ProgressService>(
+            builder: (context, progressService, child) {
+              return FutureBuilder<Map<String, dynamic>>(
+                future: _getProgressData(),
+                builder: (context, snapshot) {
+                  if (snapshot.connectionState == ConnectionState.waiting) {
+                    return const Center(child: CircularProgressIndicator());
+                  }
+
+                  if (snapshot.hasError || !snapshot.hasData) {
+                    return const Center(
+                      child: Text('Unable to load progress data'),
+                    );
+                  }
+
+                  final data = snapshot.data!;
+                  final painLevels =
+                      List<double>.from(data['painLevels'] ?? []);
+                  final adherenceRates =
+                      List<int>.from(data['adherenceRates'] ?? []);
+                  final dates = List<String>.from(data['dates'] ?? []);
+
+                  if (painLevels.isEmpty || adherenceRates.isEmpty) {
+                    return _buildNoDataMessage();
+                  }
+
+                  return Column(
+                    children: [
+                      // Combined Progress Chart
+                      ProgressChartWidget(
+                        painLevels: painLevels,
+                        adherenceRates: adherenceRates,
+                        dates: dates,
+                        title: 'Pain Level & Adherence Trends',
+                      ),
+                      const SizedBox(height: 20),
+
+                      // Individual Pain Chart
+                      SimpleProgressChart(
+                        values: painLevels,
+                        labels: dates,
+                        title: 'Pain Level Over Time',
+                        color: Colors.red,
+                        maxValue: 10,
+                        yAxisLabel: 'Pain Level (0-10)',
+                      ),
+                      const SizedBox(height: 20),
+
+                      // Individual Adherence Chart
+                      SimpleProgressChart(
+                        values:
+                            adherenceRates.map((e) => e.toDouble()).toList(),
+                        labels: dates,
+                        title: 'Adherence Rate Over Time',
+                        color: Colors.green,
+                        maxValue: 100,
+                        yAxisLabel: 'Adherence (%)',
+                      ),
+                      const SizedBox(height: 20),
+
+                      // Progress Summary Cards
+                      _buildProgressSummaryCards(data),
+                    ],
+                  );
+                },
+              );
+            },
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildNoDataMessage() {
+    return Card(
+      child: Padding(
+        padding: const EdgeInsets.all(32.0),
+        child: Column(
+          children: [
+            Icon(
+              Icons.show_chart,
+              size: 64,
+              color: Colors.grey[400],
+            ),
+            const SizedBox(height: 16),
+            const Text(
+              'No Progress Data Available',
+              style: TextStyle(
+                fontSize: 18,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+            const SizedBox(height: 8),
+            const Text(
+              'Complete some exercises to see your progress charts.',
+              textAlign: TextAlign.center,
+              style: TextStyle(color: Colors.grey),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildProgressSummaryCards(Map<String, dynamic> data) {
+    final painLevels = List<double>.from(data['painLevels'] ?? []);
+    final adherenceRates = List<int>.from(data['adherenceRates'] ?? []);
+
+    final avgPain = painLevels.isNotEmpty
+        ? painLevels.reduce((a, b) => a + b) / painLevels.length
+        : 0;
+    final avgAdherence = adherenceRates.isNotEmpty
+        ? adherenceRates.reduce((a, b) => a + b) / adherenceRates.length
+        : 0;
+
+    return Row(
+      children: [
+        Expanded(
+          child: Card(
+            child: Padding(
+              padding: const EdgeInsets.all(16.0),
+              child: Column(
+                children: [
+                  Icon(
+                    Icons.trending_down,
+                    color: avgPain <= 5 ? Colors.green : Colors.orange,
+                    size: 32,
+                  ),
+                  const SizedBox(height: 8),
+                  const Text(
+                    'Avg Pain Level',
+                    style: TextStyle(fontWeight: FontWeight.bold),
+                  ),
+                  Text(
+                    avgPain.toStringAsFixed(1),
+                    style: const TextStyle(
+                      fontSize: 24,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ),
+        const SizedBox(width: 16),
+        Expanded(
+          child: Card(
+            child: Padding(
+              padding: const EdgeInsets.all(16.0),
+              child: Column(
+                children: [
+                  Icon(
+                    Icons.check_circle,
+                    color: avgAdherence >= 80 ? Colors.green : Colors.orange,
+                    size: 32,
+                  ),
+                  const SizedBox(height: 8),
+                  const Text(
+                    'Avg Adherence',
+                    style: TextStyle(fontWeight: FontWeight.bold),
+                  ),
+                  Text(
+                    '${avgAdherence.round()}%',
+                    style: const TextStyle(
+                      fontSize: 24,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget _buildNotificationTab() {
+    final authService = Provider.of<AuthService>(context);
+
+    return SingleChildScrollView(
+      padding: const EdgeInsets.all(16.0),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          const Text(
+            'Notifications',
+            style: TextStyle(
+              fontSize: 24,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+          const SizedBox(height: 20),
+
+          // Real notifications from Firestore
+          StreamBuilder<QuerySnapshot>(
+            stream: FirebaseFirestore.instance
+                .collection('users')
+                .doc(authService.currentUser?.uid)
+                .collection('notifications')
+                .orderBy('timestamp', descending: true)
+                .limit(20)
+                .snapshots(),
+            builder: (context, snapshot) {
+              if (snapshot.connectionState == ConnectionState.waiting) {
+                return const Center(child: CircularProgressIndicator());
+              }
+
+              if (!snapshot.hasData || snapshot.data!.docs.isEmpty) {
+                return _buildNoNotificationsMessage();
+              }
+
+              final notifications = snapshot.data!.docs;
+              final unreadCount = notifications
+                  .where((doc) =>
+                      !(doc.data() as Map<String, dynamic>)['isRead'] ?? false)
+                  .length;
+
+              return Column(
+                children: [
+                  // Unread count badge
+                  if (unreadCount > 0)
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        const SizedBox(),
+                        Container(
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 12, vertical: 6),
+                          decoration: BoxDecoration(
+                            color: Colors.red,
+                            borderRadius: BorderRadius.circular(20),
+                          ),
+                          child: Text(
+                            '$unreadCount unread',
+                            style: const TextStyle(
+                              color: Colors.white,
+                              fontSize: 12,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  const SizedBox(height: 16),
+
+                  // Notifications list
+                  ...notifications.map((doc) {
+                    final data = doc.data() as Map<String, dynamic>;
+                    return _buildRealNotificationCard(
+                      notificationId: doc.id,
+                      data: data,
+                      authService: authService,
+                    );
+                  }).toList(),
+                ],
+              );
+            },
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildNoNotificationsMessage() {
+    return Card(
+      child: Padding(
+        padding: const EdgeInsets.all(32.0),
+        child: Column(
+          children: [
+            Icon(
+              Icons.notifications_none,
+              size: 64,
+              color: Colors.grey[400],
+            ),
+            const SizedBox(height: 16),
+            const Text(
+              'No Notifications',
+              style: TextStyle(
+                fontSize: 18,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+            const SizedBox(height: 8),
+            const Text(
+              'You\'re all caught up! New notifications will appear here.',
+              textAlign: TextAlign.center,
+              style: TextStyle(color: Colors.grey),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildRealNotificationCard({
+    required String notificationId,
+    required Map<String, dynamic> data,
+    required AuthService authService,
+  }) {
+    final title = data['title'] ?? 'Notification';
+    final message = data['message'] ?? '';
+    final type = data['type'] ?? 'general';
+    final isRead = data['isRead'] ?? false;
+    final timestamp = data['timestamp'] as Timestamp?;
+    final therapistId = data['therapistId'] as String?;
+    final planId = data['planId'] as String?;
+    final progressId = data['progressId'] as String?;
+
+    final time = timestamp != null
+        ? _formatNotificationTime(timestamp.toDate())
+        : 'Unknown time';
+
+    // Get icon and color based on notification type
+    IconData icon;
+    Color color;
+
+    switch (type) {
+      case 'exercise_reminder':
+        icon = Icons.fitness_center;
+        color = Colors.blue;
+        break;
+      case 'progress_update':
+        icon = Icons.trending_up;
+        color = Colors.green;
+        break;
+      case 'therapist_message':
+        icon = Icons.message;
+        color = Colors.purple;
+        break;
+      case 'plan_updated':
+        icon = Icons.update;
+        color = Colors.orange;
+        break;
+      case 'therapist_added':
+        icon = Icons.person_add;
+        color = Colors.teal;
+        break;
+      case 'therapist_removed':
+        icon = Icons.person_remove;
+        color = Colors.red;
+        break;
+      case 'appointment_reminder':
+        icon = Icons.calendar_today;
+        color = Colors.indigo;
+        break;
+      default:
+        icon = Icons.notifications;
+        color = Colors.grey;
+    }
+
+    return Card(
+      margin: const EdgeInsets.only(bottom: 12),
+      elevation: isRead ? 1 : 3,
+      child: ListTile(
+        leading: Container(
+          width: 40,
+          height: 40,
+          decoration: BoxDecoration(
+            color: color.withOpacity(0.1),
+            borderRadius: BorderRadius.circular(8),
+          ),
+          child: Icon(icon, color: color),
+        ),
+        title: Text(
+          title,
+          style: TextStyle(
+            fontWeight: isRead ? FontWeight.normal : FontWeight.bold,
+            color: isRead ? Colors.grey[700] : Colors.black,
+          ),
+        ),
+        subtitle: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            const SizedBox(height: 4),
+            Text(
+              message,
+              style: TextStyle(
+                color: isRead ? Colors.grey[600] : Colors.black87,
+              ),
+            ),
+            const SizedBox(height: 4),
+            Text(
+              time,
+              style: TextStyle(
+                fontSize: 12,
+                color: Colors.grey[600],
+              ),
+            ),
+          ],
+        ),
+        trailing: Row(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            if (!isRead)
+              Container(
+                width: 8,
+                height: 8,
+                decoration: const BoxDecoration(
+                  color: Colors.red,
+                  shape: BoxShape.circle,
+                ),
+              ),
+            const SizedBox(width: 8),
+            const Icon(Icons.chevron_right),
+          ],
+        ),
+        isThreeLine: true,
+        onTap: () => _handleNotificationTap(
+          type: type,
+          notificationId: notificationId,
+          therapistId: therapistId,
+          planId: planId,
+          progressId: progressId,
+          authService: authService,
+          isRead: isRead,
+        ),
+      ),
+    );
+  }
+
+  String _formatNotificationTime(DateTime timestamp) {
+    final now = DateTime.now();
+    final difference = now.difference(timestamp);
+
+    if (difference.inDays > 7) {
+      return DateFormat('MMM dd, yyyy').format(timestamp);
+    } else if (difference.inDays > 0) {
+      return '${difference.inDays}d ago';
+    } else if (difference.inHours > 0) {
+      return '${difference.inHours}h ago';
+    } else if (difference.inMinutes > 0) {
+      return '${difference.inMinutes}m ago';
+    } else {
+      return 'Just now';
+    }
+  }
+
+  Future<void> _handleNotificationTap({
+    required String type,
+    required String notificationId,
+    String? therapistId,
+    String? planId,
+    String? progressId,
+    required AuthService authService,
+    required bool isRead,
+  }) async {
+    // Mark notification as read if not already read
+    if (!isRead) {
+      await _markNotificationAsRead(notificationId, authService);
+    }
+
+    switch (type) {
+      case 'exercise_reminder':
+        // Navigate to activity tab (exercises)
+        setState(() {
+          _selectedBottomNavIndex = 0; // Activity tab
+        });
+        break;
+
+      case 'progress_update':
+        // Navigate to activity tab to show progress
+        setState(() {
+          _selectedBottomNavIndex = 0; // Activity tab
+        });
+        break;
+
+      case 'therapist_message':
+        if (therapistId != null) {
+          await _navigateToTherapistChat(therapistId, authService);
+        } else {
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(
+                content: Text('Therapist information not available')),
+          );
+        }
+        break;
+
+      case 'plan_updated':
+        if (planId != null) {
+          await _navigateToPlanDetails(planId);
+        } else {
+          // Navigate to saved plans
+          Navigator.pushNamed(context, '/saved_plans');
+        }
+        break;
+
+      case 'therapist_added':
+      case 'therapist_removed':
+        // Navigate to profile or therapist management
+        setState(() {
+          _selectedBottomNavIndex = 3; // Profile tab
+        });
+        break;
+
+      case 'appointment_reminder':
+        // Could navigate to calendar or appointment screen
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('Calendar feature coming soon')),
+        );
+        break;
+
+      default:
+        // For unknown types, just mark as read
+        break;
+    }
+  }
+
+  Future<void> _markNotificationAsRead(
+      String notificationId, AuthService authService) async {
+    try {
+      await FirebaseFirestore.instance
+          .collection('users')
+          .doc(authService.currentUser?.uid)
+          .collection('notifications')
+          .doc(notificationId)
+          .update({'isRead': true});
+    } catch (e) {
+      print('Error marking notification as read: $e');
+    }
+  }
+
+  Future<void> _navigateToTherapistChat(
+      String therapistId, AuthService authService) async {
+    try {
+      // Get therapist details
+      final therapistDoc = await FirebaseFirestore.instance
+          .collection('users')
+          .doc(therapistId)
+          .get();
+
+      if (therapistDoc.exists) {
+        final therapistData = therapistDoc.data()!;
+        final therapistName = therapistData['name'] ?? 'Unknown Therapist';
+
+        // Get therapist profile for title
+        final therapistProfileDoc = await FirebaseFirestore.instance
+            .collection('therapists')
+            .doc(therapistId)
+            .get();
+
+        String therapistTitle = 'Dr.'; // Default title
+        if (therapistProfileDoc.exists) {
+          therapistTitle = therapistProfileDoc.data()?['title'] ?? 'Dr.';
+        }
+
+        // Navigate to chat screen
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => TherapistChatScreen(
+              therapistId: therapistId,
+              therapistName: therapistName,
+              therapistTitle: therapistTitle,
+              patientId: authService.currentUser!.uid,
+            ),
+          ),
+        );
+      } else {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('Therapist not found')),
+        );
+      }
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Error loading therapist: $e')),
+      );
+    }
+  }
+
+  Future<void> _navigateToPlanDetails(String planId) async {
+    try {
+      final planDoc = await FirebaseFirestore.instance
+          .collection('rehabilitation_plans')
+          .doc(planId)
+          .get();
+
+      if (planDoc.exists) {
+        final planData = planDoc.data()!;
+        final plan = RehabilitationPlan.fromJson(planData);
+
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => ExerciseRecommendationScreen(
+              plan: plan,
+              planId: planId,
+            ),
+          ),
+        );
+      } else {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('Plan not found')),
+        );
+      }
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Error loading plan: $e')),
+      );
+    }
+  }
+
+  Widget _buildProfileTab() {
+    return const ProfileScreen();
+  }
+
+  Future<Map<String, dynamic>> _getProgressData() async {
+    final authService = Provider.of<AuthService>(context, listen: false);
+    final progressService =
+        Provider.of<ProgressService>(context, listen: false);
+
+    if (authService.currentUser?.uid != null) {
+      return await progressService.getProgressTrends(
+        authService.currentUser!.uid,
+        daysBack: 30,
+      );
+    }
+
+    // Return mock data if no user
+    return {
+      'painLevels': [8.0, 7.5, 6.0, 5.5, 4.0, 3.5, 3.0],
+      'adherenceRates': [60, 70, 75, 80, 85, 90, 95],
+      'dates': ['1/12', '2/12', '3/12', '4/12', '5/12', '6/12', '7/12'],
+    };
   }
 
   Widget _buildProgressSection() {
@@ -641,70 +1310,99 @@ class _RehabilitationProgressScreenState
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: [
-          _buildBottomNavItem(Icons.show_chart, 'Activity', true),
-          _buildBottomNavItem(Icons.bar_chart, 'Progress Chart', false),
-          _buildBottomNavItem(Icons.notifications_none, 'Notification', false,
-              hasBadge: true),
-          _buildBottomNavItem(Icons.person_outline, 'Profile', false),
+          _buildBottomNavItem(
+            Icons.show_chart,
+            'Activity',
+            0,
+          ),
+          _buildBottomNavItem(
+            Icons.bar_chart,
+            'Progress Chart',
+            1,
+          ),
+          _buildBottomNavItem(
+            Icons.notifications_none,
+            'Notification',
+            2,
+            hasBadge: true,
+          ),
+          _buildBottomNavItem(
+            Icons.person_outline,
+            'Profile',
+            3,
+          ),
         ],
       ),
     );
   }
 
-  Widget _buildBottomNavItem(IconData icon, String label, bool isSelected,
-      {bool hasBadge = false}) {
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        Stack(
-          clipBehavior: Clip.none,
-          children: [
-            Icon(
-              icon,
-              color: isSelected
-                  ? Theme.of(context).colorScheme.primary
-                  : Colors.grey,
-            ),
-            if (hasBadge)
-              Positioned(
-                right: -6,
-                top: -6,
-                child: Container(
-                  width: 14,
-                  height: 14,
-                  decoration: BoxDecoration(
-                    color: Colors.green,
-                    shape: BoxShape.circle,
-                    border: Border.all(
-                      color: Theme.of(context).scaffoldBackgroundColor,
-                      width: 2,
+  Widget _buildBottomNavItem(
+    IconData icon,
+    String label,
+    int index, {
+    bool hasBadge = false,
+  }) {
+    final isSelected = _selectedBottomNavIndex == index;
+
+    return GestureDetector(
+      onTap: () {
+        setState(() {
+          _selectedBottomNavIndex = index;
+        });
+      },
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Stack(
+            clipBehavior: Clip.none,
+            children: [
+              Icon(
+                icon,
+                color: isSelected
+                    ? Theme.of(context).colorScheme.primary
+                    : Colors.grey,
+              ),
+              if (hasBadge)
+                Positioned(
+                  right: -6,
+                  top: -6,
+                  child: Container(
+                    width: 14,
+                    height: 14,
+                    decoration: BoxDecoration(
+                      color: Colors.red,
+                      shape: BoxShape.circle,
+                      border: Border.all(
+                        color: Theme.of(context).scaffoldBackgroundColor,
+                        width: 2,
+                      ),
                     ),
-                  ),
-                  child: const Center(
-                    child: Text(
-                      '2',
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 8,
-                        fontWeight: FontWeight.bold,
+                    child: const Center(
+                      child: Text(
+                        '2',
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 8,
+                          fontWeight: FontWeight.bold,
+                        ),
                       ),
                     ),
                   ),
                 ),
-              ),
-          ],
-        ),
-        const SizedBox(height: 4),
-        Text(
-          label,
-          style: TextStyle(
-            fontSize: 10,
-            color: isSelected
-                ? Theme.of(context).colorScheme.primary
-                : Colors.grey,
+            ],
           ),
-        ),
-      ],
+          const SizedBox(height: 4),
+          Text(
+            label,
+            style: TextStyle(
+              fontSize: 10,
+              color: isSelected
+                  ? Theme.of(context).colorScheme.primary
+                  : Colors.grey,
+            ),
+          ),
+        ],
+      ),
     );
   }
 }
