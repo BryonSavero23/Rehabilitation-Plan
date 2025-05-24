@@ -10,7 +10,7 @@ dependencies:
   flutter:
     sdk: flutter
   cupertino_icons: ^1.0.2
-  intl: ^0.17.0
+  intl: ^0.20.2
   
   # Firebase - using compatible versions that work together
   firebase_core: ^3.12.1
@@ -21,13 +21,24 @@ dependencies:
   provider: ^6.0.5
   
   # HTTP
-  http: ^0.13.5
+  http: ^1.4.0
   circular_countdown_timer: ^0.2.3
+
+  # NEW DEPENDENCIES - Add these:
+  firebase_messaging: ^15.2.6
+  firebase_analytics: ^11.4.6
+  shared_preferences: ^2.2.2
+  connectivity_plus: ^6.1.4
+  package_info_plus: ^8.3.0
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
-  flutter_lints: ^2.0.0
+  flutter_lints: ^5.0.0
+
+  # NEW DEV DEPENDENCIES - Add these:
+  mockito: ^5.4.2
+  build_runner: ^2.4.7
 
 flutter:
   uses-material-design: true

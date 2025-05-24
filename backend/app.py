@@ -19,7 +19,7 @@ CORS(app)
 # Create directories for models and metrics if they don't exist
 os.makedirs('models', exist_ok=True)
 
-# Sample data for training the model
+# Updated generate_sample_data function with better pain level logic
 def generate_sample_data():
     body_parts = ['Knee', 'Shoulder', 'Ankle', 'Wrist', 'Elbow', 'Hip', 'Back', 'Neck']
     pain_levels = list(range(1, 11))
@@ -32,13 +32,11 @@ def generate_sample_data():
              'Return to sports', 'Post-surgery recovery']
     
     difficulty_levels = ['beginner', 'intermediate', 'advanced']
-    sets_options = [2, 3, 4]
-    reps_options = [8, 10, 12, 15]
     
     data = []
     
-    # Generate sample data
-    for _ in range(200):
+    # Generate sample data with more logical pain level correlations
+    for _ in range(500):  # Increased sample size
         body_part = np.random.choice(body_parts)
         pain_level = np.random.choice(pain_levels)
         pain_location = np.random.choice(pain_locations)
@@ -46,30 +44,25 @@ def generate_sample_data():
         surgical_history = np.random.choice(surgical_histories)
         goal = np.random.choice(goals)
         
-        # Determine difficulty level based on pain level and other factors
-        if pain_level > 7:
+        # Better pain level to difficulty mapping
+        if pain_level >= 8:  # High pain (8-10)
             difficulty = 'beginner'
-        elif pain_level > 4:
-            difficulty = 'intermediate'
-        else:
-            difficulty = 'advanced'
-            
-        # Determine sets and reps based on difficulty
-        if difficulty == 'beginner':
-            sets = 2
+            sets = np.random.choice([1, 2])  # Fewer sets for high pain
+            reps = np.random.choice([5, 8])  # Fewer reps for high pain
+        elif pain_level >= 5:  # Moderate pain (5-7)
+            difficulty = np.random.choice(['beginner', 'intermediate'], p=[0.7, 0.3])
+            sets = np.random.choice([2, 3])
             reps = np.random.choice([8, 10])
-        elif difficulty == 'intermediate':
-            sets = 3
-            reps = np.random.choice([10, 12])
-        else:
-            sets = 4
-            reps = np.random.choice([12, 15])
+        else:  # Low pain (1-4)
+            difficulty = np.random.choice(['intermediate', 'advanced'], p=[0.6, 0.4])
+            sets = np.random.choice([3, 4])
+            reps = np.random.choice([10, 12, 15])
             
-        # Add some randomness
-        if np.random.random() < 0.2:
+        # Add some randomness but keep correlation
+        if np.random.random() < 0.1:  # 10% random variation
             difficulty = np.random.choice(difficulty_levels)
-            sets = np.random.choice(sets_options)
-            reps = np.random.choice(reps_options)
+            sets = np.random.choice([1, 2, 3, 4])
+            reps = np.random.choice([5, 8, 10, 12, 15])
         
         data.append({
             'body_part': body_part,
@@ -530,53 +523,73 @@ def get_exercise_database():
     
     return exercises
 
-# Generate a rehabilitation plan based on user data
+# Replace your existing generate_plan function in backend/app.py with this:
+
 def generate_plan(rehab_data):
     """
     Generate a personalized rehabilitation plan based on user data
     """
     try:
-        # Load models
-        encoder, dt_diff, rf_sets, rf_reps, _ = get_models_with_metrics()
-        
+        print("=== GENERATING PLAN ===")
         # Extract data
         medical_history = rehab_data.get('medicalHistory', {})
         physical_condition = rehab_data.get('physicalCondition', {})
         goals = rehab_data.get('rehabilitationGoals', [])
         
         body_part = physical_condition.get('bodyPart', 'Knee')
-        pain_level = physical_condition.get('painLevel', 5)
+        pain_level = int(physical_condition.get('painLevel', 5))
         pain_location = physical_condition.get('painLocation', 'Joint')
         previous_injuries = medical_history.get('previousInjuries', 'None')
         surgical_history = medical_history.get('surgicalHistory', 'None')
         primary_goal = goals[0] if goals else 'Pain reduction'
         
-        # Prepare input data for prediction
-        input_data = pd.DataFrame([{
-            'body_part': body_part,
-            'pain_level': int(pain_level),
-            'pain_location': pain_location,
-            'previous_injuries': previous_injuries,
-            'surgical_history': surgical_history,
-            'primary_goal': primary_goal
-        }])
+        print(f"Processing plan for pain level: {pain_level}")
         
-        # Encode categorical features
-        categorical_features = ['body_part', 'pain_location', 'previous_injuries', 
-                               'surgical_history', 'primary_goal']
-        X_cat = pd.DataFrame(
-            encoder.transform(input_data[categorical_features]),
-            columns=encoder.get_feature_names_out(categorical_features)
-        )
-        
-        # Combine with numerical features
-        X_num = input_data[['pain_level']].reset_index(drop=True)
-        X_processed = pd.concat([X_num, X_cat], axis=1)
-        
-        # Make predictions
-        difficulty = dt_diff.predict(X_processed)[0]
-        sets = rf_sets.predict(X_processed)[0]
-        reps = rf_reps.predict(X_processed)[0]
+        # EXPLICIT LOGIC BASED ON PAIN LEVEL - NO ML PREDICTIONS
+        if pain_level >= 8:  # High pain (8-10)
+            difficulty = 'beginner'
+            sets = 1
+            reps = 5
+            max_duration = 15
+            plan_type = "gentle, beginner-friendly"
+            pain_priority = 'high'
+            print(f"High pain detected: sets={sets}, reps={reps}, difficulty={difficulty}")
+            
+        elif pain_level >= 6:  # Moderate-high pain (6-7)
+            difficulty = 'beginner'
+            sets = 2
+            reps = 6
+            max_duration = 25
+            plan_type = "careful, low-intensity"
+            pain_priority = 'high'
+            print(f"Moderate-high pain detected: sets={sets}, reps={reps}, difficulty={difficulty}")
+            
+        elif pain_level >= 4:  # Moderate pain (4-5)
+            difficulty = 'intermediate'
+            sets = 2
+            reps = 10
+            max_duration = 45
+            plan_type = "balanced intensity"
+            pain_priority = 'medium'
+            print(f"Moderate pain detected: sets={sets}, reps={reps}, difficulty={difficulty}")
+            
+        elif pain_level >= 2:  # Low-moderate pain (2-3)
+            difficulty = 'intermediate'
+            sets = 3
+            reps = 12
+            max_duration = 60
+            plan_type = "progressive"
+            pain_priority = 'low'
+            print(f"Low-moderate pain detected: sets={sets}, reps={reps}, difficulty={difficulty}")
+            
+        else:  # Very low pain (0-1)
+            difficulty = 'advanced'
+            sets = 4
+            reps = 15
+            max_duration = 90
+            plan_type = "intensive, strength-focused"
+            pain_priority = 'low'
+            print(f"Very low pain detected: sets={sets}, reps={reps}, difficulty={difficulty}")
         
         # Get exercises from database
         exercise_db = get_exercise_database()
@@ -586,27 +599,44 @@ def generate_plan(rehab_data):
         else:
             exercises_list = exercise_db['default']
         
-        # Create exercises with predicted parameters
+        # Create exercises with our explicit parameters
         exercises = []
         for i, ex in enumerate(exercises_list):
             exercise_id = f"{body_part.lower()}_{i+1}_{uuid.uuid4().hex[:4]}"
+            
+            # Adjust duration based on pain level
+            duration = min(ex['durationSeconds'], max_duration)
+            
             exercise = {
                 'id': exercise_id,
                 'name': ex['name'],
                 'description': ex['description'],
                 'bodyPart': ex['bodyPart'],
-                'sets': int(sets),
-                'reps': int(reps),
-                'durationSeconds': int(ex['durationSeconds']),
-                'difficultyLevel': str(difficulty)
+                'sets': sets,  # Use our calculated sets
+                'reps': reps,  # Use our calculated reps
+                'durationSeconds': duration,
+                'difficultyLevel': difficulty  # Use our calculated difficulty
             }
             exercises.append(exercise)
+            print(f"Created exercise {i+1}: {ex['name']} - {sets} sets, {reps} reps, {difficulty}")
         
         # Create plan title and description
         title = f"{body_part} Rehabilitation Plan"
-        description = f"A personalized plan for {body_part} recovery"
+        
+        # Create description based on pain level
+        if pain_level >= 8:
+            description = f"A gentle, beginner-friendly plan for {body_part} recovery with high pain management focus."
+        elif pain_level >= 6:
+            description = f"A careful, low-intensity plan for {body_part} recovery focusing on pain management."
+        elif pain_level >= 4:
+            description = f"A balanced intensity plan for {body_part} recovery with moderate pain management."
+        elif pain_level >= 2:
+            description = f"A progressive plan for {body_part} recovery with strength and mobility focus."
+        else:
+            description = f"An intensive, strength-focused plan for {body_part} recovery with advanced exercises."
+            
         if goals:
-            description += f" focusing on {', '.join(goals)}."
+            description += f" Focusing on {', '.join(goals)}."
         
         # Create the rehabilitation plan
         plan = {
@@ -616,15 +646,17 @@ def generate_plan(rehab_data):
             'goals': {
                 'primary': primary_goal,
                 'bodyPart': body_part,
-                'painReduction': 'high' if pain_level > 7 else ('medium' if pain_level > 4 else 'low'),
+                'painReduction': pain_priority,
             }
         }
         
+        print(f"Generated plan with {len(exercises)} exercises, pain priority: {pain_priority}")
         return plan
     
     except Exception as e:
         print(f"Error generating plan: {e}")
         raise
+
 
 # API routes
 @app.route('/api/generate_plan', methods=['POST'])
@@ -672,6 +704,95 @@ def retrain_models():
     except Exception as e:
         return jsonify({'error': str(e)}), 500
 
+# Add this debug endpoint to your backend/app.py
+
+@app.route('/api/debug_plan', methods=['POST'])
+def debug_generate_plan():
+    try:
+        print("=== DEBUG PLAN GENERATION ===")
+        rehab_data = request.json
+        print(f"Received data: {rehab_data}")
+        
+        # Extract pain level specifically
+        physical_condition = rehab_data.get('physicalCondition', {})
+        pain_level = physical_condition.get('painLevel')
+        
+        print(f"Pain level received: {pain_level} (type: {type(pain_level)})")
+        
+        # Try to convert to int
+        try:
+            pain_level_int = int(pain_level)
+            print(f"Pain level as int: {pain_level_int}")
+        except (ValueError, TypeError) as e:
+            print(f"Error converting pain level to int: {e}")
+            pain_level_int = 5
+        
+        # Show what category it falls into
+        if pain_level_int >= 8:
+            category = "High pain (8-10)"
+            expected_sets = 1
+            expected_reps = 5
+            expected_difficulty = "beginner"
+        elif pain_level_int >= 6:
+            category = "Moderate-high pain (6-7)"
+            expected_sets = 2
+            expected_reps = 6
+            expected_difficulty = "beginner"
+        elif pain_level_int >= 4:
+            category = "Moderate pain (4-5)"
+            expected_sets = 2
+            expected_reps = 10
+            expected_difficulty = "intermediate"
+        elif pain_level_int >= 2:
+            category = "Low-moderate pain (2-3)"
+            expected_sets = 3
+            expected_reps = 12
+            expected_difficulty = "intermediate"
+        else:
+            category = "Very low pain (0-1)"
+            expected_sets = 4
+            expected_reps = 15
+            expected_difficulty = "advanced"
+        
+        print(f"Pain category: {category}")
+        print(f"Expected: {expected_sets} sets, {expected_reps} reps, {expected_difficulty}")
+        
+        # Generate the actual plan
+        plan = generate_plan(rehab_data)
+        
+        # Check if the plan matches expectations
+        if plan['exercises']:
+            actual_sets = plan['exercises'][0]['sets']
+            actual_reps = plan['exercises'][0]['reps']
+            actual_difficulty = plan['exercises'][0]['difficultyLevel']
+            
+            print(f"Actual result: {actual_sets} sets, {actual_reps} reps, {actual_difficulty}")
+            
+            if (actual_sets == expected_sets and 
+                actual_reps == expected_reps and 
+                actual_difficulty == expected_difficulty):
+                print("✅ Plan generation working correctly!")
+            else:
+                print("❌ Plan generation not working as expected!")
+        
+        print("=== END DEBUG ===")
+        return jsonify({
+            'debug_info': {
+                'received_pain_level': pain_level,
+                'pain_level_type': str(type(pain_level)),
+                'converted_pain_level': pain_level_int,
+                'pain_category': category,
+                'expected_sets': expected_sets,
+                'expected_reps': expected_reps,
+                'expected_difficulty': expected_difficulty,
+            },
+            'plan': plan
+        })
+        
+    except Exception as e:
+        print(f"Debug error: {e}")
+        return jsonify({'error': str(e), 'debug_info': 'Error occurred'}), 500    
+
 # Initialize models and metrics on startup
 def initialize():
     try:
@@ -685,4 +806,7 @@ with app.app_context():
     initialize()
 
 if __name__ == '__main__':
-    app.run(debug=True, host='0.0.0.0')
+    print("Starting Flask backend server...")
+    print("Server will be available at: http://localhost:5000")
+    print("Health check: http://localhost:5000/api/health")
+    app.run(debug=True, host='0.0.0.0', port=5000)

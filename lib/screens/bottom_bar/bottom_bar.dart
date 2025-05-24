@@ -4,6 +4,7 @@ import 'package:personalized_rehabilitation_plans/screens/profile/profile_screen
 import 'package:personalized_rehabilitation_plans/screens/user_input_screen.dart';
 import 'package:personalized_rehabilitation_plans/screens/therapist/patient_management_dashboard.dart';
 import 'package:personalized_rehabilitation_plans/screens/progress/rehabilitation_progress_screen.dart';
+import 'package:personalized_rehabilitation_plans/screens/dashboard_home_screen.dart';
 import 'package:provider/provider.dart';
 
 import '../../services/auth_service.dart';
@@ -93,10 +94,12 @@ class _BottomBarScreenState extends State<BottomBarScreen> {
           } else {
             // Patient screens
             if (_selectedIndex == 0) {
-              return const UserInputScreen();
+              return const DashboardHomeScreen(); // New dashboard home
             } else if (_selectedIndex == 1) {
-              return const SavedRehabilitationPlans();
+              return const UserInputScreen(); // Create plan
             } else if (_selectedIndex == 2) {
+              return const SavedRehabilitationPlans(); // Saved plans
+            } else if (_selectedIndex == 3) {
               // Show progress screen using StreamBuilder to get plans
               return StreamBuilder(
                 stream: authService.getRehabilitationPlans(),
@@ -136,20 +139,28 @@ class _BottomBarScreenState extends State<BottomBarScreen> {
     );
   }
 
-  // Bottom navigation for patient users - updated with Progress tab instead of Metrics
+  // Bottom navigation for patient users - updated with 5 tabs including Dashboard
   Widget _buildPatientBottomNav() {
     return BottomNavigationBar(
       currentIndex: _selectedIndex,
       onTap: _onItemTapped,
-      type: BottomNavigationBarType.fixed, // Required for 4+ items
+      type: BottomNavigationBarType.fixed, // Required for 5 items
+      selectedItemColor: Colors.blue,
+      unselectedItemColor: Colors.grey,
+      selectedFontSize: 12,
+      unselectedFontSize: 12,
       items: const [
         BottomNavigationBarItem(
-          icon: Icon(Icons.home_filled),
-          label: 'Home',
+          icon: Icon(Icons.dashboard),
+          label: 'Dashboard',
+        ),
+        BottomNavigationBarItem(
+          icon: Icon(Icons.add_circle_outline),
+          label: 'Create Plan',
         ),
         BottomNavigationBarItem(
           icon: Icon(Icons.bookmark),
-          label: 'Saved Plans',
+          label: 'My Plans',
         ),
         BottomNavigationBarItem(
           icon: Icon(Icons.show_chart),
@@ -163,7 +174,7 @@ class _BottomBarScreenState extends State<BottomBarScreen> {
     );
   }
 
-  // Bottom navigation for therapist users - updated with Progress tab instead of Metrics
+  // Bottom navigation for therapist users - keeping existing 4 tabs
   Widget _buildTherapistBottomNav() {
     return BottomNavigationBar(
       currentIndex: _selectedIndex,

@@ -247,15 +247,17 @@ class _UserInputScreenState extends State<UserInputScreen> {
                             const RoundSliderThumbShape(enabledThumbRadius: 10),
                       ),
                       child: Slider(
-                        value: double.tryParse(_painLevelController.text) ?? 5,
+                        value:
+                            double.tryParse(_painLevelController.text) ?? 5.0,
                         min: 0,
                         max: 10,
                         divisions: 10,
                         label: _painLevelController.text,
                         onChanged: (value) {
                           setState(() {
+                            // FIXED: Store as integer string to ensure proper parsing
                             _painLevelController.text =
-                                value.toInt().toString();
+                                value.round().toString();
                           });
                         },
                       ),
@@ -275,15 +277,29 @@ class _UserInputScreenState extends State<UserInputScreen> {
                         .withOpacity(0.1),
                     borderRadius: BorderRadius.circular(20),
                   ),
-                  child: Text(
-                    _getPainLevelDescription(
-                        int.tryParse(_painLevelController.text) ?? 5),
-                    style: TextStyle(
-                      color: _getPainLevelColor(
-                          int.tryParse(_painLevelController.text) ?? 5),
-                      fontWeight: FontWeight.w500,
-                      fontSize: 14,
-                    ),
+                  child: Column(
+                    children: [
+                      Text(
+                        'Current Level: ${_painLevelController.text}',
+                        style: TextStyle(
+                          color: _getPainLevelColor(
+                              int.tryParse(_painLevelController.text) ?? 5),
+                          fontWeight: FontWeight.bold,
+                          fontSize: 16,
+                        ),
+                      ),
+                      const SizedBox(height: 4),
+                      Text(
+                        _getPainLevelDescription(
+                            int.tryParse(_painLevelController.text) ?? 5),
+                        style: TextStyle(
+                          color: _getPainLevelColor(
+                              int.tryParse(_painLevelController.text) ?? 5),
+                          fontWeight: FontWeight.w500,
+                          fontSize: 14,
+                        ),
+                      ),
+                    ],
                   ),
                 ),
               ),
@@ -736,7 +752,7 @@ class _UserInputScreenState extends State<UserInputScreen> {
         'surgicalHistory': surgicalHistory,
       };
 
-      // Prepare physical condition data
+      // Prepare physical condition data - FIXED: Ensure pain level is integer
       final String bodyPart =
           _selectedBodyPart == 'Other' ? _otherBodyPart : _selectedBodyPart;
 
@@ -744,9 +760,21 @@ class _UserInputScreenState extends State<UserInputScreen> {
           ? _otherPainLocation
           : _selectedPainLocation;
 
+      // FIX: Parse pain level as integer and ensure it's within valid range
+      int painLevelInt;
+      try {
+        painLevelInt = int.parse(_painLevelController.text.trim());
+        // Ensure pain level is within 0-10 range
+        painLevelInt = painLevelInt.clamp(0, 10);
+      } catch (e) {
+        // Default to 5 if parsing fails
+        painLevelInt = 5;
+        print('Error parsing pain level: $e, defaulting to 5');
+      }
+
       final physicalCondition = {
         'bodyPart': bodyPart,
-        'painLevel': int.tryParse(_painLevelController.text) ?? 5,
+        'painLevel': painLevelInt, // Now properly as integer
         'painLocation': painLocation,
       };
 
@@ -765,6 +793,13 @@ class _UserInputScreenState extends State<UserInputScreen> {
         rehabilitationGoals: goals,
       );
 
+      // Debug: Print the data being sent to backend
+      print('Sending rehabilitation data to backend:');
+      print(
+          'Pain Level: ${physicalCondition['painLevel']} (${physicalCondition['painLevel'].runtimeType})');
+      print('Body Part: ${physicalCondition['bodyPart']}');
+      print('Goals: $goals');
+
       // Generate a plan
       final service = RehabilitationService();
       final plan = await service.generatePlan(rehabData);
@@ -777,12 +812,14 @@ class _UserInputScreenState extends State<UserInputScreen> {
         );
       }
     } catch (e) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text('Error generating plan: ${e.toString()}'),
-          backgroundColor: Colors.red,
-        ),
-      );
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('Error generating plan: ${e.toString()}'),
+            backgroundColor: Colors.red,
+          ),
+        );
+      }
     } finally {
       if (mounted) {
         setState(() {

@@ -1,4 +1,4 @@
-// User Rehabilitation Data Model
+// Updated RehabilitationData Model with proper data type handling
 class RehabilitationData {
   final Map<String, dynamic> medicalHistory;
   final Map<String, dynamic> physicalCondition;
@@ -11,23 +11,46 @@ class RehabilitationData {
   });
 
   Map<String, dynamic> toJson() {
+    // Ensure pain level is integer
+    Map<String, dynamic> processedPhysicalCondition =
+        Map.from(physicalCondition);
+
+    if (processedPhysicalCondition.containsKey('painLevel')) {
+      final painLevel = processedPhysicalCondition['painLevel'];
+      if (painLevel is String) {
+        try {
+          processedPhysicalCondition['painLevel'] = int.parse(painLevel);
+        } catch (e) {
+          processedPhysicalCondition['painLevel'] = 5; // Default fallback
+          print(
+              'Warning: Could not parse pain level "$painLevel", using default value 5');
+        }
+      } else if (painLevel is double) {
+        processedPhysicalCondition['painLevel'] = painLevel.round();
+      }
+      // Ensure pain level is within valid range
+      processedPhysicalCondition['painLevel'] =
+          (processedPhysicalCondition['painLevel'] as int).clamp(0, 10);
+    }
+
     return {
       'medicalHistory': medicalHistory,
-      'physicalCondition': physicalCondition,
+      'physicalCondition': processedPhysicalCondition,
       'rehabilitationGoals': rehabilitationGoals,
     };
   }
 
   factory RehabilitationData.fromJson(Map<String, dynamic> json) {
     return RehabilitationData(
-      medicalHistory: json['medicalHistory'],
-      physicalCondition: json['physicalCondition'],
-      rehabilitationGoals: List<String>.from(json['rehabilitationGoals']),
+      medicalHistory: Map<String, dynamic>.from(json['medicalHistory'] ?? {}),
+      physicalCondition:
+          Map<String, dynamic>.from(json['physicalCondition'] ?? {}),
+      rehabilitationGoals: List<String>.from(json['rehabilitationGoals'] ?? []),
     );
   }
 }
 
-// Exercise Model
+// Exercise Model - Enhanced with better validation
 class Exercise {
   final String id;
   final String name;
@@ -73,22 +96,39 @@ class Exercise {
 
   factory Exercise.fromJson(Map<String, dynamic> json) {
     return Exercise(
-      id: json['id'],
-      name: json['name'],
-      description: json['description'],
-      bodyPart: json['bodyPart'],
-      sets: json['sets'],
-      reps: json['reps'],
-      durationSeconds: json['durationSeconds'],
-      difficultyLevel: json['difficultyLevel'],
-      imageUrl: json['imageUrl'],
-      videoUrl: json['videoUrl'],
-      isCompleted: json['isCompleted'] ?? false,
+      id: json['id']?.toString() ?? '',
+      name: json['name']?.toString() ?? 'Unknown Exercise',
+      description:
+          json['description']?.toString() ?? 'No description available',
+      bodyPart: json['bodyPart']?.toString() ?? 'General',
+      sets: _parseInt(json['sets'], 3),
+      reps: _parseInt(json['reps'], 10),
+      durationSeconds: _parseInt(json['durationSeconds'], 30),
+      difficultyLevel: json['difficultyLevel']?.toString() ?? 'beginner',
+      imageUrl: json['imageUrl']?.toString(),
+      videoUrl: json['videoUrl']?.toString(),
+      isCompleted: json['isCompleted'] == true,
     );
+  }
+
+  // Helper method to safely parse integers
+  static int _parseInt(dynamic value, int defaultValue) {
+    if (value is int) return value;
+    if (value is double) return value.round();
+    if (value is String) {
+      try {
+        return int.parse(value);
+      } catch (e) {
+        print(
+            'Warning: Could not parse "$value" as int, using default $defaultValue');
+        return defaultValue;
+      }
+    }
+    return defaultValue;
   }
 }
 
-// Rehabilitation Plan Model
+// Rehabilitation Plan Model - Enhanced with better validation
 class RehabilitationPlan {
   final String title;
   final String description;
@@ -112,12 +152,20 @@ class RehabilitationPlan {
   }
 
   factory RehabilitationPlan.fromJson(Map<String, dynamic> json) {
+    List<Exercise> exerciseList = [];
+
+    if (json['exercises'] is List) {
+      exerciseList = (json['exercises'] as List)
+          .map((e) => Exercise.fromJson(e as Map<String, dynamic>))
+          .toList();
+    }
+
     return RehabilitationPlan(
-      title: json['title'],
-      description: json['description'],
-      exercises:
-          (json['exercises'] as List).map((e) => Exercise.fromJson(e)).toList(),
-      goals: json['goals'],
+      title: json['title']?.toString() ?? 'Rehabilitation Plan',
+      description:
+          json['description']?.toString() ?? 'No description available',
+      exercises: exerciseList,
+      goals: Map<String, dynamic>.from(json['goals'] ?? {}),
     );
   }
 
