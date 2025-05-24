@@ -254,15 +254,50 @@ class AuthService extends ChangeNotifier {
     }
   }
 
+// Add this method to your existing AuthService class
   Future<void> saveTherapistProfile(
-      String userId, Map<String, Object> therapistProfileData) async {
+      String userId, Map<String, dynamic> therapistProfileData) async {
     try {
-      await _firestore
-          .collection('users')
-          .doc(currentUser!.uid)
-          .update(therapistProfileData);
+      // Update user document with therapist flag
+      await _firestore.collection('users').doc(userId).update({
+        'isTherapist': true,
+        'lastUpdated': FieldValue.serverTimestamp(),
+      });
+
+      // Create therapist profile document
+      await _firestore.collection('therapists').doc(userId).set({
+        'userId': userId,
+        'licenseNumber': therapistProfileData['licenseNumber'],
+        'specialty': therapistProfileData['specialty'],
+        'yearsOfExperience': therapistProfileData['yearsOfExperience'],
+        'education': therapistProfileData['education'],
+        'clinicName': therapistProfileData['clinicName'],
+        'clinicAddress': therapistProfileData['clinicAddress'],
+        'specialization': therapistProfileData['specialization'],
+        'isVerified': false, // Therapists start as unverified
+        'verificationSubmittedDate': FieldValue.serverTimestamp(),
+        'createdAt': FieldValue.serverTimestamp(),
+        'lastUpdated': FieldValue.serverTimestamp(),
+      });
+
+      // Refresh user data
+      await fetchUserData(userId);
     } catch (e) {
-      throw Exception('Failed to save user data: $e');
+      throw Exception('Failed to save therapist profile: $e');
+    }
+  }
+
+  // Add method to get therapist profile
+  Future<Map<String, dynamic>?> getTherapistProfile(String userId) async {
+    try {
+      final doc = await _firestore.collection('therapists').doc(userId).get();
+      if (doc.exists) {
+        return doc.data();
+      }
+      return null;
+    } catch (e) {
+      print('Error getting therapist profile: $e');
+      return null;
     }
   }
 }

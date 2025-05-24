@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:provider/provider.dart';
 import 'package:personalized_rehabilitation_plans/screens/bottom_bar/bottom_bar.dart';
-import 'package:personalized_rehabilitation_plans/screens/therapist/patient_management_dashboard.dart';
 import 'package:personalized_rehabilitation_plans/screens/therapist/therapist_bottom_bar_screen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:personalized_rehabilitation_plans/screens/splash_screen.dart';
@@ -39,8 +38,6 @@ class MyApp extends StatelessWidget {
         routes: {
           '/patient_home': (context) => const BottomBarScreen(),
           '/therapist_home': (context) => const TherapistBottomBarScreen(),
-          '/patient_management': (context) =>
-              const PatientManagementDashboard(),
         },
       ),
     );
