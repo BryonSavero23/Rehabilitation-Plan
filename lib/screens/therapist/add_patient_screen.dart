@@ -5,7 +5,7 @@ import 'package:personalized_rehabilitation_plans/services/auth_service.dart';
 import 'package:personalized_rehabilitation_plans/widgets/custom_button.dart';
 
 class AddPatientScreen extends StatefulWidget {
-  const AddPatientScreen({Key? key}) : super(key: key);
+  const AddPatientScreen({super.key});
 
   @override
   State<AddPatientScreen> createState() => _AddPatientScreenState();

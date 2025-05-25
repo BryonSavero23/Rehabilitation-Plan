@@ -8,12 +8,12 @@ class ExerciseCard extends StatelessWidget {
   final VoidCallback? onPressed;
 
   const ExerciseCard({
-    Key? key,
+    super.key,
     required this.exercise,
     required this.isActive,
     required this.startTime,
     this.onPressed,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -214,14 +214,14 @@ class CircularProgressWidget extends StatelessWidget {
   final DateTime checkupDate;
 
   const CircularProgressWidget({
-    Key? key,
+    super.key,
     required this.completed,
     required this.total,
     required this.remaining,
     required this.missed,
     required this.phaseName,
     required this.checkupDate,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {

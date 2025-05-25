@@ -6,7 +6,7 @@ import 'package:personalized_rehabilitation_plans/widgets/enhanced_dropdown.dart
 import 'package:personalized_rehabilitation_plans/theme/app_theme.dart';
 
 class UserInputScreen extends StatefulWidget {
-  const UserInputScreen({Key? key}) : super(key: key);
+  const UserInputScreen({super.key});
 
   @override
   State<UserInputScreen> createState() => _UserInputScreenState();

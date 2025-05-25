@@ -6,7 +6,7 @@ import 'package:personalized_rehabilitation_plans/theme/app_theme.dart';
 import '../bottom_bar/bottom_bar.dart';
 
 class LoginScreen extends StatefulWidget {
-  const LoginScreen({Key? key}) : super(key: key);
+  const LoginScreen({super.key});
 
   @override
   State<LoginScreen> createState() => _LoginScreenState();

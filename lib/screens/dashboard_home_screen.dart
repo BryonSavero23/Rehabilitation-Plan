@@ -10,7 +10,7 @@ import 'package:personalized_rehabilitation_plans/theme/app_theme.dart';
 import 'package:personalized_rehabilitation_plans/screens/therapist_chat_screen.dart';
 
 class DashboardHomeScreen extends StatefulWidget {
-  const DashboardHomeScreen({Key? key}) : super(key: key);
+  const DashboardHomeScreen({super.key});
 
   @override
   State<DashboardHomeScreen> createState() => _DashboardHomeScreenState();

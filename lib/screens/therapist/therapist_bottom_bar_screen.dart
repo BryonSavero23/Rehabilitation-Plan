@@ -11,7 +11,7 @@ import 'package:personalized_rehabilitation_plans/theme/app_theme.dart';
 import 'therapist_dashboard_screen.dart';
 
 class TherapistBottomBarScreen extends StatefulWidget {
-  const TherapistBottomBarScreen({Key? key}) : super(key: key);
+  const TherapistBottomBarScreen({super.key});
 
   @override
   State<TherapistBottomBarScreen> createState() =>

@@ -11,12 +11,12 @@ class TherapistChatScreen extends StatefulWidget {
   final String patientId;
 
   const TherapistChatScreen({
-    Key? key,
+    super.key,
     required this.therapistId,
     required this.therapistName,
     required this.therapistTitle,
     required this.patientId,
-  }) : super(key: key);
+  });
 
   @override
   State<TherapistChatScreen> createState() => _TherapistChatScreenState();

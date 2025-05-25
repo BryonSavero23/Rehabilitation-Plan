@@ -9,14 +9,14 @@ class ProgressChartWidget extends StatelessWidget {
   final int? maxAdherenceRate;
 
   const ProgressChartWidget({
-    Key? key,
+    super.key,
     required this.painLevels,
     required this.adherenceRates,
     required this.dates,
     this.title = 'Progress Over Time',
     this.maxPainLevel,
     this.maxAdherenceRate,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -348,14 +348,14 @@ class SimpleProgressChart extends StatelessWidget {
   final String yAxisLabel;
 
   const SimpleProgressChart({
-    Key? key,
+    super.key,
     required this.values,
     required this.labels,
     required this.title,
     this.color = Colors.blue,
     this.maxValue = 10,
     this.yAxisLabel = '',
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {

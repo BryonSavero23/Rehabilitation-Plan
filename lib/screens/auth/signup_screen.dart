@@ -7,7 +7,7 @@ import 'package:personalized_rehabilitation_plans/theme/app_theme.dart';
 import '../bottom_bar/bottom_bar.dart';
 
 class SignupScreen extends StatefulWidget {
-  const SignupScreen({Key? key}) : super(key: key);
+  const SignupScreen({super.key});
 
   @override
   State<SignupScreen> createState() => _SignupScreenState();

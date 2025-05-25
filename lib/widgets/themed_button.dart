@@ -11,7 +11,7 @@ class ThemedButton extends StatelessWidget {
   final double? height;
 
   const ThemedButton({
-    Key? key,
+    super.key,
     required this.text,
     this.onPressed,
     this.isLoading = false,
@@ -19,7 +19,7 @@ class ThemedButton extends StatelessWidget {
     this.icon,
     this.width,
     this.height = 48,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {

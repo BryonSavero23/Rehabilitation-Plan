@@ -11,11 +11,11 @@ class EditRehabilitationPlanScreen extends StatefulWidget {
   final String patientName;
 
   const EditRehabilitationPlanScreen({
-    Key? key,
+    super.key,
     required this.planId,
     required this.patientId,
     required this.patientName,
-  }) : super(key: key);
+  });
 
   @override
   State<EditRehabilitationPlanScreen> createState() =>
@@ -551,8 +551,9 @@ class _EditRehabilitationPlanScreenState
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: _goals.entries.map((entry) {
                             // Skip the bodyPart entry as it's already shown elsewhere
-                            if (entry.key == 'bodyPart')
+                            if (entry.key == 'bodyPart') {
                               return const SizedBox.shrink();
+                            }
 
                             String label = entry.key.replaceAll('_', ' ');
                             label = label[0].toUpperCase() + label.substring(1);
@@ -797,11 +798,11 @@ class ExerciseFormDialog extends StatefulWidget {
   final Function(Exercise) onSave;
 
   const ExerciseFormDialog({
-    Key? key,
+    super.key,
     required this.bodyPart,
     this.exercise,
     required this.onSave,
-  }) : super(key: key);
+  });
 
   @override
   State<ExerciseFormDialog> createState() => _ExerciseFormDialogState();
@@ -1019,11 +1020,11 @@ class GoalsFormDialog extends StatefulWidget {
   final Function(Map<String, dynamic>) onSave;
 
   const GoalsFormDialog({
-    Key? key,
+    super.key,
     required this.initialGoals,
     required this.selectedBodyPart,
     required this.onSave,
-  }) : super(key: key);
+  });
 
   @override
   State<GoalsFormDialog> createState() => _GoalsFormDialogState();

@@ -7,9 +7,9 @@ class TherapistGuard extends StatefulWidget {
   final Widget child;
 
   const TherapistGuard({
-    Key? key,
+    super.key,
     required this.child,
-  }) : super(key: key);
+  });
 
   @override
   State<TherapistGuard> createState() => _TherapistGuardState();

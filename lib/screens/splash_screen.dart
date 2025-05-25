@@ -6,7 +6,7 @@ import 'package:personalized_rehabilitation_plans/theme/app_theme.dart';
 import 'bottom_bar/bottom_bar.dart';
 
 class SplashScreen extends StatefulWidget {
-  const SplashScreen({Key? key}) : super(key: key);
+  const SplashScreen({super.key});
 
   @override
   State<SplashScreen> createState() => _SplashScreenState();

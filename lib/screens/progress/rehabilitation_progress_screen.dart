@@ -13,18 +13,18 @@ import 'package:personalized_rehabilitation_plans/services/progress_service.dart
 import 'package:provider/provider.dart';
 
 class RehabilitationProgressScreen extends StatefulWidget {
-  final RehabilitationPlan plan;
+  final RehabilitationPlan? plan;
   final String? planId;
   final String? therapistName;
   final String? therapistTitle;
 
   const RehabilitationProgressScreen({
-    Key? key,
-    required this.plan,
+    super.key,
+    this.plan,
     this.planId,
     this.therapistName,
     this.therapistTitle,
-  }) : super(key: key);
+  });
 
   @override
   State<RehabilitationProgressScreen> createState() =>
@@ -34,15 +34,159 @@ class RehabilitationProgressScreen extends StatefulWidget {
 class _RehabilitationProgressScreenState
     extends State<RehabilitationProgressScreen> {
   int _selectedDay = 0;
-  int _selectedBottomNavIndex =
-      0; // 0: Activity, 1: Progress Chart, 2: Notification, 3: Profile
+  int _selectedTopTabIndex = 0; // 0: Activity, 1: Progress Chart
   final List<DateTime> _weekDays = [];
   bool _isLoading = false;
+
+  // Plan selection state - following dashboard pattern
+  String? _selectedPlanId;
+  RehabilitationPlan? _selectedPlan;
+  String? _therapistName;
+  String? _therapistTitle;
 
   @override
   void initState() {
     super.initState();
     _generateWeekDays();
+    _loadInitialData();
+  }
+
+  // Following dashboard pattern for loading initial data
+  Future<void> _loadInitialData() async {
+    setState(() {
+      _isLoading = true;
+    });
+
+    final authService = Provider.of<AuthService>(context, listen: false);
+
+    try {
+      // If plan is passed via constructor (like from dashboard), use it
+      if (widget.plan != null && widget.planId != null) {
+        setState(() {
+          _selectedPlan = widget.plan;
+          _selectedPlanId = widget.planId;
+          _therapistName = widget.therapistName;
+          _therapistTitle = widget.therapistTitle;
+        });
+        await _loadTherapistInfo();
+      } else {
+        // Otherwise, load the first available plan (following dashboard pattern)
+        final plansSnapshot = await FirebaseFirestore.instance
+            .collection('rehabilitation_plans')
+            .where('userId', isEqualTo: authService.currentUser?.uid)
+            .orderBy('lastUpdated', descending: true)
+            .limit(1)
+            .get();
+
+        if (plansSnapshot.docs.isNotEmpty) {
+          final firstPlan = plansSnapshot.docs.first;
+          final planData = firstPlan.data();
+          setState(() {
+            _selectedPlanId = firstPlan.id;
+            _selectedPlan = RehabilitationPlan.fromJson(planData);
+          });
+          await _loadTherapistInfo();
+        }
+      }
+    } catch (e) {
+      print('Error loading initial data: $e');
+    }
+
+    setState(() {
+      _isLoading = false;
+    });
+  }
+
+  // Following dashboard pattern for plan changes
+  void _onPlanChanged(String? planId, RehabilitationPlan? plan) {
+    setState(() {
+      _selectedPlanId = planId;
+      _selectedPlan = plan;
+    });
+    _loadTherapistInfo();
+  }
+
+  Future<void> _loadTherapistInfo() async {
+    if (_selectedPlan == null || _selectedPlanId == null) return;
+
+    try {
+      // Get therapist ID from the plan data
+      final planSnapshot = await FirebaseFirestore.instance
+          .collection('rehabilitation_plans')
+          .doc(_selectedPlanId)
+          .get();
+
+      if (planSnapshot.exists) {
+        final planData = planSnapshot.data();
+        final therapistId = planData?['therapistId'];
+
+        print('DEBUG: Plan data - therapistId: $therapistId'); // Debug log
+
+        if (therapistId != null && therapistId.isNotEmpty) {
+          // Get therapist user data
+          final therapistDoc = await FirebaseFirestore.instance
+              .collection('users')
+              .doc(therapistId)
+              .get();
+
+          print(
+              'DEBUG: Therapist doc exists: ${therapistDoc.exists}'); // Debug log
+
+          if (therapistDoc.exists) {
+            final therapistData = therapistDoc.data()!;
+            print('DEBUG: Therapist data: $therapistData'); // Debug log
+
+            // Get therapist profile for additional info
+            final therapistProfileDoc = await FirebaseFirestore.instance
+                .collection('therapists')
+                .doc(therapistId)
+                .get();
+
+            print(
+                'DEBUG: Therapist profile exists: ${therapistProfileDoc.exists}'); // Debug log
+
+            String therapistName = therapistData['name'] ?? 'Unknown Therapist';
+            String therapistTitle = 'Dr.';
+
+            if (therapistProfileDoc.exists) {
+              final profileData = therapistProfileDoc.data();
+              print('DEBUG: Profile data: $profileData'); // Debug log
+
+              // Try different possible fields for title/specialization
+              therapistTitle = profileData?['title'] ??
+                  profileData?['specialization'] ??
+                  'Dr.';
+            }
+
+            setState(() {
+              _therapistName = therapistName;
+              _therapistTitle = therapistTitle;
+            });
+
+            print(
+                'DEBUG: Set therapist name: $_therapistName, title: $_therapistTitle'); // Debug log
+          } else {
+            print('DEBUG: Therapist document not found for ID: $therapistId');
+            setState(() {
+              _therapistName = 'Therapist Not Found';
+              _therapistTitle = 'Dr.';
+            });
+          }
+        } else {
+          print('DEBUG: No therapistId in plan data');
+          setState(() {
+            _therapistName = 'No Therapist Assigned';
+            _therapistTitle = '';
+          });
+        }
+      }
+    } catch (e) {
+      print('Error loading therapist info: $e');
+      setState(() {
+        _therapistName = widget.therapistName ?? 'Your Therapist';
+        _therapistTitle = widget.therapistTitle ?? 'Dr.';
+      });
+    }
   }
 
   void _generateWeekDays() {
@@ -57,23 +201,22 @@ class _RehabilitationProgressScreenState
 
   // Calculate completed exercises count
   int get _completedExercisesCount {
-    return widget.plan.exercises.where((e) => e.isCompleted).length;
+    return _selectedPlan?.exercises.where((e) => e.isCompleted).length ?? 0;
   }
 
   // Calculate remaining exercises
   int get _remainingExercisesCount {
-    return widget.plan.exercises.length - _completedExercisesCount;
+    return (_selectedPlan?.exercises.length ?? 0) - _completedExercisesCount;
   }
 
   // Calculate missed exercises (placeholder)
   int get _missedExercisesCount {
-    // This is simplified - in a real app, you'd track missed sessions
-    return 1; // Placeholder
+    return 0; // Placeholder
   }
 
   // Total exercises
   int get _totalExercisesCount {
-    return widget.plan.exercises.length;
+    return _selectedPlan?.exercises.length ?? 0;
   }
 
   @override
@@ -90,6 +233,7 @@ class _RehabilitationProgressScreenState
             : Column(
                 children: [
                   _buildHeader(),
+                  if (_selectedPlan != null) _buildTopTabBar(),
                   Expanded(
                     child: Container(
                       decoration: BoxDecoration(
@@ -99,10 +243,11 @@ class _RehabilitationProgressScreenState
                           topRight: Radius.circular(30),
                         ),
                       ),
-                      child: _buildBodyContent(),
+                      child: _selectedPlan == null
+                          ? _buildPlanSelection()
+                          : _buildBodyContent(),
                     ),
                   ),
-                  _buildBottomNavigation(),
                 ],
               ),
       ),
@@ -110,49 +255,222 @@ class _RehabilitationProgressScreenState
   }
 
   Widget _buildHeader() {
-    final therapistName = widget.therapistName ?? "Your Therapist";
-    final therapistTitle = widget.therapistTitle ?? "";
+    final authService = Provider.of<AuthService>(context);
+    final therapistName = _therapistName ?? "Your Therapist";
+    final therapistTitle = _therapistTitle ?? "";
 
     return Padding(
       padding: const EdgeInsets.all(16.0),
-      child: Row(
+      child: Column(
         children: [
-          const CircleAvatar(
-            radius: 20,
-            backgroundImage: NetworkImage(
-                'https://placehold.co/100x100/orange/white?text=T'),
-          ),
-          const SizedBox(width: 12),
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
+          Row(
             children: [
-              Text(
-                widget.plan.title,
-                style: TextStyle(
-                  fontSize: 18,
-                  fontWeight: FontWeight.bold,
-                  color: Theme.of(context).colorScheme.onPrimary,
+              const CircleAvatar(
+                radius: 20,
+                backgroundImage: NetworkImage(
+                    'https://placehold.co/100x100/orange/white?text=T'),
+              ),
+              const SizedBox(width: 12),
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      'Progress Tracking',
+                      style: TextStyle(
+                        fontSize: 18,
+                        fontWeight: FontWeight.bold,
+                        color: Theme.of(context).colorScheme.onPrimary,
+                      ),
+                    ),
+                    Text(
+                      '$therapistTitle $therapistName',
+                      style: TextStyle(
+                        fontSize: 14,
+                        color: Theme.of(context)
+                            .colorScheme
+                            .onPrimary
+                            .withOpacity(0.7),
+                      ),
+                    ),
+                  ],
                 ),
               ),
-              Text(
-                '$therapistTitle $therapistName',
-                style: TextStyle(
-                  fontSize: 14,
-                  color:
-                      Theme.of(context).colorScheme.onPrimary.withOpacity(0.7),
+              IconButton(
+                icon: Icon(
+                  Icons.keyboard_arrow_down,
+                  color: Theme.of(context).colorScheme.onPrimary,
                 ),
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
               ),
             ],
           ),
-          const Spacer(),
-          IconButton(
-            icon: Icon(
-              Icons.keyboard_arrow_down,
-              color: Theme.of(context).colorScheme.onPrimary,
+          const SizedBox(height: 16),
+
+          // Plan selector following dashboard pattern
+          Container(
+            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+            decoration: BoxDecoration(
+              color: Colors.white.withOpacity(0.9),
+              borderRadius: BorderRadius.circular(12),
             ),
+            child: Row(
+              children: [
+                Expanded(
+                  child: StreamBuilder<QuerySnapshot>(
+                    stream: authService.getRehabilitationPlans(),
+                    builder: (context, snapshot) {
+                      if (!snapshot.hasData || snapshot.data!.docs.isEmpty) {
+                        return const Text(
+                          'No plans available',
+                          style: TextStyle(color: Colors.grey),
+                        );
+                      }
+
+                      final plans = snapshot.data!.docs;
+
+                      return DropdownButton<String>(
+                        value: _selectedPlanId,
+                        hint: const Text('Select a plan'),
+                        isExpanded: true,
+                        underline: const SizedBox(),
+                        items: plans.map((doc) {
+                          final planData = doc.data() as Map<String, dynamic>;
+                          final title = planData['title'] ?? 'Unnamed Plan';
+                          return DropdownMenuItem<String>(
+                            value: doc.id,
+                            child: Text(
+                              title,
+                              overflow: TextOverflow.ellipsis,
+                            ),
+                          );
+                        }).toList(),
+                        onChanged: (String? planId) {
+                          if (planId != null) {
+                            final selectedDoc =
+                                plans.firstWhere((doc) => doc.id == planId);
+                            final planData =
+                                selectedDoc.data() as Map<String, dynamic>;
+                            final plan = RehabilitationPlan.fromJson(planData);
+                            _onPlanChanged(planId, plan);
+                          }
+                        },
+                      );
+                    },
+                  ),
+                ),
+                const SizedBox(width: 16),
+                Text(
+                  'Select Plan',
+                  style: TextStyle(
+                    color: AppTheme.primaryBlue,
+                    fontWeight: FontWeight.w600,
+                    fontSize: 14,
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildTopTabBar() {
+    return Container(
+      margin: const EdgeInsets.symmetric(horizontal: 16),
+      decoration: BoxDecoration(
+        color: Colors.white.withOpacity(0.2),
+        borderRadius: BorderRadius.circular(25),
+      ),
+      child: Row(
+        children: [
+          Expanded(
+            child: GestureDetector(
+              onTap: () => setState(() => _selectedTopTabIndex = 0),
+              child: Container(
+                padding: const EdgeInsets.symmetric(vertical: 12),
+                decoration: BoxDecoration(
+                  color: _selectedTopTabIndex == 0
+                      ? Colors.white
+                      : Colors.transparent,
+                  borderRadius: BorderRadius.circular(25),
+                ),
+                child: Text(
+                  'Activity',
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                    color: _selectedTopTabIndex == 0
+                        ? Theme.of(context).primaryColor
+                        : Colors.white,
+                    fontWeight: FontWeight.w600,
+                  ),
+                ),
+              ),
+            ),
+          ),
+          Expanded(
+            child: GestureDetector(
+              onTap: () => setState(() => _selectedTopTabIndex = 1),
+              child: Container(
+                padding: const EdgeInsets.symmetric(vertical: 12),
+                decoration: BoxDecoration(
+                  color: _selectedTopTabIndex == 1
+                      ? Colors.white
+                      : Colors.transparent,
+                  borderRadius: BorderRadius.circular(25),
+                ),
+                child: Text(
+                  'Progress Chart',
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                    color: _selectedTopTabIndex == 1
+                        ? Theme.of(context).primaryColor
+                        : Colors.white,
+                    fontWeight: FontWeight.w600,
+                  ),
+                ),
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildPlanSelection() {
+    return Center(
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Icon(
+            Icons.healing_outlined,
+            size: 80,
+            color: Colors.grey[400],
+          ),
+          const SizedBox(height: 16),
+          Text(
+            'No Rehabilitation Plan Selected',
+            style: TextStyle(
+              fontSize: 18,
+              fontWeight: FontWeight.bold,
+              color: Colors.grey[600],
+            ),
+          ),
+          const SizedBox(height: 8),
+          Text(
+            'Please select a plan to view your progress',
+            style: TextStyle(color: Colors.grey[500]),
+          ),
+          const SizedBox(height: 24),
+          ElevatedButton(
             onPressed: () {
-              Navigator.of(context).pop();
+              // Navigate back to dashboard (index 0 in bottom navigation)
+              Navigator.of(context).popUntil((route) => route.isFirst);
             },
+            child: const Text('Go Back to Dashboard'),
           ),
         ],
       ),
@@ -160,15 +478,11 @@ class _RehabilitationProgressScreenState
   }
 
   Widget _buildBodyContent() {
-    switch (_selectedBottomNavIndex) {
+    switch (_selectedTopTabIndex) {
       case 0:
         return _buildActivityTab();
       case 1:
         return _buildProgressChartTab();
-      case 2:
-        return _buildNotificationTab();
-      case 3:
-        return _buildProfileTab();
       default:
         return _buildActivityTab();
     }
@@ -383,435 +697,6 @@ class _RehabilitationProgressScreenState
     );
   }
 
-  Widget _buildNotificationTab() {
-    final authService = Provider.of<AuthService>(context);
-
-    return SingleChildScrollView(
-      padding: const EdgeInsets.all(16.0),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          const Text(
-            'Notifications',
-            style: TextStyle(
-              fontSize: 24,
-              fontWeight: FontWeight.bold,
-            ),
-          ),
-          const SizedBox(height: 20),
-
-          // Real notifications from Firestore
-          StreamBuilder<QuerySnapshot>(
-            stream: FirebaseFirestore.instance
-                .collection('users')
-                .doc(authService.currentUser?.uid)
-                .collection('notifications')
-                .orderBy('timestamp', descending: true)
-                .limit(20)
-                .snapshots(),
-            builder: (context, snapshot) {
-              if (snapshot.connectionState == ConnectionState.waiting) {
-                return const Center(child: CircularProgressIndicator());
-              }
-
-              if (!snapshot.hasData || snapshot.data!.docs.isEmpty) {
-                return _buildNoNotificationsMessage();
-              }
-
-              final notifications = snapshot.data!.docs;
-              final unreadCount = notifications
-                  .where((doc) =>
-                      !(doc.data() as Map<String, dynamic>)['isRead'] ?? false)
-                  .length;
-
-              return Column(
-                children: [
-                  // Unread count badge
-                  if (unreadCount > 0)
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        const SizedBox(),
-                        Container(
-                          padding: const EdgeInsets.symmetric(
-                              horizontal: 12, vertical: 6),
-                          decoration: BoxDecoration(
-                            color: Colors.red,
-                            borderRadius: BorderRadius.circular(20),
-                          ),
-                          child: Text(
-                            '$unreadCount unread',
-                            style: const TextStyle(
-                              color: Colors.white,
-                              fontSize: 12,
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                  const SizedBox(height: 16),
-
-                  // Notifications list
-                  ...notifications.map((doc) {
-                    final data = doc.data() as Map<String, dynamic>;
-                    return _buildRealNotificationCard(
-                      notificationId: doc.id,
-                      data: data,
-                      authService: authService,
-                    );
-                  }).toList(),
-                ],
-              );
-            },
-          ),
-        ],
-      ),
-    );
-  }
-
-  Widget _buildNoNotificationsMessage() {
-    return Card(
-      child: Padding(
-        padding: const EdgeInsets.all(32.0),
-        child: Column(
-          children: [
-            Icon(
-              Icons.notifications_none,
-              size: 64,
-              color: Colors.grey[400],
-            ),
-            const SizedBox(height: 16),
-            const Text(
-              'No Notifications',
-              style: TextStyle(
-                fontSize: 18,
-                fontWeight: FontWeight.bold,
-              ),
-            ),
-            const SizedBox(height: 8),
-            const Text(
-              'You\'re all caught up! New notifications will appear here.',
-              textAlign: TextAlign.center,
-              style: TextStyle(color: Colors.grey),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-
-  Widget _buildRealNotificationCard({
-    required String notificationId,
-    required Map<String, dynamic> data,
-    required AuthService authService,
-  }) {
-    final title = data['title'] ?? 'Notification';
-    final message = data['message'] ?? '';
-    final type = data['type'] ?? 'general';
-    final isRead = data['isRead'] ?? false;
-    final timestamp = data['timestamp'] as Timestamp?;
-    final therapistId = data['therapistId'] as String?;
-    final planId = data['planId'] as String?;
-    final progressId = data['progressId'] as String?;
-
-    final time = timestamp != null
-        ? _formatNotificationTime(timestamp.toDate())
-        : 'Unknown time';
-
-    // Get icon and color based on notification type
-    IconData icon;
-    Color color;
-
-    switch (type) {
-      case 'exercise_reminder':
-        icon = Icons.fitness_center;
-        color = Colors.blue;
-        break;
-      case 'progress_update':
-        icon = Icons.trending_up;
-        color = Colors.green;
-        break;
-      case 'therapist_message':
-        icon = Icons.message;
-        color = Colors.purple;
-        break;
-      case 'plan_updated':
-        icon = Icons.update;
-        color = Colors.orange;
-        break;
-      case 'therapist_added':
-        icon = Icons.person_add;
-        color = Colors.teal;
-        break;
-      case 'therapist_removed':
-        icon = Icons.person_remove;
-        color = Colors.red;
-        break;
-      case 'appointment_reminder':
-        icon = Icons.calendar_today;
-        color = Colors.indigo;
-        break;
-      default:
-        icon = Icons.notifications;
-        color = Colors.grey;
-    }
-
-    return Card(
-      margin: const EdgeInsets.only(bottom: 12),
-      elevation: isRead ? 1 : 3,
-      child: ListTile(
-        leading: Container(
-          width: 40,
-          height: 40,
-          decoration: BoxDecoration(
-            color: color.withOpacity(0.1),
-            borderRadius: BorderRadius.circular(8),
-          ),
-          child: Icon(icon, color: color),
-        ),
-        title: Text(
-          title,
-          style: TextStyle(
-            fontWeight: isRead ? FontWeight.normal : FontWeight.bold,
-            color: isRead ? Colors.grey[700] : Colors.black,
-          ),
-        ),
-        subtitle: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            const SizedBox(height: 4),
-            Text(
-              message,
-              style: TextStyle(
-                color: isRead ? Colors.grey[600] : Colors.black87,
-              ),
-            ),
-            const SizedBox(height: 4),
-            Text(
-              time,
-              style: TextStyle(
-                fontSize: 12,
-                color: Colors.grey[600],
-              ),
-            ),
-          ],
-        ),
-        trailing: Row(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            if (!isRead)
-              Container(
-                width: 8,
-                height: 8,
-                decoration: const BoxDecoration(
-                  color: Colors.red,
-                  shape: BoxShape.circle,
-                ),
-              ),
-            const SizedBox(width: 8),
-            const Icon(Icons.chevron_right),
-          ],
-        ),
-        isThreeLine: true,
-        onTap: () => _handleNotificationTap(
-          type: type,
-          notificationId: notificationId,
-          therapistId: therapistId,
-          planId: planId,
-          progressId: progressId,
-          authService: authService,
-          isRead: isRead,
-        ),
-      ),
-    );
-  }
-
-  String _formatNotificationTime(DateTime timestamp) {
-    final now = DateTime.now();
-    final difference = now.difference(timestamp);
-
-    if (difference.inDays > 7) {
-      return DateFormat('MMM dd, yyyy').format(timestamp);
-    } else if (difference.inDays > 0) {
-      return '${difference.inDays}d ago';
-    } else if (difference.inHours > 0) {
-      return '${difference.inHours}h ago';
-    } else if (difference.inMinutes > 0) {
-      return '${difference.inMinutes}m ago';
-    } else {
-      return 'Just now';
-    }
-  }
-
-  Future<void> _handleNotificationTap({
-    required String type,
-    required String notificationId,
-    String? therapistId,
-    String? planId,
-    String? progressId,
-    required AuthService authService,
-    required bool isRead,
-  }) async {
-    // Mark notification as read if not already read
-    if (!isRead) {
-      await _markNotificationAsRead(notificationId, authService);
-    }
-
-    switch (type) {
-      case 'exercise_reminder':
-        // Navigate to activity tab (exercises)
-        setState(() {
-          _selectedBottomNavIndex = 0; // Activity tab
-        });
-        break;
-
-      case 'progress_update':
-        // Navigate to activity tab to show progress
-        setState(() {
-          _selectedBottomNavIndex = 0; // Activity tab
-        });
-        break;
-
-      case 'therapist_message':
-        if (therapistId != null) {
-          await _navigateToTherapistChat(therapistId, authService);
-        } else {
-          ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(
-                content: Text('Therapist information not available')),
-          );
-        }
-        break;
-
-      case 'plan_updated':
-        if (planId != null) {
-          await _navigateToPlanDetails(planId);
-        } else {
-          // Navigate to saved plans
-          Navigator.pushNamed(context, '/saved_plans');
-        }
-        break;
-
-      case 'therapist_added':
-      case 'therapist_removed':
-        // Navigate to profile or therapist management
-        setState(() {
-          _selectedBottomNavIndex = 3; // Profile tab
-        });
-        break;
-
-      case 'appointment_reminder':
-        // Could navigate to calendar or appointment screen
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('Calendar feature coming soon')),
-        );
-        break;
-
-      default:
-        // For unknown types, just mark as read
-        break;
-    }
-  }
-
-  Future<void> _markNotificationAsRead(
-      String notificationId, AuthService authService) async {
-    try {
-      await FirebaseFirestore.instance
-          .collection('users')
-          .doc(authService.currentUser?.uid)
-          .collection('notifications')
-          .doc(notificationId)
-          .update({'isRead': true});
-    } catch (e) {
-      print('Error marking notification as read: $e');
-    }
-  }
-
-  Future<void> _navigateToTherapistChat(
-      String therapistId, AuthService authService) async {
-    try {
-      // Get therapist details
-      final therapistDoc = await FirebaseFirestore.instance
-          .collection('users')
-          .doc(therapistId)
-          .get();
-
-      if (therapistDoc.exists) {
-        final therapistData = therapistDoc.data()!;
-        final therapistName = therapistData['name'] ?? 'Unknown Therapist';
-
-        // Get therapist profile for title
-        final therapistProfileDoc = await FirebaseFirestore.instance
-            .collection('therapists')
-            .doc(therapistId)
-            .get();
-
-        String therapistTitle = 'Dr.'; // Default title
-        if (therapistProfileDoc.exists) {
-          therapistTitle = therapistProfileDoc.data()?['title'] ?? 'Dr.';
-        }
-
-        // Navigate to chat screen
-        Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (context) => TherapistChatScreen(
-              therapistId: therapistId,
-              therapistName: therapistName,
-              therapistTitle: therapistTitle,
-              patientId: authService.currentUser!.uid,
-            ),
-          ),
-        );
-      } else {
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('Therapist not found')),
-        );
-      }
-    } catch (e) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Error loading therapist: $e')),
-      );
-    }
-  }
-
-  Future<void> _navigateToPlanDetails(String planId) async {
-    try {
-      final planDoc = await FirebaseFirestore.instance
-          .collection('rehabilitation_plans')
-          .doc(planId)
-          .get();
-
-      if (planDoc.exists) {
-        final planData = planDoc.data()!;
-        final plan = RehabilitationPlan.fromJson(planData);
-
-        Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (context) => ExerciseRecommendationScreen(
-              plan: plan,
-              planId: planId,
-            ),
-          ),
-        );
-      } else {
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('Plan not found')),
-        );
-      }
-    } catch (e) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Error loading plan: $e')),
-      );
-    }
-  }
-
-  Widget _buildProfileTab() {
-    return const ProfileScreen();
-  }
-
   Future<Map<String, dynamic>> _getProgressData() async {
     final authService = Provider.of<AuthService>(context, listen: false);
     final progressService =
@@ -921,8 +806,8 @@ class _RehabilitationProgressScreenState
               value: _completedExercisesCount /
                   (_totalExercisesCount > 0 ? _totalExercisesCount : 1),
               backgroundColor: Colors.grey.shade200,
-              valueColor: AlwaysStoppedAnimation<Color>(
-                const Color(0xFFCCDD00),
+              valueColor: const AlwaysStoppedAnimation<Color>(
+                Color(0xFFCCDD00),
               ),
               strokeWidth: 8,
             ),
@@ -1029,12 +914,15 @@ class _RehabilitationProgressScreenState
 
   // Get exercises scheduled for a specific day
   List<Exercise> _getSessionsForDay(DateTime day) {
+    if (_selectedPlan == null) return [];
+
     // This is a simplified implementation
     // In a real app, you would filter exercises based on scheduled dates
-    if (day.weekday <= widget.plan.exercises.length) {
+    if (day.weekday <= _selectedPlan!.exercises.length) {
       // Return a subset of exercises based on the day of week
       return [
-        widget.plan.exercises[(day.weekday - 1) % widget.plan.exercises.length]
+        _selectedPlan!
+            .exercises[(day.weekday - 1) % _selectedPlan!.exercises.length]
       ];
     }
     return [];
@@ -1267,19 +1155,21 @@ class _RehabilitationProgressScreenState
         ),
       );
 
-      if (isCompleted == true && widget.planId != null) {
+      if (isCompleted == true &&
+          _selectedPlanId != null &&
+          _selectedPlan != null) {
         // Update the exercise completion status
         final index =
-            widget.plan.exercises.indexWhere((e) => e.id == exercise.id);
+            _selectedPlan!.exercises.indexWhere((e) => e.id == exercise.id);
         if (index != -1) {
           setState(() {
-            widget.plan.exercises[index].isCompleted = true;
+            _selectedPlan!.exercises[index].isCompleted = true;
           });
 
-          // Save the updated plan
+          // Save the updated plan using AuthService (following dashboard pattern)
           final authService = Provider.of<AuthService>(context, listen: false);
           await authService.updateRehabilitationPlan(
-              widget.planId!, widget.plan);
+              _selectedPlanId!, _selectedPlan!);
         }
       }
     } catch (e) {
@@ -1292,117 +1182,126 @@ class _RehabilitationProgressScreenState
       });
     }
   }
+}
 
-  Widget _buildBottomNavigation() {
-    return Container(
-      height: 60,
-      decoration: BoxDecoration(
-        color: Theme.of(context).scaffoldBackgroundColor,
-        boxShadow: [
-          BoxShadow(
-            color: Theme.of(context).shadowColor.withOpacity(0.2),
-            blurRadius: 6,
-            spreadRadius: 2,
-            offset: const Offset(0, -2),
-          ),
-        ],
-      ),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-        children: [
-          _buildBottomNavItem(
-            Icons.show_chart,
-            'Activity',
-            0,
-          ),
-          _buildBottomNavItem(
-            Icons.bar_chart,
-            'Progress Chart',
-            1,
-          ),
-          _buildBottomNavItem(
-            Icons.notifications_none,
-            'Notification',
-            2,
-            hasBadge: true,
-          ),
-          _buildBottomNavItem(
-            Icons.person_outline,
-            'Profile',
-            3,
-          ),
-        ],
-      ),
-    );
-  }
+// Simple Progress Chart Widget (since it was referenced but missing)
+class SimpleProgressChart extends StatelessWidget {
+  final List<double> values;
+  final List<String> labels;
+  final String title;
+  final Color color;
+  final double maxValue;
+  final String yAxisLabel;
 
-  Widget _buildBottomNavItem(
-    IconData icon,
-    String label,
-    int index, {
-    bool hasBadge = false,
-  }) {
-    final isSelected = _selectedBottomNavIndex == index;
+  const SimpleProgressChart({
+    Key? key,
+    required this.values,
+    required this.labels,
+    required this.title,
+    required this.color,
+    required this.maxValue,
+    required this.yAxisLabel,
+  }) : super(key: key);
 
-    return GestureDetector(
-      onTap: () {
-        setState(() {
-          _selectedBottomNavIndex = index;
-        });
-      },
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Stack(
-            clipBehavior: Clip.none,
-            children: [
-              Icon(
-                icon,
-                color: isSelected
-                    ? Theme.of(context).colorScheme.primary
-                    : Colors.grey,
+  @override
+  Widget build(BuildContext context) {
+    return Card(
+      child: Padding(
+        padding: const EdgeInsets.all(16.0),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              title,
+              style: const TextStyle(
+                fontSize: 18,
+                fontWeight: FontWeight.bold,
               ),
-              if (hasBadge)
-                Positioned(
-                  right: -6,
-                  top: -6,
-                  child: Container(
-                    width: 14,
-                    height: 14,
-                    decoration: BoxDecoration(
-                      color: Colors.red,
-                      shape: BoxShape.circle,
-                      border: Border.all(
-                        color: Theme.of(context).scaffoldBackgroundColor,
-                        width: 2,
-                      ),
-                    ),
-                    child: const Center(
-                      child: Text(
-                        '2',
-                        style: TextStyle(
-                          color: Colors.white,
-                          fontSize: 8,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                    ),
-                  ),
-                ),
-            ],
-          ),
-          const SizedBox(height: 4),
-          Text(
-            label,
-            style: TextStyle(
-              fontSize: 10,
-              color: isSelected
-                  ? Theme.of(context).colorScheme.primary
-                  : Colors.grey,
             ),
-          ),
-        ],
+            const SizedBox(height: 16),
+            Container(
+              height: 200,
+              width: double.infinity,
+              decoration: BoxDecoration(
+                border: Border.all(color: Colors.grey.shade300),
+                borderRadius: BorderRadius.circular(8),
+              ),
+              child: CustomPaint(
+                painter: SimpleChartPainter(
+                  values: values,
+                  labels: labels,
+                  color: color,
+                  maxValue: maxValue,
+                ),
+              ),
+            ),
+            const SizedBox(height: 8),
+            Text(
+              yAxisLabel,
+              style: const TextStyle(
+                fontSize: 12,
+                color: Colors.grey,
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }
+}
+
+// Simple Chart Painter
+class SimpleChartPainter extends CustomPainter {
+  final List<double> values;
+  final List<String> labels;
+  final Color color;
+  final double maxValue;
+
+  SimpleChartPainter({
+    required this.values,
+    required this.labels,
+    required this.color,
+    required this.maxValue,
+  });
+
+  @override
+  void paint(Canvas canvas, Size size) {
+    if (values.isEmpty) return;
+
+    final paint = Paint()
+      ..color = color
+      ..strokeWidth = 2
+      ..style = PaintingStyle.stroke;
+
+    final pointPaint = Paint()
+      ..color = color
+      ..style = PaintingStyle.fill;
+
+    final path = Path();
+    final points = <Offset>[];
+
+    // Calculate points
+    for (int i = 0; i < values.length; i++) {
+      final x = (i / (values.length - 1)) * size.width;
+      final y = size.height - (values[i] / maxValue) * size.height;
+      points.add(Offset(x, y));
+
+      if (i == 0) {
+        path.moveTo(x, y);
+      } else {
+        path.lineTo(x, y);
+      }
+    }
+
+    // Draw line
+    canvas.drawPath(path, paint);
+
+    // Draw points
+    for (final point in points) {
+      canvas.drawCircle(point, 4, pointPaint);
+    }
+  }
+
+  @override
+  bool shouldRepaint(covariant CustomPainter oldDelegate) => true;
 }

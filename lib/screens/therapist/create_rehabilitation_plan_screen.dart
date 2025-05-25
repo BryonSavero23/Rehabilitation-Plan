@@ -10,10 +10,10 @@ class CreateRehabilitationPlanScreen extends StatefulWidget {
   final String patientName;
 
   const CreateRehabilitationPlanScreen({
-    Key? key,
+    super.key,
     required this.patientId,
     required this.patientName,
-  }) : super(key: key);
+  });
 
   @override
   State<CreateRehabilitationPlanScreen> createState() =>
@@ -64,7 +64,7 @@ class _CreateRehabilitationPlanScreenState
         case 'knee':
           _exercises.addAll([
             Exercise(
-              id: DateTime.now().millisecondsSinceEpoch.toString() + '1',
+              id: '${DateTime.now().millisecondsSinceEpoch}1',
               name: 'Straight Leg Raises',
               description:
                   'Lie flat on your back with one leg bent and the other straight. Tighten the thigh muscle of the straight leg and slowly raise it to the height of the bent knee.',
@@ -75,7 +75,7 @@ class _CreateRehabilitationPlanScreenState
               difficultyLevel: 'beginner',
             ),
             Exercise(
-              id: DateTime.now().millisecondsSinceEpoch.toString() + '2',
+              id: '${DateTime.now().millisecondsSinceEpoch}2',
               name: 'Hamstring Curls',
               description:
                   'Stand facing a wall or sturdy object for balance. Bend your affected knee, bringing your heel toward your buttocks. Hold, then lower slowly.',
@@ -86,7 +86,7 @@ class _CreateRehabilitationPlanScreenState
               difficultyLevel: 'beginner',
             ),
             Exercise(
-              id: DateTime.now().millisecondsSinceEpoch.toString() + '3',
+              id: '${DateTime.now().millisecondsSinceEpoch}3',
               name: 'Wall Squats',
               description:
                   'Stand with your back against a wall, feet shoulder-width apart. Slide down the wall until your knees are bent at about 45 degrees. Hold, then slide back up.',
@@ -102,7 +102,7 @@ class _CreateRehabilitationPlanScreenState
         case 'shoulder':
           _exercises.addAll([
             Exercise(
-              id: DateTime.now().millisecondsSinceEpoch.toString() + '1',
+              id: '${DateTime.now().millisecondsSinceEpoch}1',
               name: 'Pendulum Exercise',
               description:
                   'Lean forward slightly with support, allowing your affected arm to hang down. Swing your arm gently in small circles, then in larger circles. Repeat in the opposite direction.',
@@ -113,7 +113,7 @@ class _CreateRehabilitationPlanScreenState
               difficultyLevel: 'beginner',
             ),
             Exercise(
-              id: DateTime.now().millisecondsSinceEpoch.toString() + '2',
+              id: '${DateTime.now().millisecondsSinceEpoch}2',
               name: 'Wall Crawl',
               description:
                   'Stand facing a wall with your affected arm. Walk your fingers up the wall as high as comfortable. Slowly lower back down.',
@@ -124,7 +124,7 @@ class _CreateRehabilitationPlanScreenState
               difficultyLevel: 'beginner',
             ),
             Exercise(
-              id: DateTime.now().millisecondsSinceEpoch.toString() + '3',
+              id: '${DateTime.now().millisecondsSinceEpoch}3',
               name: 'External Rotation',
               description:
                   'Holding a light resistance band, keep your elbow at 90 degrees and close to your side. Rotate your forearm outward, away from your body.',
@@ -518,8 +518,9 @@ class _CreateRehabilitationPlanScreenState
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: _goals.entries.map((entry) {
                             // Skip the bodyPart entry as it's already shown elsewhere
-                            if (entry.key == 'bodyPart')
+                            if (entry.key == 'bodyPart') {
                               return const SizedBox.shrink();
+                            }
 
                             String label = entry.key.replaceAll('_', ' ');
                             label = label[0].toUpperCase() + label.substring(1);
@@ -729,11 +730,11 @@ class ExerciseFormDialog extends StatefulWidget {
   final Function(Exercise) onSave;
 
   const ExerciseFormDialog({
-    Key? key,
+    super.key,
     required this.bodyPart,
     this.exercise,
     required this.onSave,
-  }) : super(key: key);
+  });
 
   @override
   State<ExerciseFormDialog> createState() => _ExerciseFormDialogState();
@@ -954,11 +955,11 @@ class GoalsFormDialog extends StatefulWidget {
   final Function(Map<String, dynamic>) onSave;
 
   const GoalsFormDialog({
-    Key? key,
+    super.key,
     required this.initialGoals,
     required this.selectedBodyPart,
     required this.onSave,
-  }) : super(key: key);
+  });
 
   @override
   State<GoalsFormDialog> createState() => _GoalsFormDialogState();

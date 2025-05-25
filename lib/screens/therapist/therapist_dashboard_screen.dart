@@ -15,7 +15,7 @@ import 'package:intl/intl.dart';
 import 'enhanced_therapist_chat_screen.dart';
 
 class TherapistDashboardScreen extends StatefulWidget {
-  const TherapistDashboardScreen({Key? key}) : super(key: key);
+  const TherapistDashboardScreen({super.key});
 
   @override
   State<TherapistDashboardScreen> createState() =>

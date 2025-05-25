@@ -7,7 +7,7 @@ import 'package:personalized_rehabilitation_plans/screens/therapist/patient_deta
 import 'package:personalized_rehabilitation_plans/screens/therapist/add_patient_screen.dart';
 
 class PatientManagementDashboard extends StatefulWidget {
-  const PatientManagementDashboard({Key? key}) : super(key: key);
+  const PatientManagementDashboard({super.key});
 
   @override
   State<PatientManagementDashboard> createState() =>

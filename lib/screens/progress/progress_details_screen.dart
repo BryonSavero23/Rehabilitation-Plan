@@ -11,11 +11,11 @@ class ProgressDetailsScreen extends StatefulWidget {
   final String patientName;
 
   const ProgressDetailsScreen({
-    Key? key,
+    super.key,
     required this.progressId,
     required this.patientId,
     required this.patientName,
-  }) : super(key: key);
+  });
 
   @override
   State<ProgressDetailsScreen> createState() => _ProgressDetailsScreenState();
@@ -172,7 +172,7 @@ class _ProgressDetailsScreenState extends State<ProgressDetailsScreen> {
                     children: [
                       _buildInfoItem(
                         'Overall Rating',
-                        _progressData!.overallRating.toString() + '/5',
+                        '${_progressData!.overallRating}/5',
                         Icons.star,
                         Colors.amber,
                       ),

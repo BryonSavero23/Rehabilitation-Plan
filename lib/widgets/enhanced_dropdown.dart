@@ -11,7 +11,7 @@ class EnhancedDropdown extends StatefulWidget {
   final bool isRequired;
 
   const EnhancedDropdown({
-    Key? key,
+    super.key,
     required this.label,
     required this.items,
     required this.value,
@@ -20,7 +20,7 @@ class EnhancedDropdown extends StatefulWidget {
     required this.onOtherChanged,
     this.otherHintText,
     this.isRequired = false,
-  }) : super(key: key);
+  });
 
   @override
   State<EnhancedDropdown> createState() => _EnhancedDropdownState();

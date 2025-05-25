@@ -59,10 +59,10 @@ class AppTheme {
             vertical: 12,
           ),
         ).copyWith(
-          elevation: MaterialStateProperty.resolveWith<double>(
-            (Set<MaterialState> states) {
-              if (states.contains(MaterialState.hovered)) return 5;
-              if (states.contains(MaterialState.pressed)) return 2;
+          elevation: WidgetStateProperty.resolveWith<double>(
+            (Set<WidgetState> states) {
+              if (states.contains(WidgetState.hovered)) return 5;
+              if (states.contains(WidgetState.pressed)) return 2;
               return 3;
             },
           ),

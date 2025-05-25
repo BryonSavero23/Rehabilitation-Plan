@@ -12,10 +12,10 @@ class ExerciseRecommendationScreen extends StatefulWidget {
   final String? planId;
 
   const ExerciseRecommendationScreen({
-    Key? key,
+    super.key,
     required this.plan,
     this.planId,
-  }) : super(key: key);
+  });
 
   @override
   State<ExerciseRecommendationScreen> createState() =>
@@ -146,7 +146,7 @@ class _ExerciseRecommendationScreenState
             } else {
               return const SizedBox.shrink();
             }
-          }).toList(),
+          }),
         ],
       ],
     );

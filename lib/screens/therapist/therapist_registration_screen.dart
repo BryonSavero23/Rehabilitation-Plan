@@ -8,9 +8,9 @@ class TherapistRegistrationScreen extends StatefulWidget {
   final String userId;
 
   const TherapistRegistrationScreen({
-    Key? key,
+    super.key,
     required this.userId,
-  }) : super(key: key);
+  });
 
   @override
   State<TherapistRegistrationScreen> createState() =>

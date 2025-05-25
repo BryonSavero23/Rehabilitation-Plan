@@ -14,12 +14,12 @@ class PatientDetailScreen extends StatefulWidget {
   final String? selectedPlanId;
 
   const PatientDetailScreen({
-    Key? key,
+    super.key,
     required this.patientId,
     required this.patientName,
     this.initialTabIndex = 0,
     this.selectedPlanId,
-  }) : super(key: key);
+  });
 
   @override
   State<PatientDetailScreen> createState() => _PatientDetailScreenState();

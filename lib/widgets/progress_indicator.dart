@@ -10,14 +10,14 @@ class ProgressIndicator extends StatelessWidget {
   final bool showPercentage;
 
   const ProgressIndicator({
-    Key? key,
+    super.key,
     required this.progress,
     required this.title,
     this.subtitle = '',
     this.color,
     this.height = 8.0,
     this.showPercentage = true,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -81,13 +81,13 @@ class CustomCircularProgressIndicator extends StatelessWidget {
   final Color? color;
 
   const CustomCircularProgressIndicator({
-    Key? key,
+    super.key,
     required this.progress,
     this.centerText = '',
     this.size = 80.0,
     this.strokeWidth = 8.0,
     this.color,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
