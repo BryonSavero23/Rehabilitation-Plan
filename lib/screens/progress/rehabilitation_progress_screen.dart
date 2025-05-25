@@ -199,24 +199,28 @@ class _RehabilitationProgressScreenState
     }
   }
 
-  // Calculate completed exercises count
+  // FIX: Calculated getters that always recalculate from current plan state
   int get _completedExercisesCount {
-    return _selectedPlan?.exercises.where((e) => e.isCompleted).length ?? 0;
+    if (_selectedPlan == null) return 0;
+    final count = _selectedPlan!.exercises.where((e) => e.isCompleted).length;
+    return count;
   }
 
-  // Calculate remaining exercises
   int get _remainingExercisesCount {
-    return (_selectedPlan?.exercises.length ?? 0) - _completedExercisesCount;
+    if (_selectedPlan == null) return 0;
+    final total = _selectedPlan!.exercises.length;
+    final completed = _completedExercisesCount;
+    final remaining = total - completed;
+    return remaining;
   }
 
-  // Calculate missed exercises (placeholder)
   int get _missedExercisesCount {
     return 0; // Placeholder
   }
 
-  // Total exercises
   int get _totalExercisesCount {
-    return _selectedPlan?.exercises.length ?? 0;
+    if (_selectedPlan == null) return 0;
+    return _selectedPlan!.exercises.length;
   }
 
   @override
@@ -749,6 +753,65 @@ class _RehabilitationProgressScreenState
     );
   }
 
+  Widget _buildProgressIndicator() {
+    // FIX: Recalculate progress values on every rebuild
+    final totalExercises = _selectedPlan?.exercises.length ?? 0;
+    final completedExercises =
+        _selectedPlan?.exercises.where((e) => e.isCompleted).length ?? 0;
+
+    return Container(
+      width: 80,
+      height: 80,
+      decoration: BoxDecoration(
+        shape: BoxShape.circle,
+        color: Colors.grey.shade100,
+        boxShadow: [
+          BoxShadow(
+            color: Theme.of(context).shadowColor.withOpacity(0.2),
+            blurRadius: 5,
+            spreadRadius: 1,
+          ),
+        ],
+      ),
+      child: Stack(
+        alignment: Alignment.center,
+        children: [
+          SizedBox(
+            width: 70,
+            height: 70,
+            child: CircularProgressIndicator(
+              value:
+                  totalExercises > 0 ? completedExercises / totalExercises : 0,
+              backgroundColor: Colors.grey.shade200,
+              valueColor: const AlwaysStoppedAnimation<Color>(
+                Color(0xFFCCDD00),
+              ),
+              strokeWidth: 8,
+            ),
+          ),
+          Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Text(
+                completedExercises.toString(),
+                style: const TextStyle(
+                  fontSize: 24,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+              Text(
+                'of $totalExercises Completed',
+                style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                      color: Colors.grey,
+                    ),
+              ),
+            ],
+          ),
+        ],
+      ),
+    );
+  }
+
   Widget _buildProgressItem(int count, String label, Color color) {
     return Column(
       children: [
@@ -778,60 +841,6 @@ class _RehabilitationProgressScreenState
               ),
         ),
       ],
-    );
-  }
-
-  Widget _buildProgressIndicator() {
-    return Container(
-      width: 80,
-      height: 80,
-      decoration: BoxDecoration(
-        shape: BoxShape.circle,
-        color: Colors.grey.shade100,
-        boxShadow: [
-          BoxShadow(
-            color: Theme.of(context).shadowColor.withOpacity(0.2),
-            blurRadius: 5,
-            spreadRadius: 1,
-          ),
-        ],
-      ),
-      child: Stack(
-        alignment: Alignment.center,
-        children: [
-          SizedBox(
-            width: 70,
-            height: 70,
-            child: CircularProgressIndicator(
-              value: _completedExercisesCount /
-                  (_totalExercisesCount > 0 ? _totalExercisesCount : 1),
-              backgroundColor: Colors.grey.shade200,
-              valueColor: const AlwaysStoppedAnimation<Color>(
-                Color(0xFFCCDD00),
-              ),
-              strokeWidth: 8,
-            ),
-          ),
-          Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Text(
-                _completedExercisesCount.toString(),
-                style: const TextStyle(
-                  fontSize: 24,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-              Text(
-                'of $_totalExercisesCount Completed',
-                style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                      color: Colors.grey,
-                    ),
-              ),
-            ],
-          ),
-        ],
-      ),
     );
   }
 
@@ -1028,6 +1037,7 @@ class _RehabilitationProgressScreenState
                                     ),
                           ),
                           const Spacer(),
+                          // Completion status indicator
                           if (exerciseCompleted)
                             Container(
                               padding: const EdgeInsets.symmetric(
@@ -1052,6 +1062,36 @@ class _RehabilitationProgressScreenState
                                         .bodySmall
                                         ?.copyWith(
                                           color: Colors.green,
+                                          fontWeight: FontWeight.bold,
+                                        ),
+                                  ),
+                                ],
+                              ),
+                            )
+                          else
+                            Container(
+                              padding: const EdgeInsets.symmetric(
+                                  horizontal: 8, vertical: 2),
+                              decoration: BoxDecoration(
+                                color: Colors.orange.withOpacity(0.2),
+                                borderRadius: BorderRadius.circular(10),
+                              ),
+                              child: Row(
+                                mainAxisSize: MainAxisSize.min,
+                                children: [
+                                  const Icon(
+                                    Icons.pending,
+                                    size: 12,
+                                    color: Colors.orange,
+                                  ),
+                                  const SizedBox(width: 4),
+                                  Text(
+                                    'Pending',
+                                    style: Theme.of(context)
+                                        .textTheme
+                                        .bodySmall
+                                        ?.copyWith(
+                                          color: Colors.orange,
                                           fontWeight: FontWeight.bold,
                                         ),
                                   ),
@@ -1087,10 +1127,17 @@ class _RehabilitationProgressScreenState
                           ),
                           const SizedBox(width: 8),
                           Text(
-                            'Start session from $startTime',
+                            exerciseCompleted
+                                ? 'Completed today'
+                                : 'Start session from $startTime',
                             style:
                                 Theme.of(context).textTheme.bodySmall?.copyWith(
-                                      color: Colors.grey,
+                                      color: exerciseCompleted
+                                          ? Colors.green
+                                          : Colors.grey,
+                                      fontWeight: exerciseCompleted
+                                          ? FontWeight.w500
+                                          : FontWeight.normal,
                                     ),
                           ),
                         ],
@@ -1105,21 +1152,11 @@ class _RehabilitationProgressScreenState
             width: double.infinity,
             height: 50,
             child: ElevatedButton(
-              onPressed: exerciseCompleted
-                  ? () {
-                      // Show completion details or allow to redo
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        const SnackBar(
-                            content: Text('Exercise already completed!')),
-                      );
-                    }
-                  : () => _navigateToExerciseDetail(exercise),
+              onPressed: () =>
+                  _handleExerciseButtonTap(exercise, exerciseCompleted),
               style: ElevatedButton.styleFrom(
-                backgroundColor: exerciseCompleted
-                    ? Colors.grey.shade400 // Completed
-                    : const Color(0xFFCCDD00), // Not completed - active
-                foregroundColor:
-                    exerciseCompleted ? Colors.white : Colors.black,
+                backgroundColor: _getExerciseButtonColor(exerciseCompleted),
+                foregroundColor: _getExerciseButtonTextColor(exerciseCompleted),
                 elevation: 0,
                 shape: const RoundedRectangleBorder(
                   borderRadius: BorderRadius.only(
@@ -1128,11 +1165,21 @@ class _RehabilitationProgressScreenState
                   ),
                 ),
               ),
-              child: Text(
-                exerciseCompleted ? 'View Details' : 'Start Now',
-                style: const TextStyle(
-                  fontWeight: FontWeight.bold,
-                ),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Icon(
+                    _getExerciseButtonIcon(exerciseCompleted),
+                    size: 18,
+                  ),
+                  const SizedBox(width: 8),
+                  Text(
+                    _getExerciseButtonText(exerciseCompleted),
+                    style: const TextStyle(
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                ],
               ),
             ),
           ),
@@ -1141,6 +1188,239 @@ class _RehabilitationProgressScreenState
     );
   }
 
+  Color _getExerciseButtonColor(bool isCompleted) {
+    if (isCompleted) {
+      return Colors.grey.shade400; // Completed - gray
+    } else {
+      return const Color(0xFFCCDD00); // Not completed - active green
+    }
+  }
+
+  Color _getExerciseButtonTextColor(bool isCompleted) {
+    if (isCompleted) {
+      return Colors.white;
+    } else {
+      return Colors.black;
+    }
+  }
+
+  IconData _getExerciseButtonIcon(bool isCompleted) {
+    if (isCompleted) {
+      return Icons.check_circle;
+    } else {
+      return Icons.play_arrow;
+    }
+  }
+
+  String _getExerciseButtonText(bool isCompleted) {
+    if (isCompleted) {
+      return 'View Details';
+    } else {
+      return 'Start Now';
+    }
+  }
+
+  void _handleExerciseButtonTap(Exercise exercise, bool isCompleted) {
+    if (isCompleted) {
+      // Show exercise details or feedback
+      _showExerciseDetails(exercise);
+    } else {
+      // Start the exercise
+      _navigateToExerciseDetail(exercise);
+    }
+  }
+
+  void _showExerciseDetails(Exercise exercise) {
+    showModalBottomSheet(
+      context: context,
+      isScrollControlled: true,
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
+      ),
+      builder: (context) => DraggableScrollableSheet(
+        initialChildSize: 0.6,
+        maxChildSize: 0.9,
+        minChildSize: 0.3,
+        expand: false,
+        builder: (context, scrollController) => Container(
+          padding: const EdgeInsets.all(20),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              // Handle bar
+              Center(
+                child: Container(
+                  width: 40,
+                  height: 4,
+                  decoration: BoxDecoration(
+                    color: Colors.grey[300],
+                    borderRadius: BorderRadius.circular(2),
+                  ),
+                ),
+              ),
+              const SizedBox(height: 20),
+
+              // Exercise details
+              Row(
+                children: [
+                  Container(
+                    padding: const EdgeInsets.all(12),
+                    decoration: BoxDecoration(
+                      color: Colors.green.withOpacity(0.1),
+                      borderRadius: BorderRadius.circular(12),
+                    ),
+                    child: const Icon(
+                      Icons.check_circle,
+                      color: Colors.green,
+                      size: 24,
+                    ),
+                  ),
+                  const SizedBox(width: 16),
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          exercise.name,
+                          style: const TextStyle(
+                            fontSize: 20,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                        Text(
+                          'Completed Exercise',
+                          style: TextStyle(
+                            fontSize: 14,
+                            color: Colors.green[600],
+                            fontWeight: FontWeight.w500,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
+
+              const SizedBox(height: 24),
+
+              // Exercise stats
+              Container(
+                padding: const EdgeInsets.all(16),
+                decoration: BoxDecoration(
+                  color: Colors.grey.shade50,
+                  borderRadius: BorderRadius.circular(12),
+                ),
+                child: Column(
+                  children: [
+                    Row(
+                      children: [
+                        Expanded(
+                          child: _buildStatItem(
+                            'Sets',
+                            exercise.sets.toString(),
+                            Icons.repeat,
+                          ),
+                        ),
+                        Expanded(
+                          child: _buildStatItem(
+                            'Reps',
+                            exercise.reps.toString(),
+                            Icons.fitness_center,
+                          ),
+                        ),
+                        Expanded(
+                          child: _buildStatItem(
+                            'Duration',
+                            '${(exercise.durationSeconds / 60).ceil()}m',
+                            Icons.timer,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
+              ),
+
+              const SizedBox(height: 24),
+
+              // Exercise description
+              const Text(
+                'Exercise Description',
+                style: TextStyle(
+                  fontSize: 16,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+              const SizedBox(height: 8),
+              Text(
+                exercise.description,
+                style: TextStyle(
+                  fontSize: 14,
+                  color: Colors.grey[700],
+                  height: 1.5,
+                ),
+              ),
+
+              const SizedBox(height: 24),
+
+              // Action buttons
+              Row(
+                children: [
+                  Expanded(
+                    child: OutlinedButton.icon(
+                      icon: const Icon(Icons.repeat),
+                      label: const Text('Do Again'),
+                      onPressed: () {
+                        Navigator.pop(context);
+                        _navigateToExerciseDetail(exercise);
+                      },
+                    ),
+                  ),
+                  const SizedBox(width: 16),
+                  Expanded(
+                    child: ElevatedButton.icon(
+                      icon: const Icon(Icons.close),
+                      label: const Text('Close'),
+                      onPressed: () => Navigator.pop(context),
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: AppTheme.primaryBlue,
+                        foregroundColor: Colors.white,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildStatItem(String label, String value, IconData icon) {
+    return Column(
+      children: [
+        Icon(icon, color: AppTheme.primaryBlue, size: 20),
+        const SizedBox(height: 4),
+        Text(
+          value,
+          style: const TextStyle(
+            fontSize: 18,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+        Text(
+          label,
+          style: TextStyle(
+            fontSize: 12,
+            color: Colors.grey[600],
+          ),
+        ),
+      ],
+    );
+  }
+
+  // FIX: Updated navigation method with proper state management
   void _navigateToExerciseDetail(Exercise exercise) async {
     try {
       setState(() {
@@ -1148,43 +1428,183 @@ class _RehabilitationProgressScreenState
       });
 
       // Navigate to exercise screen
-      bool? isCompleted = await Navigator.push(
+      final result = await Navigator.push(
         context,
         MaterialPageRoute(
-          builder: (context) => ExerciseScreen(exercise: exercise),
+          builder: (context) => ExerciseScreen(
+            exercise: exercise,
+            planId: _selectedPlanId,
+          ),
         ),
       );
 
-      if (isCompleted == true &&
-          _selectedPlanId != null &&
-          _selectedPlan != null) {
-        // Update the exercise completion status
-        final index =
-            _selectedPlan!.exercises.indexWhere((e) => e.id == exercise.id);
-        if (index != -1) {
-          setState(() {
-            _selectedPlan!.exercises[index].isCompleted = true;
-          });
+      // Handle the result from exercise completion
+      if (result != null && result is Map<String, dynamic>) {
+        final bool isCompleted = result['completed'] ?? false;
+        final String? exerciseId = result['exerciseId'];
 
-          // Save the updated plan using AuthService (following dashboard pattern)
-          final authService = Provider.of<AuthService>(context, listen: false);
-          await authService.updateRehabilitationPlan(
-              _selectedPlanId!, _selectedPlan!);
+        if (isCompleted &&
+            exerciseId != null &&
+            _selectedPlan != null &&
+            _selectedPlanId != null) {
+          // FIX: Update the local plan state immediately for instant UI feedback
+          final exerciseIndex =
+              _selectedPlan!.exercises.indexWhere((e) => e.id == exerciseId);
+          if (exerciseIndex != -1) {
+            setState(() {
+              _selectedPlan!.exercises[exerciseIndex].isCompleted = true;
+            });
+          }
+
+          // Update the plan in Firestore in the background
+          await _updatePlanInFirestore(exerciseId);
+
+          // Refresh the plan data from Firestore to ensure consistency
+          await _refreshPlanData();
+
+          // Show success message with updated progress
+          if (mounted) {
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(
+                content: Text(
+                    '${exercise.name} completed! Progress: ${_completedExercisesCount}/${_totalExercisesCount}'),
+                backgroundColor: Colors.green,
+                duration: const Duration(seconds: 3),
+              ),
+            );
+          }
         }
       }
     } catch (e) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Error: $e')),
-      );
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('Error: $e'),
+            backgroundColor: Colors.red,
+          ),
+        );
+      }
     } finally {
-      setState(() {
-        _isLoading = false;
-      });
+      if (mounted) {
+        setState(() {
+          _isLoading = false;
+        });
+      }
+    }
+  }
+
+  Future<void> _updatePlanInFirestore(String exerciseId) async {
+    try {
+      final authService = Provider.of<AuthService>(context, listen: false);
+      final userId = authService.currentUser?.uid;
+
+      if (userId == null || _selectedPlanId == null) return;
+
+      // Try user's collection first
+      final userPlanQuery = await FirebaseFirestore.instance
+          .collection('users')
+          .doc(userId)
+          .collection('rehabilitation_plans')
+          .where(FieldPath.documentId, isEqualTo: _selectedPlanId)
+          .get();
+
+      if (userPlanQuery.docs.isNotEmpty) {
+        await _updatePlanDocument(userPlanQuery.docs.first, exerciseId);
+        return;
+      }
+
+      // Try main rehabilitation_plans collection
+      final mainPlanDoc = await FirebaseFirestore.instance
+          .collection('rehabilitation_plans')
+          .doc(_selectedPlanId)
+          .get();
+
+      if (mainPlanDoc.exists) {
+        await _updatePlanDocument(mainPlanDoc, exerciseId);
+        return;
+      }
+
+      print('❌ Plan document not found: $_selectedPlanId');
+    } catch (e) {
+      print('❌ Error updating plan in Firestore: $e');
+    }
+  }
+
+  Future<void> _updatePlanDocument(
+      DocumentSnapshot planDoc, String exerciseId) async {
+    try {
+      final planData = planDoc.data() as Map<String, dynamic>;
+      List<dynamic> exercises = List.from(planData['exercises'] ?? []);
+
+      bool exerciseFound = false;
+      for (int i = 0; i < exercises.length; i++) {
+        if (exercises[i]['id'] == exerciseId) {
+          exercises[i]['isCompleted'] = true;
+          exercises[i]['completedAt'] = FieldValue.serverTimestamp();
+          exerciseFound = true;
+          break;
+        }
+      }
+
+      if (exerciseFound) {
+        await planDoc.reference.update({
+          'exercises': exercises,
+          'lastUpdated': FieldValue.serverTimestamp(),
+        });
+        print('✅ Exercise $exerciseId marked as completed in Firestore');
+      } else {
+        print('❌ Exercise $exerciseId not found in plan');
+      }
+    } catch (e) {
+      print('❌ Error updating plan document: $e');
+    }
+  }
+
+  Future<void> _refreshPlanData() async {
+    try {
+      final authService = Provider.of<AuthService>(context, listen: false);
+      final userId = authService.currentUser?.uid;
+
+      if (userId == null || _selectedPlanId == null) return;
+
+      // Fetch updated plan data
+      DocumentSnapshot? planDoc;
+
+      // Try user's collection first
+      final userPlanQuery = await FirebaseFirestore.instance
+          .collection('users')
+          .doc(userId)
+          .collection('rehabilitation_plans')
+          .where(FieldPath.documentId, isEqualTo: _selectedPlanId)
+          .get();
+
+      if (userPlanQuery.docs.isNotEmpty) {
+        planDoc = userPlanQuery.docs.first;
+      } else {
+        // Try main collection
+        planDoc = await FirebaseFirestore.instance
+            .collection('rehabilitation_plans')
+            .doc(_selectedPlanId)
+            .get();
+      }
+
+      if (planDoc != null && planDoc.exists) {
+        final planData = planDoc.data() as Map<String, dynamic>;
+        final updatedPlan = RehabilitationPlan.fromJson(planData);
+
+        setState(() {
+          _selectedPlan = updatedPlan;
+        });
+
+        print('✅ Plan data refreshed successfully');
+      }
+    } catch (e) {
+      print('❌ Error refreshing plan data: $e');
     }
   }
 }
 
-// Simple Progress Chart Widget (since it was referenced but missing)
+// Simple Progress Chart Widget (included in progress_chart_widget.dart but referenced here)
 class SimpleProgressChart extends StatelessWidget {
   final List<double> values;
   final List<String> labels;
