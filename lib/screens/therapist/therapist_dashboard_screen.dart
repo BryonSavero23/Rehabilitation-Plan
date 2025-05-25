@@ -7,8 +7,6 @@ import 'package:personalized_rehabilitation_plans/screens/therapist/patient_mana
 import 'package:personalized_rehabilitation_plans/screens/therapist/patient_detail_screen.dart';
 import 'package:personalized_rehabilitation_plans/screens/therapist/add_patient_screen.dart';
 import 'package:personalized_rehabilitation_plans/screens/progress/progress_details_screen.dart';
-import 'package:personalized_rehabilitation_plans/widgets/progress_chart_widget.dart';
-import 'package:personalized_rehabilitation_plans/services/progress_service.dart';
 import 'package:intl/intl.dart';
 
 // Import the enhanced therapist chat screen
@@ -23,7 +21,6 @@ class TherapistDashboardScreen extends StatefulWidget {
 }
 
 class _TherapistDashboardScreenState extends State<TherapistDashboardScreen> {
-  int _selectedIndex = 0;
   bool _isLoading = true;
   Map<String, dynamic> _dashboardStats = {};
 
@@ -104,59 +101,52 @@ class _TherapistDashboardScreenState extends State<TherapistDashboardScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: SafeArea(
-        child: _isLoading
-            ? const Center(child: CircularProgressIndicator())
-            : IndexedStack(
-                index: _selectedIndex,
-                children: [
-                  _buildDashboardTab(),
-                  _buildPatientsTab(),
-                  _buildChatsTab(),
-                  _buildAnalyticsTab(),
-                ],
-              ),
+      body: Container(
+        decoration: BoxDecoration(
+          gradient: LinearGradient(
+            begin: Alignment.topCenter,
+            end: Alignment.bottomCenter,
+            colors: [
+              AppTheme.backgroundStart,
+              AppTheme.backgroundEnd,
+            ],
+          ),
+        ),
+        child: SafeArea(
+          child: _isLoading
+              ? const Center(child: CircularProgressIndicator())
+              : RefreshIndicator(
+                  onRefresh: _loadDashboardData,
+                  child: SingleChildScrollView(
+                    physics: const AlwaysScrollableScrollPhysics(),
+                    padding: const EdgeInsets.all(20.0),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        _buildDashboardHeader(),
+                        const SizedBox(height: 24),
+                        _buildStatsGrid(),
+                        const SizedBox(height: 24),
+                        _buildQuickActions(),
+                        const SizedBox(height: 24),
+                        _buildRecentActivity(),
+                        const SizedBox(height: 24),
+                        _buildPatientOverview(),
+                        const SizedBox(height: 24),
+                        _buildAnalyticsPreview(),
+                      ],
+                    ),
+                  ),
+                ),
+        ),
       ),
-      bottomNavigationBar: _buildBottomNavigation(),
     );
   }
 
-  Widget _buildDashboardTab() {
+  Widget _buildDashboardHeader() {
     final authService = Provider.of<AuthService>(context);
     final therapistName = authService.currentUserModel?.name ?? 'Therapist';
 
-    return Container(
-      decoration: BoxDecoration(
-        gradient: LinearGradient(
-          begin: Alignment.topCenter,
-          end: Alignment.bottomCenter,
-          colors: [
-            AppTheme.backgroundStart,
-            AppTheme.backgroundEnd,
-          ],
-        ),
-      ),
-      child: SingleChildScrollView(
-        padding: const EdgeInsets.all(20.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            _buildDashboardHeader(therapistName),
-            const SizedBox(height: 24),
-            _buildStatsGrid(),
-            const SizedBox(height: 24),
-            _buildQuickActions(),
-            const SizedBox(height: 24),
-            _buildRecentActivity(),
-            const SizedBox(height: 24),
-            _buildPatientOverview(),
-          ],
-        ),
-      ),
-    );
-  }
-
-  Widget _buildDashboardHeader(String therapistName) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
@@ -219,7 +209,7 @@ class _TherapistDashboardScreenState extends State<TherapistDashboardScreen> {
           value: _dashboardStats['totalPatients']?.toString() ?? '0',
           icon: Icons.people,
           color: Colors.blue,
-          onTap: () => setState(() => _selectedIndex = 1),
+          onTap: () => _navigateToPatientManagement(),
         ),
         _buildStatCard(
           title: 'Active Plans',
@@ -233,14 +223,14 @@ class _TherapistDashboardScreenState extends State<TherapistDashboardScreen> {
           value: _dashboardStats['recentActivity']?.toString() ?? '0',
           icon: Icons.trending_up,
           color: Colors.orange,
-          onTap: () => setState(() => _selectedIndex = 3),
+          onTap: () => _showRecentActivityDialog(),
         ),
         _buildStatCard(
           title: 'Unread Messages',
           value: _dashboardStats['unreadMessages']?.toString() ?? '0',
           icon: Icons.message,
           color: Colors.purple,
-          onTap: () => setState(() => _selectedIndex = 2),
+          onTap: () => _showMessagesDialog(),
         ),
       ],
     );
@@ -330,26 +320,39 @@ class _TherapistDashboardScreenState extends State<TherapistDashboardScreen> {
           ),
         ),
         const SizedBox(height: 16),
-        Row(
-          children: [
-            Expanded(
-              child: _buildActionButton(
+        SingleChildScrollView(
+          scrollDirection: Axis.horizontal,
+          child: Row(
+            children: [
+              _buildActionButton(
                 title: 'Add Patient',
                 icon: Icons.person_add,
                 color: AppTheme.primaryBlue,
                 onTap: () => _navigateToAddPatient(),
               ),
-            ),
-            const SizedBox(width: 16),
-            Expanded(
-              child: _buildActionButton(
-                title: 'View All Patients',
+              const SizedBox(width: 12),
+              _buildActionButton(
+                title: 'View Patients',
                 icon: Icons.group,
                 color: Colors.green,
                 onTap: () => _navigateToPatientManagement(),
               ),
-            ),
-          ],
+              const SizedBox(width: 12),
+              _buildActionButton(
+                title: 'Messages',
+                icon: Icons.chat,
+                color: Colors.purple,
+                onTap: () => _showMessagesDialog(),
+              ),
+              const SizedBox(width: 12),
+              _buildActionButton(
+                title: 'Analytics',
+                icon: Icons.analytics,
+                color: Colors.orange,
+                onTap: () => _showAnalyticsDialog(),
+              ),
+            ],
+          ),
         ),
       ],
     );
@@ -364,6 +367,7 @@ class _TherapistDashboardScreenState extends State<TherapistDashboardScreen> {
     return GestureDetector(
       onTap: onTap,
       child: Container(
+        width: 120,
         padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 16),
         decoration: BoxDecoration(
           color: color.withOpacity(0.1),
@@ -373,25 +377,22 @@ class _TherapistDashboardScreenState extends State<TherapistDashboardScreen> {
             width: 1,
           ),
         ),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.center,
+        child: Column(
           children: [
             Icon(
               icon,
               color: color,
               size: 24,
             ),
-            const SizedBox(width: 12),
-            Expanded(
-              child: Text(
-                title,
-                style: TextStyle(
-                  color: color,
-                  fontWeight: FontWeight.w600,
-                  fontSize: 16,
-                ),
-                textAlign: TextAlign.center,
+            const SizedBox(width: 8),
+            Text(
+              title,
+              style: TextStyle(
+                color: color,
+                fontWeight: FontWeight.w600,
+                fontSize: 14,
               ),
+              textAlign: TextAlign.center,
             ),
           ],
         ),
@@ -417,7 +418,7 @@ class _TherapistDashboardScreenState extends State<TherapistDashboardScreen> {
               ),
             ),
             TextButton(
-              onPressed: () => setState(() => _selectedIndex = 3),
+              onPressed: () => _showRecentActivityDialog(),
               child: const Text('View All'),
             ),
           ],
@@ -575,7 +576,7 @@ class _TherapistDashboardScreenState extends State<TherapistDashboardScreen> {
               ),
             ),
             TextButton(
-              onPressed: () => setState(() => _selectedIndex = 1),
+              onPressed: () => _navigateToPatientManagement(),
               child: const Text('View All'),
             ),
           ],
@@ -707,258 +708,92 @@ class _TherapistDashboardScreenState extends State<TherapistDashboardScreen> {
     );
   }
 
-  Widget _buildPatientsTab() {
-    return const PatientManagementDashboard();
-  }
-
-  Widget _buildChatsTab() {
+  Widget _buildAnalyticsPreview() {
     final authService = Provider.of<AuthService>(context);
 
-    return Container(
-      decoration: BoxDecoration(
-        gradient: LinearGradient(
-          begin: Alignment.topCenter,
-          end: Alignment.bottomCenter,
-          colors: [
-            AppTheme.backgroundStart,
-            AppTheme.backgroundEnd,
-          ],
-        ),
-      ),
-      child: Column(
-        children: [
-          AppBar(
-            title: const Text('Patient Chats'),
-            backgroundColor: Colors.transparent,
-            elevation: 0,
-            foregroundColor: AppTheme.primaryBlue,
-            automaticallyImplyLeading: false,
-          ),
-          Expanded(
-            child: StreamBuilder<QuerySnapshot>(
-              stream: FirebaseFirestore.instance
-                  .collection('chats')
-                  .where('therapistId', isEqualTo: authService.currentUser?.uid)
-                  .orderBy('lastMessageTime', descending: true)
-                  .snapshots(),
-              builder: (context, snapshot) {
-                if (snapshot.connectionState == ConnectionState.waiting) {
-                  return const Center(child: CircularProgressIndicator());
-                }
-
-                if (!snapshot.hasData || snapshot.data!.docs.isEmpty) {
-                  return _buildNoChatsCard();
-                }
-
-                return ListView.builder(
-                  padding: const EdgeInsets.all(16),
-                  itemCount: snapshot.data!.docs.length,
-                  itemBuilder: (context, index) {
-                    final chatData = snapshot.data!.docs[index].data()
-                        as Map<String, dynamic>;
-                    return _buildChatCard(chatData);
-                  },
-                );
-              },
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-
-  Widget _buildNoChatsCard() {
-    return Center(
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Icon(
-            Icons.chat_bubble_outline,
-            size: 64,
-            color: Colors.grey[400],
-          ),
-          const SizedBox(height: 16),
-          const Text(
-            'No Conversations Yet',
-            style: TextStyle(
-              fontSize: 18,
-              fontWeight: FontWeight.bold,
-            ),
-          ),
-          const SizedBox(height: 8),
-          const Text(
-            'Patient messages will appear here',
-            style: TextStyle(color: Colors.grey),
-          ),
-        ],
-      ),
-    );
-  }
-
-  Widget _buildChatCard(Map<String, dynamic> chatData) {
-    final patientId = chatData['patientId'] ?? '';
-    final lastMessage = chatData['lastMessage'] ?? '';
-    final lastMessageTime = chatData['lastMessageTime'] as Timestamp?;
-    final lastMessageSender = chatData['lastMessageSender'] ?? '';
-
-    return FutureBuilder<DocumentSnapshot>(
-      future:
-          FirebaseFirestore.instance.collection('users').doc(patientId).get(),
-      builder: (context, userSnapshot) {
-        String patientName = 'Unknown Patient';
-        if (userSnapshot.hasData && userSnapshot.data!.exists) {
-          patientName = userSnapshot.data!.get('name') ?? 'Unknown Patient';
-        }
-
-        return Card(
-          margin: const EdgeInsets.only(bottom: 12),
-          child: ListTile(
-            leading: CircleAvatar(
-              backgroundColor: AppTheme.primaryBlue,
-              child: Text(
-                patientName.substring(0, 1).toUpperCase(),
-                style: const TextStyle(
-                  color: Colors.white,
-                  fontWeight: FontWeight.bold,
-                ),
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            const Text(
+              'Analytics Preview',
+              style: TextStyle(
+                fontSize: 20,
+                fontWeight: FontWeight.bold,
+                color: Colors.black87,
               ),
             ),
-            title: Text(
-              patientName,
-              style: const TextStyle(fontWeight: FontWeight.w600),
+            TextButton(
+              onPressed: () => _showAnalyticsDialog(),
+              child: const Text('View Full Analytics'),
             ),
-            subtitle: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                const SizedBox(height: 4),
-                Text(
-                  lastMessage.isNotEmpty ? lastMessage : 'No messages yet',
-                  maxLines: 1,
-                  overflow: TextOverflow.ellipsis,
-                ),
-                if (lastMessageTime != null)
-                  Text(
-                    _formatChatTime(lastMessageTime.toDate()),
-                    style: const TextStyle(fontSize: 12),
-                  ),
-              ],
-            ),
-            trailing: const Icon(Icons.arrow_forward_ios, size: 16),
-            onTap: () => _navigateToChat(patientId, patientName),
-          ),
-        );
-      },
-    );
-  }
-
-  Widget _buildAnalyticsTab() {
-    return Container(
-      decoration: BoxDecoration(
-        gradient: LinearGradient(
-          begin: Alignment.topCenter,
-          end: Alignment.bottomCenter,
-          colors: [
-            AppTheme.backgroundStart,
-            AppTheme.backgroundEnd,
           ],
         ),
-      ),
-      child: SingleChildScrollView(
-        padding: const EdgeInsets.all(16),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            AppBar(
-              title: const Text('Analytics'),
-              backgroundColor: Colors.transparent,
-              elevation: 0,
-              foregroundColor: AppTheme.primaryBlue,
-              automaticallyImplyLeading: false,
-            ),
-            const SizedBox(height: 16),
-            _buildOverallStatsCard(),
-            const SizedBox(height: 24),
-            _buildPatientProgressChart(),
-            const SizedBox(height: 24),
-            _buildRecentProgressLogs(),
-          ],
-        ),
-      ),
-    );
-  }
+        const SizedBox(height: 16),
+        FutureBuilder<Map<String, dynamic>>(
+          future: _getOverallStats(authService.currentUser?.uid ?? ''),
+          builder: (context, snapshot) {
+            if (snapshot.connectionState == ConnectionState.waiting) {
+              return const Center(child: CircularProgressIndicator());
+            }
 
-  Widget _buildOverallStatsCard() {
-    final authService = Provider.of<AuthService>(context);
+            final stats = snapshot.data ?? {};
 
-    return FutureBuilder<Map<String, dynamic>>(
-      future: _getOverallStats(authService.currentUser?.uid ?? ''),
-      builder: (context, snapshot) {
-        if (snapshot.connectionState == ConnectionState.waiting) {
-          return const Center(child: CircularProgressIndicator());
-        }
-
-        final stats = snapshot.data ?? {};
-
-        return Card(
-          child: Padding(
-            padding: const EdgeInsets.all(20),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                const Text(
-                  'Overall Statistics',
-                  style: TextStyle(
-                    fontSize: 20,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-                const SizedBox(height: 16),
-                Row(
+            return Card(
+              child: Padding(
+                padding: const EdgeInsets.all(20),
+                child: Column(
                   children: [
-                    Expanded(
-                      child: _buildStatItem(
-                        'Average Adherence',
-                        '${stats['avgAdherence']?.round() ?? 0}%',
-                        Icons.check_circle,
-                        Colors.green,
-                      ),
+                    Row(
+                      children: [
+                        Expanded(
+                          child: _buildStatItem(
+                            'Avg Adherence',
+                            '${stats['avgAdherence']?.round() ?? 0}%',
+                            Icons.check_circle,
+                            Colors.green,
+                          ),
+                        ),
+                        Expanded(
+                          child: _buildStatItem(
+                            'Avg Pain Level',
+                            '${stats['avgPainLevel']?.toStringAsFixed(1) ?? '0.0'}/10',
+                            Icons.healing,
+                            Colors.orange,
+                          ),
+                        ),
+                      ],
                     ),
-                    Expanded(
-                      child: _buildStatItem(
-                        'Average Pain Level',
-                        '${stats['avgPainLevel']?.toStringAsFixed(1) ?? '0.0'}/10',
-                        Icons.healing,
-                        Colors.orange,
-                      ),
+                    const SizedBox(height: 16),
+                    Row(
+                      children: [
+                        Expanded(
+                          child: _buildStatItem(
+                            'Total Sessions',
+                            '${stats['totalSessions'] ?? 0}',
+                            Icons.fitness_center,
+                            Colors.blue,
+                          ),
+                        ),
+                        Expanded(
+                          child: _buildStatItem(
+                            'This Week',
+                            '${stats['thisWeekSessions'] ?? 0}',
+                            Icons.calendar_today,
+                            Colors.purple,
+                          ),
+                        ),
+                      ],
                     ),
                   ],
                 ),
-                const SizedBox(height: 16),
-                Row(
-                  children: [
-                    Expanded(
-                      child: _buildStatItem(
-                        'Total Sessions',
-                        '${stats['totalSessions'] ?? 0}',
-                        Icons.fitness_center,
-                        Colors.blue,
-                      ),
-                    ),
-                    Expanded(
-                      child: _buildStatItem(
-                        'This Week',
-                        '${stats['thisWeekSessions'] ?? 0}',
-                        Icons.calendar_today,
-                        Colors.purple,
-                      ),
-                    ),
-                  ],
-                ),
-              ],
-            ),
-          ),
-        );
-      },
+              ),
+            );
+          },
+        ),
+      ],
     );
   }
 
@@ -978,7 +813,7 @@ class _TherapistDashboardScreenState extends State<TherapistDashboardScreen> {
         Text(
           value,
           style: const TextStyle(
-            fontSize: 20,
+            fontSize: 18,
             fontWeight: FontWeight.bold,
           ),
         ),
@@ -991,291 +826,6 @@ class _TherapistDashboardScreenState extends State<TherapistDashboardScreen> {
           textAlign: TextAlign.center,
         ),
       ],
-    );
-  }
-
-  Widget _buildPatientProgressChart() {
-    final authService = Provider.of<AuthService>(context);
-
-    return FutureBuilder<Map<String, dynamic>>(
-      future: _getProgressTrendsData(authService.currentUser?.uid ?? ''),
-      builder: (context, snapshot) {
-        if (snapshot.connectionState == ConnectionState.waiting) {
-          return const Center(child: CircularProgressIndicator());
-        }
-
-        if (!snapshot.hasData || snapshot.data!.isEmpty) {
-          return Card(
-            child: Padding(
-              padding: const EdgeInsets.all(20),
-              child: Column(
-                children: [
-                  Icon(
-                    Icons.show_chart,
-                    size: 48,
-                    color: Colors.grey[400],
-                  ),
-                  const SizedBox(height: 16),
-                  const Text(
-                    'No Progress Data Available',
-                    style: TextStyle(
-                      fontSize: 16,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                  const SizedBox(height: 8),
-                  const Text(
-                    'Patient progress charts will appear here',
-                    style: TextStyle(color: Colors.grey),
-                  ),
-                ],
-              ),
-            ),
-          );
-        }
-
-        final data = snapshot.data!;
-        final painLevels = List<double>.from(data['painLevels'] ?? []);
-        final adherenceRates = List<int>.from(data['adherenceRates'] ?? []);
-        final dates = List<String>.from(data['dates'] ?? []);
-
-        return ProgressChartWidget(
-          painLevels: painLevels,
-          adherenceRates: adherenceRates,
-          dates: dates,
-          title: 'Patient Progress Trends (Last 30 Days)',
-        );
-      },
-    );
-  }
-
-  Widget _buildRecentProgressLogs() {
-    final authService = Provider.of<AuthService>(context);
-
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        const Text(
-          'Recent Progress Logs',
-          style: TextStyle(
-            fontSize: 20,
-            fontWeight: FontWeight.bold,
-          ),
-        ),
-        const SizedBox(height: 16),
-        StreamBuilder<QuerySnapshot>(
-          stream: FirebaseFirestore.instance
-              .collection('progress_logs')
-              .where('therapistId', isEqualTo: authService.currentUser?.uid)
-              .orderBy('date', descending: true)
-              .limit(10)
-              .snapshots(),
-          builder: (context, snapshot) {
-            if (snapshot.connectionState == ConnectionState.waiting) {
-              return const Center(child: CircularProgressIndicator());
-            }
-
-            if (!snapshot.hasData || snapshot.data!.docs.isEmpty) {
-              return Card(
-                child: Padding(
-                  padding: const EdgeInsets.all(20),
-                  child: Column(
-                    children: [
-                      Icon(
-                        Icons.timeline,
-                        size: 48,
-                        color: Colors.grey[400],
-                      ),
-                      const SizedBox(height: 16),
-                      const Text(
-                        'No Progress Logs',
-                        style: TextStyle(
-                          fontSize: 16,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                      const SizedBox(height: 8),
-                      const Text(
-                        'Patient progress logs will appear here',
-                        style: TextStyle(color: Colors.grey),
-                      ),
-                    ],
-                  ),
-                ),
-              );
-            }
-
-            return Column(
-              children: snapshot.data!.docs.map((doc) {
-                final data = doc.data() as Map<String, dynamic>;
-                return _buildProgressLogCard(data, doc.id);
-              }).toList(),
-            );
-          },
-        ),
-      ],
-    );
-  }
-
-  Widget _buildProgressLogCard(Map<String, dynamic> data, String logId) {
-    final patientId = data['userId'] ?? '';
-    final date = (data['date'] as Timestamp?)?.toDate() ?? DateTime.now();
-    final adherence = data['adherencePercentage'] ?? 0;
-    final rating = data['overallRating'] ?? 0;
-    final exerciseLogs = data['exerciseLogs'] as List<dynamic>? ?? [];
-
-    // Calculate average pain level
-    double avgPain = 0;
-    if (exerciseLogs.isNotEmpty) {
-      double totalPain = 0;
-      for (var exercise in exerciseLogs) {
-        totalPain += (exercise['painLevel'] ?? 0);
-      }
-      avgPain = totalPain / exerciseLogs.length;
-    }
-
-    return FutureBuilder<DocumentSnapshot>(
-      future:
-          FirebaseFirestore.instance.collection('users').doc(patientId).get(),
-      builder: (context, userSnapshot) {
-        String patientName = 'Unknown Patient';
-        if (userSnapshot.hasData && userSnapshot.data!.exists) {
-          patientName = userSnapshot.data!.get('name') ?? 'Unknown Patient';
-        }
-
-        return Card(
-          margin: const EdgeInsets.only(bottom: 12),
-          child: ListTile(
-            leading: CircleAvatar(
-              backgroundColor: _getAdherenceColor(adherence).withOpacity(0.2),
-              child: Text(
-                patientName.substring(0, 1).toUpperCase(),
-                style: TextStyle(
-                  color: _getAdherenceColor(adherence),
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-            ),
-            title: Text(
-              patientName,
-              style: const TextStyle(fontWeight: FontWeight.w600),
-            ),
-            subtitle: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                const SizedBox(height: 4),
-                Row(
-                  children: [
-                    Icon(
-                      Icons.check_circle,
-                      size: 14,
-                      color: _getAdherenceColor(adherence),
-                    ),
-                    const SizedBox(width: 4),
-                    Text('$adherence% adherence'),
-                    const SizedBox(width: 16),
-                    Icon(
-                      Icons.healing,
-                      size: 14,
-                      color: _getPainColor(avgPain),
-                    ),
-                    const SizedBox(width: 4),
-                    Text('${avgPain.toStringAsFixed(1)}/10 pain'),
-                  ],
-                ),
-                const SizedBox(height: 2),
-                Text(
-                  '${exerciseLogs.length} exercises • ${DateFormat('MMM dd, yyyy').format(date)}',
-                  style: const TextStyle(fontSize: 12),
-                ),
-              ],
-            ),
-            trailing: Row(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                ...List.generate(5, (index) {
-                  return Icon(
-                    index < rating ? Icons.star : Icons.star_border,
-                    color: Colors.amber,
-                    size: 16,
-                  );
-                }),
-                const SizedBox(width: 8),
-                const Icon(Icons.arrow_forward_ios, size: 16),
-              ],
-            ),
-            onTap: () =>
-                _navigateToProgressDetails(logId, patientId, patientName),
-          ),
-        );
-      },
-    );
-  }
-
-  Widget _buildBottomNavigation() {
-    return Container(
-      decoration: BoxDecoration(
-        color: Colors.white,
-        boxShadow: [
-          BoxShadow(
-            color: Colors.grey.withOpacity(0.2),
-            blurRadius: 10,
-            offset: const Offset(0, -2),
-          ),
-        ],
-      ),
-      child: BottomNavigationBar(
-        currentIndex: _selectedIndex,
-        onTap: (index) => setState(() => _selectedIndex = index),
-        type: BottomNavigationBarType.fixed,
-        selectedItemColor: AppTheme.primaryBlue,
-        unselectedItemColor: Colors.grey,
-        backgroundColor: Colors.white,
-        elevation: 0,
-        items: [
-          const BottomNavigationBarItem(
-            icon: Icon(Icons.dashboard),
-            label: 'Dashboard',
-          ),
-          const BottomNavigationBarItem(
-            icon: Icon(Icons.people),
-            label: 'Patients',
-          ),
-          BottomNavigationBarItem(
-            icon: Stack(
-              clipBehavior: Clip.none,
-              children: [
-                const Icon(Icons.chat),
-                if ((_dashboardStats['unreadMessages'] ?? 0) > 0)
-                  Positioned(
-                    right: -8,
-                    top: -8,
-                    child: Container(
-                      padding: const EdgeInsets.all(4),
-                      decoration: const BoxDecoration(
-                        color: Colors.red,
-                        shape: BoxShape.circle,
-                      ),
-                      child: Text(
-                        '${_dashboardStats['unreadMessages']}',
-                        style: const TextStyle(
-                          color: Colors.white,
-                          fontSize: 10,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                    ),
-                  ),
-              ],
-            ),
-            label: 'Chats',
-          ),
-          const BottomNavigationBarItem(
-            icon: Icon(Icons.analytics),
-            label: 'Analytics',
-          ),
-        ],
-      ),
     );
   }
 
@@ -1329,70 +879,6 @@ class _TherapistDashboardScreenState extends State<TherapistDashboardScreen> {
     }
   }
 
-  Future<Map<String, dynamic>> _getProgressTrendsData(
-      String therapistId) async {
-    try {
-      final endDate = DateTime.now();
-      final startDate = endDate.subtract(const Duration(days: 30));
-
-      final progressSnapshot = await FirebaseFirestore.instance
-          .collection('progress_logs')
-          .where('therapistId', isEqualTo: therapistId)
-          .where('date', isGreaterThanOrEqualTo: startDate)
-          .where('date', isLessThanOrEqualTo: endDate)
-          .orderBy('date')
-          .get();
-
-      if (progressSnapshot.docs.isEmpty) {
-        return {};
-      }
-
-      List<double> painLevels = [];
-      List<int> adherenceRates = [];
-      List<String> dates = [];
-
-      for (var doc in progressSnapshot.docs) {
-        final data = doc.data();
-        final date = (data['date'] as Timestamp?)?.toDate() ?? DateTime.now();
-
-        adherenceRates.add(data['adherencePercentage'] ?? 0);
-
-        final exerciseLogs = data['exerciseLogs'] as List<dynamic>? ?? [];
-        double avgPain = 0;
-        if (exerciseLogs.isNotEmpty) {
-          double totalPain = 0;
-          for (var exercise in exerciseLogs) {
-            totalPain += (exercise['painLevel'] ?? 0);
-          }
-          avgPain = totalPain / exerciseLogs.length;
-        }
-        painLevels.add(avgPain);
-        dates.add('${date.day}/${date.month}');
-      }
-
-      return {
-        'painLevels': painLevels,
-        'adherenceRates': adherenceRates,
-        'dates': dates,
-      };
-    } catch (e) {
-      print('Error getting progress trends: $e');
-      return {};
-    }
-  }
-
-  Color _getAdherenceColor(int adherence) {
-    if (adherence >= 80) return Colors.green;
-    if (adherence >= 60) return Colors.orange;
-    return Colors.red;
-  }
-
-  Color _getPainColor(double pain) {
-    if (pain <= 3) return Colors.green;
-    if (pain <= 6) return Colors.orange;
-    return Colors.red;
-  }
-
   String _formatDate(DateTime date) {
     final now = DateTime.now();
     final difference = now.difference(date);
@@ -1405,21 +891,6 @@ class _TherapistDashboardScreenState extends State<TherapistDashboardScreen> {
       return '${difference.inDays} days ago';
     } else {
       return DateFormat('MMM dd, yyyy').format(date);
-    }
-  }
-
-  String _formatChatTime(DateTime time) {
-    final now = DateTime.now();
-    final difference = now.difference(time);
-
-    if (difference.inMinutes < 60) {
-      return '${difference.inMinutes}m ago';
-    } else if (difference.inHours < 24) {
-      return '${difference.inHours}h ago';
-    } else if (difference.inDays < 7) {
-      return '${difference.inDays}d ago';
-    } else {
-      return DateFormat('MMM dd').format(time);
     }
   }
 
@@ -1483,5 +954,60 @@ class _TherapistDashboardScreenState extends State<TherapistDashboardScreen> {
         ),
       ),
     ).then((_) => _loadDashboardData()); // Refresh data when returning
+  }
+
+  // Dialog methods
+  void _showRecentActivityDialog() {
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: const Text('Recent Activity'),
+        content: const Text(
+          'This would show detailed recent activity from all patients.',
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(context),
+            child: const Text('Close'),
+          ),
+        ],
+      ),
+    );
+  }
+
+  void _showMessagesDialog() {
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: const Text('Messages'),
+        content: const Text(
+          'This would show patient chat conversations.',
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(context),
+            child: const Text('Close'),
+          ),
+        ],
+      ),
+    );
+  }
+
+  void _showAnalyticsDialog() {
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: const Text('Analytics'),
+        content: const Text(
+          'This would show detailed analytics and progress charts.',
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(context),
+            child: const Text('Close'),
+          ),
+        ],
+      ),
+    );
   }
 }
