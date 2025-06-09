@@ -1,0 +1,41 @@
+{
+  "id": "c48ebf5a-09da-4f89-a36f-f1d2366f8d15",
+  "feedback": {
+    "exerciseName": "Wall Squats",
+    "exerciseId": "knee_3_def456",
+    "userId": "user123",
+    "painLevelBefore": 5,
+    "painLevelAfter": 3,
+    "difficultyRating": "perfect",
+    "completionPercentage": 100,
+    "notes": "Felt much better today, no pain during exercise",
+    "sessionDate": "2024-01-15",
+    "duration": 240
+  },
+  "analysis": {
+    "recommendations": [
+      "Exercise helped maintain or reduce pain levels. Continue as prescribed.",
+      "Perfect difficulty level! Maintain current intensity.",
+      "Low completion rate. Focus on form over quantity."
+    ],
+    "adjustments": {
+      "sets_multiplier": 0.7,
+      "reps_multiplier": 0.8
+    },
+    "effectiveness_score": 1.0,
+    "pain_analysis": {
+      "pain_change": -2,
+      "is_beneficial": true,
+      "severity": "mild"
+    },
+    "completion_analysis": {
+      "completion_rate": 0.0,
+      "is_adequate": false
+    },
+    "difficulty_analysis": {
+      "rating": "perfect",
+      "is_appropriate": true
+    }
+  },
+  "timestamp": "2025-05-25T21:06:04.831815"
+}

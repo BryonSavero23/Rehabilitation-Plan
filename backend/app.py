@@ -900,7 +900,7 @@ def generate_plan(rehab_data):
         
         print(f"Processing plan for pain level: {pain_level}")
         
-        # EXPLICIT LOGIC BASED ON PAIN LEVEL - NO ML PREDICTIONS
+        # EXPLICIT LOGIC BASED ON PAIN LEVEL
         if pain_level >= 8:  # High pain (8-10)
             difficulty = 'beginner'
             sets = 1

@@ -13,7 +13,7 @@ dependencies:
   intl: ^0.20.2
   
   # Firebase - using compatible versions that work together
-  firebase_core: ^3.12.1
+  firebase_core: ^3.13.1
   firebase_auth: ^5.5.1
   cloud_firestore: ^5.6.5
   

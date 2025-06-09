@@ -1,0 +1,42 @@
+{
+  "id": "a8aab59a-dbd8-4fef-be28-d9f7b87a5909",
+  "feedback": {
+    "exerciseName": "Ankle Pumps",
+    "exerciseId": "ankle_1_ghi789",
+    "userId": "user456",
+    "painLevelBefore": 2,
+    "painLevelAfter": 1,
+    "difficultyRating": "easy",
+    "completionPercentage": 100,
+    "notes": "This exercise feels too easy now",
+    "sessionDate": "2024-01-15",
+    "duration": 120
+  },
+  "analysis": {
+    "recommendations": [
+      "Exercise helped maintain or reduce pain levels. Continue as prescribed.",
+      "Exercise seems too easy. Consider increasing intensity next time.",
+      "Low completion rate. Focus on form over quantity."
+    ],
+    "adjustments": {
+      "sets_multiplier": 0.7,
+      "reps_multiplier": 0.8,
+      "difficulty_level": "intermediate"
+    },
+    "effectiveness_score": 0.6,
+    "pain_analysis": {
+      "pain_change": -1,
+      "is_beneficial": true,
+      "severity": "mild"
+    },
+    "completion_analysis": {
+      "completion_rate": 0.0,
+      "is_adequate": false
+    },
+    "difficulty_analysis": {
+      "rating": "easy",
+      "is_appropriate": false
+    }
+  },
+  "timestamp": "2025-05-25T21:06:16.643257"
+}

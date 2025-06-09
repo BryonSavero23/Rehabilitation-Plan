@@ -1,0 +1,44 @@
+{
+  "id": "04402ded-9cec-4bb7-a748-22ce05e34ed5",
+  "feedback": {
+    "exerciseName": "Straight Leg Raises",
+    "exerciseId": "knee_1_abc123",
+    "userId": "user123",
+    "painLevelBefore": 7,
+    "painLevelAfter": 8,
+    "difficultyRating": "hard",
+    "completionPercentage": 60,
+    "notes": "Pain increased during exercise, felt strain in knee",
+    "sessionDate": "2024-01-15",
+    "duration": 180
+  },
+  "analysis": {
+    "recommendations": [
+      "High pain level detected. Consider reducing exercise intensity.",
+      "Exercise is too challenging. Reducing intensity recommended.",
+      "Low completion rate. Focus on form over quantity."
+    ],
+    "adjustments": {
+      "intensity_multiplier": 0.7,
+      "rest_time_multiplier": 1.5,
+      "sets_multiplier": 0.7,
+      "reps_multiplier": 0.8,
+      "difficulty_level": "beginner"
+    },
+    "effectiveness_score": 0.35,
+    "pain_analysis": {
+      "pain_change": 1,
+      "is_beneficial": false,
+      "severity": "very_severe"
+    },
+    "completion_analysis": {
+      "completion_rate": 0.0,
+      "is_adequate": false
+    },
+    "difficulty_analysis": {
+      "rating": "hard",
+      "is_appropriate": false
+    }
+  },
+  "timestamp": "2025-05-25T21:04:55.249224"
+}
