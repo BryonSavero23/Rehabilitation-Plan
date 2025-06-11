@@ -1,13 +1,13 @@
 plugins {
     id "com.android.application"
     id "kotlin-android"
-    // The Flutter Gplugins {
-    id "com.android.application"
-    id "kotlin-android"
     // The Flutter Gradle Plugin must be applied after the Android and Kotlin Gradle plugins.
     id "dev.flutter.flutter-gradle-plugin"
     id 'com.google.gms.google-services'
 }
+
+// Add this import if it's missing
+import java.util.Properties
 
 def localProperties = new Properties()
 def localPropertiesFile = rootProject.file('local.properties')
@@ -30,7 +30,7 @@ if (flutterVersionName == null) {
 
 android {
     namespace = "com.example.personalized_rehabilitation_plans"
-    compileSdk = 34
+    compileSdk = 35
     ndkVersion = flutter.ndkVersion
 
     compileOptions {
@@ -45,7 +45,7 @@ android {
     defaultConfig {
         applicationId = "com.example.personalized_rehabilitation_plans"
         minSdk = 23
-        targetSdk = 34
+        targetSdk = 35
         versionCode flutterVersionCode.toInteger()
         versionName flutterVersionName
     }

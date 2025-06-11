@@ -2,11 +2,11 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/foundation.dart';
 import 'package:personalized_rehabilitation_plans/models/exercise_feedback_model.dart';
-import 'package:http/http.dart' as http;
-import 'dart:convert';
+import 'package:personalized_rehabilitation_plans/services/rehabilitation_service.dart';
 
 class FeedbackService extends ChangeNotifier {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
+  final RehabilitationService _rehabilitationService = RehabilitationService();
   bool _isLoading = false;
 
   bool get isLoading => _isLoading;
@@ -244,6 +244,30 @@ class FeedbackService extends ChangeNotifier {
             .toList());
   }
 
+  // Get AI-powered analytics
+  Future<Map<String, dynamic>> getAIAnalytics(String userId) async {
+    try {
+      return await _rehabilitationService.getUserAnalytics(userId: userId);
+    } catch (e) {
+      print('Error getting AI analytics: $e');
+      return {};
+    }
+  }
+
+  // Get AI feedback trends
+  Future<Map<String, dynamic>> getAIFeedbackTrends(String userId,
+      {int daysBack = 30}) async {
+    try {
+      return await _rehabilitationService.getFeedbackTrends(
+        userId: userId,
+        daysBack: daysBack,
+      );
+    } catch (e) {
+      print('Error getting AI feedback trends: $e');
+      return {};
+    }
+  }
+
   // Private helper methods
 
   String _analyzeImprovementTrend(List<ExerciseFeedback> feedbacks) {
@@ -376,47 +400,55 @@ class FeedbackService extends ChangeNotifier {
     return recommendations;
   }
 
-  // Send feedback to backend for ML analysis
+  // UPDATED: Send feedback to backend for ML analysis
   Future<void> _sendToBackendAnalysis(ExerciseFeedback feedback) async {
     try {
-      // This integrates with your Flask backend
-      const String baseUrl =
-          'http://localhost:5000/api'; // Update with your backend URL
+      final responseData =
+          await _rehabilitationService.analyzeFeedback(feedback.toMap());
 
-      final response = await http
-          .post(
-            Uri.parse('$baseUrl/analyze_feedback'),
-            headers: {
-              'Content-Type': 'application/json',
-              'Accept': 'application/json',
-            },
-            body: jsonEncode({
-              'feedback': feedback.toMap(),
-              'timestamp': DateTime.now().toIso8601String(),
-            }),
-          )
-          .timeout(const Duration(seconds: 10));
+      print('✅ Backend analysis response: $responseData');
 
-      if (response.statusCode == 200) {
-        final responseData = jsonDecode(response.body);
-        print('Backend analysis response: $responseData');
+      // Handle AI recommendations from the new modular backend
+      if (responseData['analysis'] != null) {
+        final analysis = responseData['analysis'];
 
-        // Handle any recommendations or adjustments from backend
-        if (responseData['recommendations'] != null) {
-          await _storeBERecommendations(
-              feedback.userId, responseData['recommendations']);
+        // Store recommendations if available
+        if (analysis['recommendations'] != null) {
+          await _storeAIRecommendations(
+              feedback.userId, analysis['recommendations']);
         }
-      } else {
-        print('Backend analysis failed: ${response.statusCode}');
+
+        // Log effectiveness score
+        if (analysis['effectiveness_score'] != null) {
+          print(
+              '🎯 Exercise effectiveness score: ${analysis['effectiveness_score']}');
+        }
+
+        // Log pain analysis
+        if (analysis['pain_analysis'] != null) {
+          final painAnalysis = analysis['pain_analysis'];
+          print('💊 Pain beneficial: ${painAnalysis['is_beneficial']}');
+          print('📊 Pain severity: ${painAnalysis['severity']}');
+        }
+
+        // Log adjustments suggested by AI
+        if (analysis['adjustments'] != null) {
+          final adjustments = analysis['adjustments'];
+          print('🔧 AI suggested adjustments: $adjustments');
+
+          // Store these adjustments for future use
+          await _storeAIAdjustments(
+              feedback.userId, feedback.exerciseId, adjustments);
+        }
       }
     } catch (e) {
-      print('Error sending feedback to backend: $e');
+      print('❌ Error sending feedback to backend: $e');
       // Don't throw error here as feedback submission should still succeed
     }
   }
 
   // Store backend recommendations
-  Future<void> _storeBERecommendations(
+  Future<void> _storeAIRecommendations(
       String userId, List<dynamic> recommendations) async {
     try {
       await _firestore.collection('userRecommendations').add({
@@ -428,6 +460,23 @@ class FeedbackService extends ChangeNotifier {
       });
     } catch (e) {
       print('Error storing backend recommendations: $e');
+    }
+  }
+
+  // NEW: Store AI-generated adjustments for future plan optimization
+  Future<void> _storeAIAdjustments(String userId, String exerciseId,
+      Map<String, dynamic> adjustments) async {
+    try {
+      await _firestore.collection('aiAdjustments').add({
+        'userId': userId,
+        'exerciseId': exerciseId,
+        'adjustments': adjustments,
+        'source': 'ai_analysis',
+        'timestamp': FieldValue.serverTimestamp(),
+        'applied': false,
+      });
+    } catch (e) {
+      print('Error storing AI adjustments: $e');
     }
   }
 
