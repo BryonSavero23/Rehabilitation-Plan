@@ -338,13 +338,28 @@ class _ExerciseCompletionScreenState extends State<ExerciseCompletionScreen>
 
       if (adjustmentHistory.isNotEmpty) {
         final latestAdjustment = adjustmentHistory.first;
-        final adjustmentTime = latestAdjustment['timestamp'] as Timestamp?;
 
-        // Check if adjustment was made in the last minute (indicating it was from this session)
+        // FIXED: Safe timestamp handling
+        dynamic timestampData = latestAdjustment['timestamp'];
+        DateTime? adjustmentTime;
+
+        if (timestampData is Timestamp) {
+          adjustmentTime = timestampData.toDate();
+        } else if (timestampData is DateTime) {
+          adjustmentTime = timestampData;
+        } else if (timestampData is String) {
+          try {
+            adjustmentTime = DateTime.parse(timestampData);
+          } catch (e) {
+            print('❌ Error parsing timestamp string: $e');
+            adjustmentTime = null;
+          }
+        }
+
+        // Check if adjustment was made in the last 2 minutes (indicating it was from this session)
         if (adjustmentTime != null) {
-          final adjustmentDate = adjustmentTime.toDate();
           final now = DateTime.now();
-          final timeDifference = now.difference(adjustmentDate).inMinutes;
+          final timeDifference = now.difference(adjustmentTime).inMinutes;
 
           if (timeDifference < 2) {
             setState(() {
@@ -356,11 +371,19 @@ class _ExerciseCompletionScreenState extends State<ExerciseCompletionScreen>
             _adjustmentController.forward();
 
             print('🎯 Recent adjustments detected and displayed');
+          } else {
+            print(
+                '📊 Latest adjustment is too old: ${timeDifference} minutes ago');
           }
+        } else {
+          print('❌ Could not parse adjustment timestamp');
         }
+      } else {
+        print('📊 No adjustment history found for exercise: $exerciseId');
       }
     } catch (e) {
       print('❌ Error checking adjustments: $e');
+      // Don't throw error - this is optional functionality
     }
   }
 

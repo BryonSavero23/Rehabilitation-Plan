@@ -1,4 +1,4 @@
-// lib/services/exercise_adjustment_service.dart (Enhanced with Real-time AI Processing)
+// lib/services/exercise_adjustment_service.dart (FIXED VERSION)
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:personalized_rehabilitation_plans/models/rehabilitation_models.dart';
 import 'package:personalized_rehabilitation_plans/services/rehabilitation_service.dart';
@@ -54,9 +54,6 @@ class ExerciseAdjustmentService {
           print('✅ Pattern-based adjustments applied');
         }
       }
-
-      // Step 4: Check for ML optimization opportunities
-      await _processMLOptimization(userId, planId, exerciseId);
 
       print('🎯 Post-exercise adjustment processing complete');
     } catch (e) {
@@ -158,38 +155,6 @@ class ExerciseAdjustmentService {
       }
     } catch (e) {
       print('❌ Error in pattern-based adjustments: $e');
-    }
-  }
-
-  // 🧠 Process ML optimization using backend
-  Future<void> _processMLOptimization(
-      String userId, String planId, String exerciseId) async {
-    try {
-      print('🧠 Processing ML optimization...');
-
-      // Get feedback history for ML analysis
-      final feedbackHistory =
-          await _getRecentFeedbackHistory(userId, exerciseId, 10);
-
-      if (feedbackHistory.length < 5) {
-        print('📊 Insufficient data for ML optimization');
-        return;
-      }
-
-      // Send to ML backend for optimization
-      final optimizationResult = await _rehabilitationService.optimizePlan(
-        userId: userId,
-        exerciseId: exerciseId,
-        feedbackHistory: feedbackHistory,
-      );
-
-      if (optimizationResult['optimized_parameters'] != null) {
-        final params = optimizationResult['optimized_parameters'];
-        await _applyOptimizedParameters(userId, planId, exerciseId, params);
-        print('🎯 ML optimization applied');
-      }
-    } catch (e) {
-      print('❌ Error in ML optimization: $e');
     }
   }
 
@@ -403,65 +368,6 @@ class ExerciseAdjustmentService {
     return adjustments;
   }
 
-  // 🎯 Apply ML-optimized parameters
-  Future<void> _applyOptimizedParameters(
-    String userId,
-    String planId,
-    String exerciseId,
-    Map<String, dynamic> optimizedParams,
-  ) async {
-    try {
-      print('🎯 Applying ML-optimized parameters...');
-
-      // Get current exercise to calculate multipliers
-      final planDoc = await _getPlanDocument(userId, planId);
-      if (planDoc == null || !planDoc.exists) return;
-
-      final planData = planDoc.data() as Map<String, dynamic>;
-      final exercises = List<dynamic>.from(planData['exercises'] ?? []);
-
-      Map<String, dynamic>? currentExercise;
-      for (final exercise in exercises) {
-        if (exercise['id'] == exerciseId) {
-          currentExercise = exercise;
-          break;
-        }
-      }
-
-      if (currentExercise == null) return;
-
-      final adjustments = <String, dynamic>{};
-
-      // Calculate multipliers from optimized vs current values
-      if (optimizedParams.containsKey('optimized_sets')) {
-        final currentSets = currentExercise['sets'] ?? 3;
-        final optimizedSets = optimizedParams['optimized_sets'];
-        adjustments['sets_multiplier'] = optimizedSets / currentSets;
-      }
-
-      if (optimizedParams.containsKey('optimized_reps')) {
-        final currentReps = currentExercise['reps'] ?? 10;
-        final optimizedReps = optimizedParams['optimized_reps'];
-        adjustments['reps_multiplier'] = optimizedReps / currentReps;
-      }
-
-      if (adjustments.isNotEmpty) {
-        await applyAIAdjustments(
-          userId: userId,
-          planId: planId,
-          exerciseId: exerciseId,
-          aiAdjustments: adjustments,
-        );
-
-        await _logAdjustment(
-            userId, exerciseId, adjustments, 'ml_optimization');
-        print('✅ ML-optimized parameters applied');
-      }
-    } catch (e) {
-      print('❌ Error applying optimized parameters: $e');
-    }
-  }
-
   // 🔍 Check if exercise needs adjustment based on recent feedback patterns
   Future<bool> shouldAdjustExercise(
       String userId, String exerciseId, int feedbackCount) async {
@@ -598,7 +504,7 @@ class ExerciseAdjustmentService {
     }
   }
 
-  // 🔍 Get adjustment history for an exercise
+  // 🔍 Get adjustment history for an exercise - FIXED VERSION
   Future<List<Map<String, dynamic>>> getAdjustmentHistory(
     String userId,
     String exerciseId,
@@ -612,12 +518,20 @@ class ExerciseAdjustmentService {
           .limit(10)
           .get();
 
-      return snapshot.docs
-          .map((doc) => {
-                'id': doc.id,
-                ...doc.data(),
-              })
-          .toList();
+      return snapshot.docs.map((doc) {
+        final data = doc.data();
+        // FIXED: Safe timestamp handling
+        final timestamp = data['timestamp'];
+
+        return {
+          'id': doc.id,
+          ...data,
+          // Convert Timestamp to DateTime safely
+          'timestamp': timestamp is Timestamp
+              ? timestamp.toDate()
+              : (timestamp is DateTime ? timestamp : DateTime.now()),
+        };
+      }).toList();
     } catch (e) {
       print('❌ Error getting adjustment history: $e');
       return [];
@@ -702,90 +616,6 @@ class ExerciseAdjustmentService {
     } catch (e) {
       print('❌ Error getting adjustment analytics: $e');
       return {};
-    }
-  }
-
-  // 🎯 Predict next adjustment for an exercise
-  Future<Map<String, dynamic>?> predictNextAdjustment(
-      String userId, String exerciseId) async {
-    try {
-      final feedbackHistory =
-          await _getRecentFeedbackHistory(userId, exerciseId, 5);
-
-      if (feedbackHistory.length < 3) {
-        return null;
-      }
-
-      // Simple prediction based on trends
-      final patterns = _analyzePatterns(feedbackHistory);
-
-      if (patterns.isNotEmpty) {
-        return {
-          'predictedAdjustments': patterns,
-          'confidence': _calculatePredictionConfidence(feedbackHistory),
-          'reasoning': 'Based on recent feedback patterns',
-          'recommendedTiming': 'After next session',
-        };
-      }
-
-      return null;
-    } catch (e) {
-      print('❌ Error predicting next adjustment: $e');
-      return null;
-    }
-  }
-
-  // 📊 Calculate prediction confidence based on data quality
-  double _calculatePredictionConfidence(
-      List<Map<String, dynamic>> feedbackHistory) {
-    if (feedbackHistory.length < 3) return 0.0;
-    if (feedbackHistory.length < 5) return 0.6;
-    if (feedbackHistory.length < 8) return 0.8;
-    return 0.95;
-  }
-
-  // 🔄 Revert last adjustment if user reports issues
-  Future<void> revertLastAdjustment(
-      String userId, String exerciseId, String planId) async {
-    try {
-      print('🔄 Reverting last adjustment for exercise: $exerciseId');
-
-      // Get the last adjustment
-      final adjustmentHistory = await getAdjustmentHistory(userId, exerciseId);
-
-      if (adjustmentHistory.isEmpty) {
-        print('❌ No adjustments to revert');
-        return;
-      }
-
-      final lastAdjustment = adjustmentHistory.first;
-      final adjustments = lastAdjustment['adjustments'] as Map<String, dynamic>;
-
-      // Create inverse adjustments
-      final inverseAdjustments = <String, dynamic>{};
-
-      for (final entry in adjustments.entries) {
-        if (entry.key.contains('multiplier')) {
-          final multiplier = entry.value as double;
-          inverseAdjustments[entry.key] =
-              1.0 / multiplier; // Inverse multiplier
-        }
-      }
-
-      if (inverseAdjustments.isNotEmpty) {
-        await applyAIAdjustments(
-          userId: userId,
-          planId: planId,
-          exerciseId: exerciseId,
-          aiAdjustments: inverseAdjustments,
-        );
-
-        await _logAdjustment(
-            userId, exerciseId, inverseAdjustments, 'revert_adjustment');
-        print('✅ Last adjustment reverted successfully');
-      }
-    } catch (e) {
-      print('❌ Error reverting adjustment: $e');
     }
   }
 }
