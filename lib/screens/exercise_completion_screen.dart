@@ -1,4 +1,4 @@
-// lib/screens/exercise_completion_screen.dart (Enhanced with Real-time AI Adjustments)
+// lib/screens/exercise_completion_screen.dart (FIXED - AI Analysis stays visible)
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:provider/provider.dart';
@@ -41,6 +41,8 @@ class _ExerciseCompletionScreenState extends State<ExerciseCompletionScreen>
   String _difficultyRating = 'perfect';
   String _additionalNotes = '';
   bool _isSubmitting = false;
+  bool _isAnalyzing = false; // NEW: Separate state for AI analysis
+  bool _feedbackSubmitted = false; // NEW: Track if feedback is submitted
   Map<String, dynamic>? _aiAnalysis;
   Map<String, dynamic>? _exerciseAdjustments;
   bool _showAIInsights = false;
@@ -137,6 +139,7 @@ class _ExerciseCompletionScreenState extends State<ExerciseCompletionScreen>
 
     setState(() {
       _isSubmitting = true;
+      _isAnalyzing = true; // Start AI analysis indicator
     });
 
     try {
@@ -189,6 +192,13 @@ class _ExerciseCompletionScreenState extends State<ExerciseCompletionScreen>
       // 🚀 REAL-TIME AI ANALYSIS & ADJUSTMENTS
       await _processRealTimeAdjustments(feedback);
 
+      // FIXED: Mark feedback as submitted but don't navigate yet
+      setState(() {
+        _feedbackSubmitted = true;
+        _isSubmitting = false;
+        _isAnalyzing = false; // Stop analysis indicator
+      });
+
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
@@ -215,17 +225,9 @@ class _ExerciseCompletionScreenState extends State<ExerciseCompletionScreen>
             duration: const Duration(seconds: 4),
           ),
         );
-
-        // Return with completion status and adjustments
-        Navigator.of(context).pop({
-          'completed': true,
-          'exerciseId': widget.exercise.id,
-          'feedback': feedback.toMap(),
-          'aiAnalysis': _aiAnalysis,
-          'adjustmentsApplied': _adjustmentsApplied,
-          'exerciseAdjustments': _exerciseAdjustments,
-        });
       }
+
+      // FIXED: Don't auto-navigate - let user read AI analysis first
     } catch (e) {
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
@@ -239,8 +241,28 @@ class _ExerciseCompletionScreenState extends State<ExerciseCompletionScreen>
       if (mounted) {
         setState(() {
           _isSubmitting = false;
+          _isAnalyzing = false;
         });
       }
+    }
+  }
+
+  // NEW: Separate method to finish and navigate
+  void _finishAndNavigate() {
+    if (mounted) {
+      Navigator.of(context).pop({
+        'completed': true,
+        'exerciseId': widget.exercise.id,
+        'feedback': {
+          'painLevelBefore': widget.prePainLevel,
+          'painLevelAfter': _postPainLevel,
+          'difficultyRating': _difficultyRating,
+          'completed': true,
+        },
+        'aiAnalysis': _aiAnalysis,
+        'adjustmentsApplied': _adjustmentsApplied,
+        'exerciseAdjustments': _exerciseAdjustments,
+      });
     }
   }
 
@@ -698,6 +720,12 @@ class _ExerciseCompletionScreenState extends State<ExerciseCompletionScreen>
               ),
               const SizedBox(height: 24),
 
+              // AI Analysis loading indicator
+              if (_isAnalyzing && !_showAIInsights) ...[
+                _buildAnalysisLoadingIndicator(),
+                const SizedBox(height: 24),
+              ],
+
               // AI Insights Section
               if (_showAIInsights && _aiAnalysis != null) ...[
                 AnimatedBuilder(
@@ -728,25 +756,131 @@ class _ExerciseCompletionScreenState extends State<ExerciseCompletionScreen>
                 const SizedBox(height: 24),
               ],
 
-              // Additional notes
-              _buildNotesSection(),
-              const SizedBox(height: 32),
+              // Additional notes (only show if feedback not submitted)
+              if (!_feedbackSubmitted) ...[
+                _buildNotesSection(),
+                const SizedBox(height: 32),
+              ],
 
-              // Submit button
-              CustomButton(
-                text: _isSubmitting
-                    ? 'Processing AI Analysis...'
-                    : 'Submit Feedback',
-                onPressed: _isSubmitting ? null : _submitFeedback,
-                width: double.infinity,
-                isLoading: _isSubmitting,
-              ),
+              // FIXED: Dynamic button based on state
+              _buildActionButton(),
               const SizedBox(height: 16),
             ],
           ),
         ),
       ),
     );
+  }
+
+  // NEW: Loading indicator for AI analysis
+  Widget _buildAnalysisLoadingIndicator() {
+    return Container(
+      padding: const EdgeInsets.all(20),
+      decoration: BoxDecoration(
+        gradient: LinearGradient(
+          colors: [Colors.blue.shade50, Colors.cyan.shade50],
+          begin: Alignment.topLeft,
+          end: Alignment.bottomRight,
+        ),
+        borderRadius: BorderRadius.circular(16),
+        border: Border.all(color: Colors.blue.withOpacity(0.3)),
+      ),
+      child: Column(
+        children: [
+          Row(
+            children: [
+              Container(
+                width: 24,
+                height: 24,
+                child: CircularProgressIndicator(
+                  strokeWidth: 2,
+                  valueColor: AlwaysStoppedAnimation<Color>(Colors.blue),
+                ),
+              ),
+              const SizedBox(width: 12),
+              const Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      'AI Analysis in Progress...',
+                      style: TextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.blue,
+                      ),
+                    ),
+                    Text(
+                      'Analyzing your feedback and generating insights',
+                      style: TextStyle(fontSize: 12, color: Colors.grey),
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          ),
+        ],
+      ),
+    );
+  }
+
+  // FIXED: Dynamic action button
+  Widget _buildActionButton() {
+    if (!_feedbackSubmitted) {
+      // Show submit feedback button
+      return CustomButton(
+        text: _isSubmitting ? 'Processing AI Analysis...' : 'Submit Feedback',
+        onPressed: _isSubmitting ? null : _submitFeedback,
+        width: double.infinity,
+        isLoading: _isSubmitting,
+      );
+    } else {
+      // Show finish button after feedback is submitted
+      return Column(
+        children: [
+          // Success message
+          Container(
+            padding: const EdgeInsets.all(16),
+            decoration: BoxDecoration(
+              color: Colors.green.withOpacity(0.1),
+              borderRadius: BorderRadius.circular(12),
+              border: Border.all(color: Colors.green.withOpacity(0.3)),
+            ),
+            child: Row(
+              children: [
+                const Icon(Icons.check_circle, color: Colors.green, size: 24),
+                const SizedBox(width: 12),
+                const Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        'Feedback Submitted Successfully!',
+                        style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          color: Colors.green,
+                        ),
+                      ),
+                      Text(
+                        'Review your AI insights above and finish when ready',
+                        style: TextStyle(fontSize: 12, color: Colors.grey),
+                      ),
+                    ],
+                  ),
+                ),
+              ],
+            ),
+          ),
+          const SizedBox(height: 16),
+          CustomButton(
+            text: 'Finish & Return to Progress',
+            onPressed: _finishAndNavigate,
+            width: double.infinity,
+            backgroundColor: AppTheme.primaryBlue,
+          ),
+        ],
+      );
+    }
   }
 
   Widget _buildCelebrationHeader() {
@@ -891,7 +1025,7 @@ class _ExerciseCompletionScreenState extends State<ExerciseCompletionScreen>
     );
   }
 
-  // 🎯 NEW: REAL-TIME ADJUSTMENTS DISPLAY
+  // 🎯 REAL-TIME ADJUSTMENTS DISPLAY
   Widget _buildAdjustmentsDisplay() {
     if (_exerciseAdjustments == null) return const SizedBox.shrink();
 
@@ -985,12 +1119,11 @@ class _ExerciseCompletionScreenState extends State<ExerciseCompletionScreen>
                     color: Colors.blue.withOpacity(0.1),
                     borderRadius: BorderRadius.circular(8),
                   ),
-                  child: Row(
+                  child: const Row(
                     children: [
-                      const Icon(Icons.info_outline,
-                          color: Colors.blue, size: 16),
-                      const SizedBox(width: 8),
-                      const Expanded(
+                      Icon(Icons.info_outline, color: Colors.blue, size: 16),
+                      SizedBox(width: 8),
+                      Expanded(
                         child: Text(
                           'These adjustments are based on your feedback and pain response patterns',
                           style: TextStyle(fontSize: 12, color: Colors.blue),
@@ -1334,27 +1467,53 @@ class _ExerciseCompletionScreenState extends State<ExerciseCompletionScreen>
   }
 
   void _showExitConfirmation() {
-    showDialog(
-      context: context,
-      builder: (context) => AlertDialog(
-        title: const Text('Submit Feedback'),
-        content: const Text(
-            'Please submit your feedback before leaving this screen.'),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.pop(context),
-            child: const Text('Continue Feedback'),
-          ),
-          TextButton(
-            onPressed: () {
-              Navigator.pop(context);
-              Navigator.pop(context, {'completed': false});
-            },
-            child: const Text('Skip Feedback'),
-          ),
-        ],
-      ),
-    );
+    if (_feedbackSubmitted) {
+      // If feedback is already submitted, just ask for confirmation
+      showDialog(
+        context: context,
+        builder: (context) => AlertDialog(
+          title: const Text('Return to Progress'),
+          content: const Text(
+              'Are you sure you want to return? Your feedback has been saved.'),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.pop(context),
+              child: const Text('Stay Here'),
+            ),
+            TextButton(
+              onPressed: () {
+                Navigator.pop(context);
+                _finishAndNavigate();
+              },
+              child: const Text('Return'),
+            ),
+          ],
+        ),
+      );
+    } else {
+      // If feedback not submitted, warn about losing data
+      showDialog(
+        context: context,
+        builder: (context) => AlertDialog(
+          title: const Text('Submit Feedback'),
+          content: const Text(
+              'Please submit your feedback before leaving this screen.'),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.pop(context),
+              child: const Text('Continue Feedback'),
+            ),
+            TextButton(
+              onPressed: () {
+                Navigator.pop(context);
+                Navigator.pop(context, {'completed': false});
+              },
+              child: const Text('Skip Feedback'),
+            ),
+          ],
+        ),
+      );
+    }
   }
 
   Color _getSetsCompletionColor() {

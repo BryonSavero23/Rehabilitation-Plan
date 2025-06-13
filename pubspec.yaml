@@ -11,6 +11,7 @@ dependencies:
     sdk: flutter
   cupertino_icons: ^1.0.2
   intl: ^0.20.2
+  fl_chart: ^0.65.0
   
   # Firebase - using compatible versions that work together
   firebase_core: ^3.13.1
