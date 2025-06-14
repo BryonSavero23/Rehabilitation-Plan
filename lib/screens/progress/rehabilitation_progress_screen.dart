@@ -1023,8 +1023,12 @@ class _RehabilitationProgressScreenState
       if (userId == null) return [];
 
       if (isNextWeek) {
-        // Get scheduled exercises for next week
-        return await _adjustmentService.getExercisesForDate(userId, day);
+        // ✅ FIXED: Pass the current plan ID to filter exercises by plan
+        return await _adjustmentService.getExercisesForDate(
+          userId,
+          day,
+          currentPlanId: _selectedPlanId, // This was missing!
+        );
       } else {
         // Get current plan exercises for current week (simplified logic)
         if (_selectedPlan == null) return [];
