@@ -571,7 +571,8 @@ class _RehabilitationProgressScreenState
     return Column(
       children: [
         _buildProgressSection(),
-        _buildCalendar(_weekDays, false), // Current week calendar
+        _buildCalendarWithNavigation(
+            _weekDays, false), // Add navigation for current week
         Expanded(
           child: SingleChildScrollView(
             padding: const EdgeInsets.symmetric(horizontal: 16),
@@ -580,6 +581,92 @@ class _RehabilitationProgressScreenState
         ),
       ],
     );
+  }
+
+// Add this new method for calendar with navigation arrows:
+  Widget _buildCalendarWithNavigation(
+      List<DateTime> weekDays, bool isNextWeek) {
+    return Column(
+      children: [
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 10),
+          child: Row(
+            children: [
+              // Left Arrow
+              IconButton(
+                onPressed: () => _navigateToPreviousWeek(),
+                icon: Icon(
+                  Icons.chevron_left,
+                  size: 30,
+                  color: Colors.black54,
+                ),
+              ),
+              // Calendar Days
+              Expanded(
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: List.generate(
+                    weekDays.length,
+                    (index) => _buildCalendarDay(index, weekDays, isNextWeek),
+                  ),
+                ),
+              ),
+              // Right Arrow
+              IconButton(
+                onPressed: () => _navigateToNextWeek(),
+                icon: Icon(
+                  Icons.chevron_right,
+                  size: 30,
+                  color: Colors.black54,
+                ),
+              ),
+            ],
+          ),
+        ),
+        const SizedBox(height: 16),
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 16),
+          child: FutureBuilder<List<Map<String, dynamic>>>(
+            future: _getExercisesForDay(weekDays[_selectedDay], isNextWeek),
+            builder: (context, snapshot) {
+              final exerciseCount = snapshot.data?.length ?? 0;
+              final dayName = isNextWeek ? 'Next' : 'Today';
+
+              return Text(
+                '$dayName, ${DateFormat('dd MMM yyyy').format(weekDays[_selectedDay])} ($exerciseCount exercises)',
+                style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                      fontWeight: FontWeight.w500,
+                    ),
+              );
+            },
+          ),
+        ),
+        const SizedBox(height: 8),
+      ],
+    );
+  }
+
+// Add these navigation methods:
+  void _navigateToPreviousWeek() {
+    setState(() {
+      // Clear the list and add new dates (7 days back)
+      final newWeekDays =
+          _weekDays.map((day) => day.subtract(Duration(days: 7))).toList();
+      _weekDays.clear();
+      _weekDays.addAll(newWeekDays);
+      _selectedDay = 0; // Reset to first day of the week
+    });
+  }
+
+  void _navigateToNextWeek() {
+    setState(() {
+      // Clear the list and add new dates (7 days forward)
+      final newWeekDays =
+          _weekDays.map((day) => day.add(Duration(days: 7))).toList();
+      _weekDays.clear();
+      _weekDays.addAll(newWeekDays);
+      _selectedDay = 0; // Reset to first day of the week
+    });
   }
 
   // Next week tab
@@ -908,7 +995,7 @@ class _RehabilitationProgressScreenState
     );
   }
 
-  // Enhanced calendar to handle both current and next week
+  // Keep your existing _buildCalendar method unchanged for Next Week tab:
   Widget _buildCalendar(List<DateTime> weekDays, bool isNextWeek) {
     return Column(
       children: [
@@ -945,6 +1032,7 @@ class _RehabilitationProgressScreenState
     );
   }
 
+  // Optionally, update _buildCalendarDay for better scrolling experience:
   Widget _buildCalendarDay(
       int index, List<DateTime> weekDays, bool isNextWeek) {
     final day = weekDays[index];
@@ -964,8 +1052,8 @@ class _RehabilitationProgressScreenState
           final hasExercises = (snapshot.data?.length ?? 0) > 0;
 
           return Container(
-            width: 40,
-            height: 60,
+            width: 50, // Slightly wider for better touch when scrolling
+            height: 70, // Slightly taller
             decoration: BoxDecoration(
               shape: BoxShape.circle,
               color: isSelected ? accentColor : Colors.transparent,
@@ -981,6 +1069,7 @@ class _RehabilitationProgressScreenState
                   style: TextStyle(
                     fontSize: 10,
                     color: isSelected ? Colors.white : Colors.grey,
+                    fontWeight: FontWeight.w500,
                   ),
                 ),
                 const SizedBox(height: 4),
