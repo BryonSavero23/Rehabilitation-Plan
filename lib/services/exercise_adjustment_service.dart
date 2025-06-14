@@ -1,7 +1,8 @@
-// lib/services/exercise_adjustment_service.dart (FIXED VERSION)
+// lib/services/exercise_adjustment_service.dart (COMPLETE UPDATED VERSION)
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:personalized_rehabilitation_plans/models/rehabilitation_models.dart';
 import 'package:personalized_rehabilitation_plans/services/rehabilitation_service.dart';
+import 'package:intl/intl.dart';
 
 class ExerciseAdjustmentService {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
@@ -51,11 +52,12 @@ class ExerciseAdjustmentService {
 
         if (needsPatternAdjustment) {
           await _processPatternBasedAdjustments(userId, planId, exerciseId);
+          adjustmentsApplied = true;
           print('✅ Pattern-based adjustments applied');
         }
       }
 
-      // 🗓️ NEW: Schedule adjusted exercise for next week
+      // 🗓️ FIXED: Schedule adjusted exercise for SAME DAY next week
       if (adjustmentsApplied) {
         await _scheduleAdjustedExerciseForNextWeek(
           userId: userId,
@@ -72,7 +74,7 @@ class ExerciseAdjustmentService {
     }
   }
 
-  // 🗓️ NEW: Schedule adjusted exercise for next week
+  // 🗓️ FIXED: Schedule adjusted exercise for SAME DAY next week (using ORIGINAL schedule date)
   Future<void> _scheduleAdjustedExerciseForNextWeek({
     required String userId,
     required String planId,
@@ -80,20 +82,92 @@ class ExerciseAdjustmentService {
     required Map<String, dynamic> feedbackData,
   }) async {
     try {
-      print('🗓️ Scheduling adjusted exercise for next week...');
+      print('🗓️ Scheduling adjusted exercise for same day next week...');
 
-      // Calculate next week's start date (next Monday)
-      final now = DateTime.now();
-      final daysUntilNextMonday = (8 - now.weekday) % 7;
-      final nextWeekStart = now.add(
-          Duration(days: daysUntilNextMonday == 0 ? 7 : daysUntilNextMonday));
+      // ✅ FIXED: Use ORIGINAL exercise schedule date, not completion date
+      DateTime originalScheduleDate;
+
+      // Try to get the original scheduled date from the exercise plan
+      // This maintains routine consistency even if exercise is completed late
+      try {
+        // Get the current week's exercise schedule for this exercise
+        final now = DateTime.now();
+        final startOfWeek = _getWeekStart(now);
+
+        // Check if we can find the original schedule in current week
+        final originalScheduled = await _firestore
+            .collection('exerciseSchedule')
+            .where('userId', isEqualTo: userId)
+            .where('exerciseId', isEqualTo: exerciseId)
+            .where('scheduledDate',
+                isGreaterThanOrEqualTo: Timestamp.fromDate(startOfWeek))
+            .where('scheduledDate',
+                isLessThan: Timestamp.fromDate(
+                    startOfWeek.add(const Duration(days: 7))))
+            .limit(1)
+            .get();
+
+        if (originalScheduled.docs.isNotEmpty) {
+          // Found original schedule - use that date
+          final originalData = originalScheduled.docs.first.data();
+          originalScheduleDate =
+              (originalData['scheduledDate'] as Timestamp).toDate();
+          print(
+              '📅 Found original schedule date: ${_formatDate(originalScheduleDate)} (${_getDayOfWeekName(originalScheduleDate.weekday)})');
+        } else {
+          // No original schedule found, try to infer from exercise pattern
+          originalScheduleDate =
+              await _inferOriginalScheduleDate(userId, exerciseId);
+        }
+      } catch (e) {
+        print('❌ Could not find original schedule, using current date pattern');
+        originalScheduleDate =
+            await _inferOriginalScheduleDate(userId, exerciseId);
+      }
+
+      print(
+          '📅 Using original schedule day: ${_getDayOfWeekName(originalScheduleDate.weekday)}');
+
+      // Calculate same day next week from ORIGINAL schedule date
+      final nextWeekSameDay = originalScheduleDate.add(const Duration(days: 7));
+
+      // Normalize to start of day for consistent scheduling
+      final scheduledDate = DateTime(
+          nextWeekSameDay.year,
+          nextWeekSameDay.month,
+          nextWeekSameDay.day,
+          9,
+          0,
+          0 // Schedule for 9 AM by default
+          );
+
+      print(
+          '📅 Scheduling for: ${_formatDate(scheduledDate)} (${_getDayOfWeekName(scheduledDate.weekday)})');
+
+      // 🚫 PREVENT ANY EXERCISE on this date: Check if ANY exercise is already scheduled
+      final existingSchedule = await _firestore
+          .collection('exerciseSchedule')
+          .where('userId', isEqualTo: userId)
+          .where('scheduledDate', isEqualTo: Timestamp.fromDate(scheduledDate))
+          .limit(1)
+          .get();
+
+      if (existingSchedule.docs.isNotEmpty) {
+        print(
+            '⚠️ Date already has an exercise scheduled - replacing with optimized version');
+
+        // Delete existing exercise for this date
+        for (final doc in existingSchedule.docs) {
+          await doc.reference.delete();
+        }
+      }
 
       // Get the adjusted exercise data
       final adjustedExercise =
           await _getAdjustedExercise(userId, planId, exerciseId);
 
       if (adjustedExercise != null) {
-        // Create schedule entry for next week
+        // Create schedule entry for same day next week
         await _firestore.collection('exerciseSchedule').add({
           'userId': userId,
           'planId': planId,
@@ -101,232 +175,82 @@ class ExerciseAdjustmentService {
           'exerciseName': adjustedExercise['name'],
           'adjustedExercise': adjustedExercise,
           'originalFeedback': feedbackData,
-          'scheduledDate': Timestamp.fromDate(nextWeekStart),
-          'weekStartDate': Timestamp.fromDate(nextWeekStart),
-          'status': 'scheduled', // scheduled, completed, skipped
+          'scheduledDate': Timestamp.fromDate(scheduledDate),
+          'originalScheduledDate': Timestamp.fromDate(
+              originalScheduleDate), // Store original schedule
+          'actualCompletionDate':
+              FieldValue.serverTimestamp(), // When it was actually completed
+          'dayOfWeek': _getDayOfWeekName(
+              originalScheduleDate.weekday), // Use original day
+          'weekStartDate': Timestamp.fromDate(_getWeekStart(scheduledDate)),
+          'status': 'scheduled',
           'adjustmentReason': 'ai_optimization',
           'createdAt': FieldValue.serverTimestamp(),
           'isAdjusted': true,
           'adjustmentVersion': 1,
+          'schedulingType': 'same_day_next_week_original_schedule',
         });
 
-        print('✅ Exercise scheduled for ${_formatDate(nextWeekStart)}');
+        print(
+            '✅ Exercise scheduled for ${_formatDate(scheduledDate)} (maintaining original routine)');
+        print(
+            '📅 Original schedule: ${_getDayOfWeekName(originalScheduleDate.weekday)} → Next: ${_getDayOfWeekName(scheduledDate.weekday)}');
 
         // Create user notification about the scheduled adjustment
         await _createScheduleNotification(
-            userId, adjustedExercise, nextWeekStart);
+            userId, adjustedExercise, scheduledDate);
       }
     } catch (e) {
-      print('❌ Error scheduling exercise for next week: $e');
+      print('❌ Error scheduling exercise for same day next week: $e');
     }
   }
 
-  // 📅 Get adjusted exercise data
-  Future<Map<String, dynamic>?> _getAdjustedExercise(
-      String userId, String planId, String exerciseId) async {
+  // 🔍 Helper: Infer original schedule date from exercise pattern
+  Future<DateTime> _inferOriginalScheduleDate(
+      String userId, String exerciseId) async {
     try {
-      // Get current plan
-      DocumentSnapshot? planDoc = await _getPlanDocument(userId, planId);
+      // Get user's rehabilitation plan to find exercise pattern
+      final userPlans = await _firestore
+          .collection('rehabilitation_plans')
+          .where('userId', isEqualTo: userId)
+          .where('status', isEqualTo: 'active')
+          .orderBy('lastUpdated', descending: true)
+          .limit(1)
+          .get();
 
-      if (planDoc == null || !planDoc.exists) {
-        return null;
-      }
+      if (userPlans.docs.isNotEmpty) {
+        final planData = userPlans.docs.first.data();
+        final exercises =
+            List<Map<String, dynamic>>.from(planData['exercises'] ?? []);
 
-      final planData = planDoc.data() as Map<String, dynamic>;
-      final exercises = List<dynamic>.from(planData['exercises'] ?? []);
+        // Find the exercise index in the plan
+        int exerciseIndex = -1;
+        for (int i = 0; i < exercises.length; i++) {
+          if (exercises[i]['id'] == exerciseId) {
+            exerciseIndex = i;
+            break;
+          }
+        }
 
-      // Find the specific exercise
-      for (final exercise in exercises) {
-        if (exercise['id'] == exerciseId) {
-          return Map<String, dynamic>.from(exercise);
+        if (exerciseIndex >= 0) {
+          // Calculate which day this exercise typically falls on (Monday = 0, Tuesday = 1, etc.)
+          final now = DateTime.now();
+          final startOfWeek = _getWeekStart(now);
+          final targetDayOfWeek = exerciseIndex % 7; // Cycle through days
+          final targetDate = startOfWeek.add(Duration(days: targetDayOfWeek));
+
+          print(
+              '📅 Inferred original schedule: ${_getDayOfWeekName(targetDate.weekday)} (based on exercise pattern)');
+          return targetDate;
         }
       }
 
-      return null;
+      // Fallback: use Monday of current week
+      print('📅 Fallback: using Monday of current week');
+      return _getWeekStart(DateTime.now());
     } catch (e) {
-      print('❌ Error getting adjusted exercise: $e');
-      return null;
-    }
-  }
-
-  // 🔔 Create notification about scheduled adjustment
-  Future<void> _createScheduleNotification(String userId,
-      Map<String, dynamic> exercise, DateTime scheduledDate) async {
-    try {
-      await _firestore.collection('userNotifications').add({
-        'userId': userId,
-        'type': 'exercise_scheduled',
-        'title': 'Exercise Adjusted for Next Week',
-        'message':
-            '${exercise['name']} has been optimized based on your feedback and scheduled for ${_formatDate(scheduledDate)}',
-        'data': {
-          'exerciseId': exercise['id'],
-          'exerciseName': exercise['name'],
-          'scheduledDate': scheduledDate.toIso8601String(),
-          'adjustments': {
-            'sets': exercise['sets'],
-            'reps': exercise['reps'],
-            'duration': exercise['durationSeconds'],
-            'difficulty': exercise['difficultyLevel'],
-          }
-        },
-        'isRead': false,
-        'createdAt': FieldValue.serverTimestamp(),
-      });
-
-      print('🔔 Schedule notification created');
-    } catch (e) {
-      print('❌ Error creating schedule notification: $e');
-    }
-  }
-
-  // 📋 Get scheduled exercises for a specific week
-  Future<List<Map<String, dynamic>>> getScheduledExercisesForWeek(
-      String userId, DateTime weekStart) async {
-    try {
-      // Calculate week end
-      final weekEnd = weekStart.add(const Duration(days: 7));
-
-      final snapshot = await _firestore
-          .collection('exerciseSchedule')
-          .where('userId', isEqualTo: userId)
-          .where('weekStartDate',
-              isGreaterThanOrEqualTo: Timestamp.fromDate(weekStart))
-          .where('weekStartDate', isLessThan: Timestamp.fromDate(weekEnd))
-          .orderBy('weekStartDate')
-          .orderBy('scheduledDate')
-          .get();
-
-      return snapshot.docs.map((doc) {
-        final data = doc.data();
-        return {
-          'id': doc.id,
-          ...data,
-          'scheduledDate': (data['scheduledDate'] as Timestamp).toDate(),
-          'weekStartDate': (data['weekStartDate'] as Timestamp).toDate(),
-        };
-      }).toList();
-    } catch (e) {
-      print('❌ Error getting scheduled exercises: $e');
-      return [];
-    }
-  }
-
-  // 📅 Get next week's scheduled exercises (for UI display)
-  Future<List<Map<String, dynamic>>> getNextWeekScheduledExercises(
-      String userId) async {
-    final now = DateTime.now();
-    final daysUntilNextMonday = (8 - now.weekday) % 7;
-    final nextWeekStart = now.add(
-        Duration(days: daysUntilNextMonday == 0 ? 7 : daysUntilNextMonday));
-
-    return await getScheduledExercisesForWeek(userId, nextWeekStart);
-  }
-
-  // 🗓️ Mark scheduled exercise as completed
-  Future<void> markScheduledExerciseCompleted(String scheduleId) async {
-    try {
-      await _firestore.collection('exerciseSchedule').doc(scheduleId).update({
-        'status': 'completed',
-        'completedAt': FieldValue.serverTimestamp(),
-      });
-
-      print('✅ Scheduled exercise marked as completed');
-    } catch (e) {
-      print('❌ Error marking scheduled exercise as completed: $e');
-    }
-  }
-
-  // 🗓️ Get exercises for specific date (enhanced for scheduled exercises)
-  Future<List<Map<String, dynamic>>> getExercisesForDate(
-      String userId, DateTime date) async {
-    try {
-      final startOfDay = DateTime(date.year, date.month, date.day);
-      final endOfDay = startOfDay.add(const Duration(days: 1));
-
-      // Get scheduled exercises for this date
-      final scheduledSnapshot = await _firestore
-          .collection('exerciseSchedule')
-          .where('userId', isEqualTo: userId)
-          .where('scheduledDate',
-              isGreaterThanOrEqualTo: Timestamp.fromDate(startOfDay))
-          .where('scheduledDate', isLessThan: Timestamp.fromDate(endOfDay))
-          .get();
-
-      List<Map<String, dynamic>> exercises = [];
-
-      for (final doc in scheduledSnapshot.docs) {
-        final data = doc.data();
-        final adjustedExercise =
-            data['adjustedExercise'] as Map<String, dynamic>;
-
-        exercises.add({
-          'scheduleId': doc.id,
-          'isScheduled': true,
-          'isAdjusted': true,
-          'status': data['status'],
-          'scheduledDate': (data['scheduledDate'] as Timestamp).toDate(),
-          'adjustmentReason': data['adjustmentReason'],
-          ...adjustedExercise,
-        });
-      }
-
-      return exercises;
-    } catch (e) {
-      print('❌ Error getting exercises for date: $e');
-      return [];
-    }
-  }
-
-  // 📊 Get weekly schedule summary
-  Future<Map<String, dynamic>> getWeeklyScheduleSummary(String userId) async {
-    try {
-      final now = DateTime.now();
-      final startOfWeek = now.subtract(Duration(days: now.weekday - 1));
-      final endOfWeek = startOfWeek.add(const Duration(days: 6));
-      final nextWeekStart = endOfWeek.add(const Duration(days: 1));
-      final nextWeekEnd = nextWeekStart.add(const Duration(days: 6));
-
-      // Get current week data
-      final currentWeekExercises =
-          await _getExercisesForWeek(userId, startOfWeek, endOfWeek);
-      final nextWeekExercises =
-          await _getExercisesForWeek(userId, nextWeekStart, nextWeekEnd);
-
-      // Check for AI-adjusted exercises in next week
-      final adjustedExercises =
-          nextWeekExercises.where((e) => e['isAdjusted'] == true).toList();
-
-      return {
-        'currentWeek': {
-          'total': currentWeekExercises.length,
-          'completed': currentWeekExercises
-              .where((e) => e['status'] == 'completed')
-              .length,
-          'remaining': currentWeekExercises
-              .where((e) => e['status'] != 'completed')
-              .length,
-        },
-        'nextWeek': {
-          'total': nextWeekExercises.length,
-          'scheduled':
-              nextWeekExercises.where((e) => e['status'] == 'scheduled').length,
-          'hasAdjustedExercises': adjustedExercises.isNotEmpty,
-          'adjustedCount': adjustedExercises.length,
-        },
-        'lastUpdated': DateTime.now().toIso8601String(),
-      };
-    } catch (e) {
-      print('❌ Error getting weekly schedule summary: $e');
-      return {
-        'currentWeek': {'total': 0, 'completed': 0, 'remaining': 0},
-        'nextWeek': {
-          'total': 0,
-          'scheduled': 0,
-          'hasAdjustedExercises': false,
-          'adjustedCount': 0
-        },
-      };
+      print('❌ Error inferring original schedule date: $e');
+      return _getWeekStart(DateTime.now());
     }
   }
 
@@ -423,33 +347,6 @@ class ExerciseAdjustmentService {
       }
     } catch (e) {
       print('❌ Error in pattern-based adjustments: $e');
-    }
-  }
-
-  // 📱 Get plan document from user's collection or main collection
-  Future<DocumentSnapshot?> _getPlanDocument(
-      String userId, String planId) async {
-    try {
-      // Try user's collection first
-      final userPlanQuery = await _firestore
-          .collection('users')
-          .doc(userId)
-          .collection('rehabilitation_plans')
-          .where(FieldPath.documentId, isEqualTo: planId)
-          .get();
-
-      if (userPlanQuery.docs.isNotEmpty) {
-        return userPlanQuery.docs.first;
-      }
-
-      // Try main collection
-      final mainPlanDoc =
-          await _firestore.collection('rehabilitation_plans').doc(planId).get();
-
-      return mainPlanDoc;
-    } catch (e) {
-      print('❌ Error getting plan document: $e');
-      return null;
     }
   }
 
@@ -698,75 +595,113 @@ class ExerciseAdjustmentService {
     }
   }
 
+  // 📱 Get plan document from user's collection or main collection
+  Future<DocumentSnapshot?> _getPlanDocument(
+      String userId, String planId) async {
+    try {
+      // Try user's collection first
+      final userPlanQuery = await _firestore
+          .collection('users')
+          .doc(userId)
+          .collection('rehabilitation_plans')
+          .where(FieldPath.documentId, isEqualTo: planId)
+          .get();
+
+      if (userPlanQuery.docs.isNotEmpty) {
+        return userPlanQuery.docs.first;
+      }
+
+      // Try main collection
+      final mainPlanDoc =
+          await _firestore.collection('rehabilitation_plans').doc(planId).get();
+
+      return mainPlanDoc;
+    } catch (e) {
+      print('❌ Error getting plan document: $e');
+      return null;
+    }
+  }
+
+  // 📅 Get adjusted exercise data
+  Future<Map<String, dynamic>?> _getAdjustedExercise(
+      String userId, String planId, String exerciseId) async {
+    try {
+      // Get current plan
+      DocumentSnapshot? planDoc = await _getPlanDocument(userId, planId);
+
+      if (planDoc == null || !planDoc.exists) {
+        return null;
+      }
+
+      final planData = planDoc.data() as Map<String, dynamic>;
+      final exercises = List<dynamic>.from(planData['exercises'] ?? []);
+
+      // Find the specific exercise
+      for (final exercise in exercises) {
+        if (exercise['id'] == exerciseId) {
+          return Map<String, dynamic>.from(exercise);
+        }
+      }
+
+      return null;
+    } catch (e) {
+      print('❌ Error getting adjusted exercise: $e');
+      return null;
+    }
+  }
+
   // 📝 Generate human-readable reason for the adjustment
   String _generateAdjustmentReason(Map<String, dynamic> adjustments) {
     List<String> reasons = [];
 
     if (adjustments.containsKey('sets_multiplier')) {
       final multiplier = adjustments['sets_multiplier'] as double;
-      if (multiplier > 1.1) {
-        reasons.add('Increased sets due to good performance');
-      } else if (multiplier < 0.9) {
-        reasons.add('Reduced sets to prevent overexertion');
+      if (multiplier > 1.0) {
+        reasons.add('Increased sets (exercise too easy)');
+      } else if (multiplier < 1.0) {
+        reasons.add('Reduced sets (exercise too hard)');
       }
     }
 
     if (adjustments.containsKey('reps_multiplier')) {
       final multiplier = adjustments['reps_multiplier'] as double;
-      if (multiplier > 1.1) {
-        reasons.add('Increased reps - exercise seems too easy');
-      } else if (multiplier < 0.9) {
-        reasons.add('Reduced reps due to difficulty');
+      if (multiplier > 1.0) {
+        reasons.add('Increased reps (good progress)');
+      } else if (multiplier < 1.0) {
+        reasons.add('Reduced reps (needs easier progression)');
       }
     }
 
     if (adjustments.containsKey('intensity_multiplier')) {
       final multiplier = adjustments['intensity_multiplier'] as double;
-      if (multiplier > 1.1) {
-        reasons.add('Increased intensity - pain reduction observed');
-      } else if (multiplier < 0.9) {
-        reasons.add('Reduced intensity due to pain increase');
-      }
-    }
-
-    if (adjustments.containsKey('rest_time_multiplier')) {
-      final multiplier = adjustments['rest_time_multiplier'] as double;
-      if (multiplier > 1.1) {
-        reasons.add('Extended rest time for better recovery');
-      } else if (multiplier < 0.9) {
-        reasons.add('Reduced rest time - good progress');
+      if (multiplier > 1.0) {
+        reasons.add('Increased intensity (pain improving)');
+      } else if (multiplier < 1.0) {
+        reasons.add('Reduced intensity (pain management)');
       }
     }
 
     if (adjustments.containsKey('difficulty_level')) {
-      final newDifficulty = adjustments['difficulty_level'] as String;
-      reasons.add('Difficulty level changed to $newDifficulty');
+      reasons.add('Difficulty level updated');
     }
 
-    return reasons.isEmpty
-        ? 'AI-optimized based on feedback'
-        : reasons.join('; ');
+    return reasons.isEmpty ? 'AI optimization' : reasons.join(', ');
   }
 
-  // 📊 Log adjustment for analytics and tracking
-  Future<void> _logAdjustment(
-    String userId,
-    String exerciseId,
-    Map<String, dynamic> adjustments,
-    String adjustmentType,
-  ) async {
+  // 📋 Log adjustment for analytics
+  Future<void> _logAdjustment(String userId, String exerciseId,
+      Map<String, dynamic> adjustments, String adjustmentType) async {
     try {
       await _firestore.collection('exerciseAdjustments').add({
         'userId': userId,
         'exerciseId': exerciseId,
         'adjustments': adjustments,
         'adjustmentType': adjustmentType,
-        'reason': _generateAdjustmentReason(adjustments),
         'timestamp': FieldValue.serverTimestamp(),
-        'source': 'ai_feedback_analysis',
+        'reason': _generateAdjustmentReason(adjustments),
       });
 
-      print('📝 Adjustment logged: $adjustmentType for $exerciseId');
+      print('📊 Adjustment logged: $adjustmentType');
     } catch (e) {
       print('❌ Error logging adjustment: $e');
     }
@@ -830,101 +765,443 @@ class ExerciseAdjustmentService {
     return false;
   }
 
-  // 📈 Get comprehensive adjustment analytics for a user
-  Future<Map<String, dynamic>> getAdjustmentAnalytics(String userId) async {
+  // 🔔 UPDATED: Create notification with correct day information
+  Future<void> _createScheduleNotification(String userId,
+      Map<String, dynamic> exercise, DateTime scheduledDate) async {
     try {
-      final snapshot = await _firestore
-          .collection('exerciseAdjustments')
-          .where('userId', isEqualTo: userId)
-          .orderBy('timestamp', descending: true)
-          .limit(50)
-          .get();
+      final dayName = _getDayOfWeekName(scheduledDate.weekday);
 
-      final adjustments = snapshot.docs.map((doc) => doc.data()).toList();
+      await _firestore.collection('userNotifications').add({
+        'userId': userId,
+        'type': 'exercise_scheduled',
+        'title': 'Exercise Optimized for Next $dayName',
+        'message':
+            '${exercise['name']} has been adjusted based on your feedback and scheduled for next $dayName (${_formatDate(scheduledDate)})',
+        'data': {
+          'exerciseId': exercise['id'],
+          'exerciseName': exercise['name'],
+          'scheduledDate': scheduledDate.toIso8601String(),
+          'dayOfWeek': dayName,
+          'schedulingType': 'same_day_next_week',
+          'adjustments': {
+            'sets': exercise['sets'],
+            'reps': exercise['reps'],
+            'duration': exercise['durationSeconds'],
+            'difficulty': exercise['difficultyLevel'],
+          }
+        },
+        'isRead': false,
+        'createdAt': FieldValue.serverTimestamp(),
+      });
 
-      if (adjustments.isEmpty) {
-        return {
-          'totalAdjustments': 0,
-          'adjustmentTypes': {},
-          'mostAdjustedExercises': [],
-          'averageEffectiveness': 0.0,
-        };
-      }
-
-      // Analyze adjustment types
-      Map<String, int> adjustmentTypes = {};
-      Map<String, int> exerciseAdjustmentCounts = {};
-
-      for (final adjustment in adjustments) {
-        final type = adjustment['adjustmentType'] as String? ?? 'unknown';
-        adjustmentTypes[type] = (adjustmentTypes[type] ?? 0) + 1;
-
-        final exerciseId = adjustment['exerciseId'] as String? ?? 'unknown';
-        exerciseAdjustmentCounts[exerciseId] =
-            (exerciseAdjustmentCounts[exerciseId] ?? 0) + 1;
-      }
-
-      // Get most adjusted exercises
-      final sortedExercises = exerciseAdjustmentCounts.entries.toList()
-        ..sort((a, b) => b.value.compareTo(a.value));
-
-      return {
-        'totalAdjustments': adjustments.length,
-        'adjustmentTypes': adjustmentTypes,
-        'mostAdjustedExercises': sortedExercises
-            .take(5)
-            .map((e) => {
-                  'exerciseId': e.key,
-                  'adjustmentCount': e.value,
-                })
-            .toList(),
-        'recentAdjustments': adjustments.take(10).toList(),
-        'lastUpdated': DateTime.now().toIso8601String(),
-      };
+      print('🔔 Schedule notification created for $dayName');
     } catch (e) {
-      print('❌ Error getting adjustment analytics: $e');
-      return {};
+      print('❌ Error creating schedule notification: $e');
     }
   }
 
-  // 📅 HELPER: Get exercises for a week range
+  // 🗓️ Mark scheduled exercise as completed
+  Future<void> markScheduledExerciseCompleted(String scheduleId) async {
+    try {
+      await _firestore.collection('exerciseSchedule').doc(scheduleId).update({
+        'status': 'completed',
+        'completedAt': FieldValue.serverTimestamp(),
+      });
+
+      print('✅ Scheduled exercise marked as completed');
+    } catch (e) {
+      print('❌ Error marking scheduled exercise as completed: $e');
+    }
+  }
+
+  // 🗓️ Get exercises for specific date (ENHANCED DEBUG: find the source of the problem)
+  Future<List<Map<String, dynamic>>> getExercisesForDate(
+      String userId, DateTime date) async {
+    try {
+      final startOfDay = DateTime(date.year, date.month, date.day);
+      final endOfDay = startOfDay.add(const Duration(days: 1));
+
+      // Check if this date is in the future (next week or beyond)
+      final now = DateTime.now();
+      final isNextWeekOrFuture = date.isAfter(now.add(const Duration(days: 1)));
+
+      print('🔍 DEBUG for ${_formatDate(date)}:');
+      print('   - Is future: $isNextWeekOrFuture');
+      print('   - Start of day: $startOfDay');
+      print('   - End of day: $endOfDay');
+
+      // Get scheduled exercises for this specific date
+      final scheduledSnapshot = await _firestore
+          .collection('exerciseSchedule')
+          .where('userId', isEqualTo: userId)
+          .where('scheduledDate',
+              isGreaterThanOrEqualTo: Timestamp.fromDate(startOfDay))
+          .where('scheduledDate', isLessThan: Timestamp.fromDate(endOfDay))
+          .get(); // Remove status filter to see ALL exercises
+
+      print(
+          '   - Found ${scheduledSnapshot.docs.length} scheduled exercises in DB');
+
+      List<Map<String, dynamic>> exercises = [];
+      Set<String> addedExerciseIds = {}; // Track to prevent duplicates
+
+      // Debug: Log all scheduled exercises found
+      for (final doc in scheduledSnapshot.docs) {
+        final data = doc.data();
+        final exerciseId = data['exerciseId'] as String;
+        final exerciseName = data['exerciseName'] as String;
+        final status = data['status'] as String;
+        final scheduledDate = (data['scheduledDate'] as Timestamp).toDate();
+
+        print(
+            '   - DB Exercise: $exerciseName (ID: $exerciseId, Status: $status, Date: $scheduledDate)');
+
+        // Only add if status is valid
+        if (['scheduled', 'completed'].contains(status)) {
+          final adjustedExercise =
+              data['adjustedExercise'] as Map<String, dynamic>;
+
+          if (!addedExerciseIds.contains(exerciseId)) {
+            exercises.add({
+              'scheduleId': doc.id,
+              'isScheduled': true,
+              'isAdjusted': true,
+              'status': status,
+              'scheduledDate': scheduledDate,
+              'dayOfWeek':
+                  data['dayOfWeek'] ?? _getDayOfWeekName(scheduledDate.weekday),
+              'adjustmentReason': data['adjustmentReason'],
+              'schedulingType': data['schedulingType'] ?? 'same_day_next_week',
+              ...adjustedExercise,
+            });
+            addedExerciseIds.add(exerciseId);
+            print('   - ✅ Added scheduled exercise: $exerciseName');
+          }
+        } else {
+          print('   - ❌ Skipped exercise with status: $status');
+        }
+      }
+
+      print('   - Scheduled exercises added: ${exercises.length}');
+
+      // ✅ FIXED: Only add pattern exercises for current/past dates, NOT future dates
+      if (exercises.isEmpty && !isNextWeekOrFuture) {
+        print(
+            '   - No scheduled exercises and is current/past date - adding pattern exercise');
+        final patternExercises =
+            await _getExerciseFromPlanForDate(userId, date);
+        for (final exercise in patternExercises) {
+          final exerciseId = exercise['id'] as String;
+          if (!addedExerciseIds.contains(exerciseId)) {
+            exercises.add({
+              ...exercise,
+              'isScheduled': false,
+              'isAdjusted': false,
+              'status': 'pattern',
+              'scheduledDate': date,
+            });
+            addedExerciseIds.add(exerciseId);
+            print('   - ✅ Added pattern exercise: ${exercise['name']}');
+          }
+        }
+      } else if (exercises.isEmpty && isNextWeekOrFuture) {
+        print(
+            '   - No scheduled exercises and is future date - NOT adding pattern exercises');
+      } else if (!exercises.isEmpty) {
+        print('   - Found scheduled exercises - NOT adding pattern exercises');
+      }
+
+      final dateType = isNextWeekOrFuture ? 'future' : 'current/past';
+      print(
+          '📅 FINAL: Found ${exercises.length} unique exercises for ${_formatDate(date)} ($dateType)');
+      return exercises;
+    } catch (e) {
+      print('❌ Error getting exercises for date: $e');
+      return [];
+    }
+  }
+
+  // 🚨 NUCLEAR OPTION: Delete ALL scheduled exercises for this user
+  Future<void> nukeAllScheduledExercises(String userId) async {
+    try {
+      print('🚨 NUCLEAR OPTION: Deleting ALL scheduled exercises for user...');
+
+      // Get ALL scheduled exercises for this user (no date filters)
+      final allScheduled = await _firestore
+          .collection('exerciseSchedule')
+          .where('userId', isEqualTo: userId)
+          .get();
+
+      print(
+          '🗑️ Found ${allScheduled.docs.length} total scheduled exercises to delete...');
+
+      int deleteCount = 0;
+      // Delete ALL of them
+      for (final doc in allScheduled.docs) {
+        final data = doc.data();
+        final exerciseName = data['exerciseName'] ?? 'Unknown';
+        final scheduledDate = (data['scheduledDate'] as Timestamp).toDate();
+
+        print('🗑️ Deleting: $exerciseName scheduled for $scheduledDate');
+        await doc.reference.delete();
+        deleteCount++;
+      }
+
+      print('✅ NUCLEAR COMPLETE: Deleted $deleteCount scheduled exercises');
+      print('📊 All scheduled exercises should now be 0');
+
+      // Verify cleanup
+      final remaining = await _firestore
+          .collection('exerciseSchedule')
+          .where('userId', isEqualTo: userId)
+          .get();
+
+      print(
+          '✅ Verification: ${remaining.docs.length} exercises remaining (should be 0)');
+    } catch (e) {
+      print('❌ Error in nuclear option: $e');
+    }
+  }
+
+  // 🚨 EMERGENCY FIX: Completely clear and rebuild next week schedule
+  Future<void> emergencyFixScheduling(String userId) async {
+    try {
+      print(
+          '🚨 EMERGENCY: Completely clearing and rebuilding next week schedule...');
+
+      // Step 1: Delete ALL scheduled exercises for next week
+      final now = DateTime.now();
+      final nextWeekStart = _getWeekStart(now).add(const Duration(days: 7));
+      final nextWeekEnd = nextWeekStart.add(const Duration(days: 6));
+
+      final allScheduled = await _firestore
+          .collection('exerciseSchedule')
+          .where('userId', isEqualTo: userId)
+          .where('scheduledDate',
+              isGreaterThanOrEqualTo: Timestamp.fromDate(nextWeekStart))
+          .where('scheduledDate',
+              isLessThan: Timestamp.fromDate(nextWeekEnd
+                  .add(const Duration(days: 1)))) // Add extra day buffer
+          .get();
+
+      print('🗑️ Deleting ${allScheduled.docs.length} scheduled exercises...');
+
+      // Delete all existing scheduled exercises for next week
+      for (final doc in allScheduled.docs) {
+        await doc.reference.delete();
+      }
+
+      print('✅ All next week exercises cleared!');
+      print('📊 Next week should now show 0 exercises for all days');
+
+      // Step 2: Verify cleanup
+      final remaining = await _firestore
+          .collection('exerciseSchedule')
+          .where('userId', isEqualTo: userId)
+          .where('scheduledDate',
+              isGreaterThanOrEqualTo: Timestamp.fromDate(nextWeekStart))
+          .where('scheduledDate',
+              isLessThan:
+                  Timestamp.fromDate(nextWeekEnd.add(const Duration(days: 1))))
+          .get();
+
+      print(
+          '✅ Verification: ${remaining.docs.length} exercises remaining (should be 0)');
+    } catch (e) {
+      print('❌ Error in emergency fix: $e');
+    }
+  }
+
+  // 🧹 Clean up duplicate scheduled exercises (AGGRESSIVE: max 1 exercise per day)
+  Future<void> cleanupDuplicateScheduledExercises(String userId) async {
+    try {
+      print('🧹 Cleaning up duplicate scheduled exercises (max 1 per day)...');
+
+      final snapshot = await _firestore
+          .collection('exerciseSchedule')
+          .where('userId', isEqualTo: userId)
+          .orderBy('createdAt', descending: true) // Keep newest
+          .get();
+
+      Map<String, List<DocumentSnapshot>> exercisesByDate = {};
+
+      // Group exercises by date only (not by exerciseId)
+      for (final doc in snapshot.docs) {
+        final data = doc.data();
+        final scheduledDate = (data['scheduledDate'] as Timestamp).toDate();
+        final dateKey =
+            '${scheduledDate.year}-${scheduledDate.month}-${scheduledDate.day}';
+
+        if (!exercisesByDate.containsKey(dateKey)) {
+          exercisesByDate[dateKey] = [];
+        }
+        exercisesByDate[dateKey]!.add(doc);
+      }
+
+      int deletedCount = 0;
+
+      // Keep only 1 exercise per date (the newest one)
+      for (final exercises in exercisesByDate.values) {
+        if (exercises.length > 1) {
+          print(
+              '📅 Found ${exercises.length} exercises for same date - keeping newest, deleting ${exercises.length - 1}');
+
+          // Keep the first (most recent due to descending order), delete the rest
+          for (int i = 1; i < exercises.length; i++) {
+            await exercises[i].reference.delete();
+            deletedCount++;
+          }
+        }
+      }
+
+      print('✅ Cleaned up $deletedCount duplicate scheduled exercises');
+      print('📊 Now enforcing: MAX 1 exercise per day');
+    } catch (e) {
+      print('❌ Error cleaning up duplicates: $e');
+    }
+  }
+
+  // 📊 Get weekly schedule summary (FIXED: accurate counting)
+  Future<Map<String, dynamic>> getWeeklyScheduleSummary(String userId) async {
+    try {
+      final now = DateTime.now();
+      final startOfWeek = _getWeekStart(now);
+      final endOfWeek = startOfWeek.add(const Duration(days: 6));
+      final nextWeekStart = endOfWeek.add(const Duration(days: 1));
+      final nextWeekEnd = nextWeekStart.add(const Duration(days: 6));
+
+      // Get current week data (from patterns since it's current week)
+      final currentWeekExercises =
+          await _getExercisesForWeek(userId, startOfWeek, endOfWeek);
+
+      // Get next week data (from scheduled exercises)
+      final nextWeekExercises = await _getScheduledExercisesForWeek(
+          userId, nextWeekStart, nextWeekEnd);
+
+      // Check for AI-adjusted exercises in next week
+      final adjustedExercises =
+          nextWeekExercises.where((e) => e['isAdjusted'] == true).toList();
+
+      return {
+        'currentWeek': {
+          'total': currentWeekExercises.length,
+          'completed': currentWeekExercises
+              .where((e) => e['status'] == 'completed')
+              .length,
+          'remaining': currentWeekExercises
+              .where((e) => e['status'] != 'completed')
+              .length,
+        },
+        'nextWeek': {
+          'total': nextWeekExercises.length,
+          'scheduled':
+              nextWeekExercises.where((e) => e['status'] == 'scheduled').length,
+          'hasAdjustedExercises': adjustedExercises.isNotEmpty,
+          'adjustedCount': adjustedExercises.length,
+        },
+        'lastUpdated': DateTime.now().toIso8601String(),
+      };
+    } catch (e) {
+      print('❌ Error getting weekly schedule summary: $e');
+      return {
+        'currentWeek': {'total': 0, 'completed': 0, 'remaining': 0},
+        'nextWeek': {
+          'total': 0,
+          'scheduled': 0,
+          'hasAdjustedExercises': false,
+          'adjustedCount': 0
+        },
+      };
+    }
+  }
+
+  // 📅 Get next week's scheduled exercises (for UI display)
+  Future<List<Map<String, dynamic>>> getNextWeekScheduledExercises(
+      String userId) async {
+    final now = DateTime.now();
+    final daysUntilNextMonday = (8 - now.weekday) % 7;
+    final nextWeekStart = now.add(
+        Duration(days: daysUntilNextMonday == 0 ? 7 : daysUntilNextMonday));
+
+    return await getScheduledExercisesForWeek(userId, nextWeekStart);
+  }
+
+  // 📋 Get scheduled exercises for a specific week (FIXED: only scheduled, no duplicates)
+  Future<List<Map<String, dynamic>>> _getScheduledExercisesForWeek(
+      String userId, DateTime weekStart, DateTime weekEnd) async {
+    try {
+      final snapshot = await _firestore
+          .collection('exerciseSchedule')
+          .where('userId', isEqualTo: userId)
+          .where('scheduledDate',
+              isGreaterThanOrEqualTo: Timestamp.fromDate(weekStart))
+          .where('scheduledDate', isLessThan: Timestamp.fromDate(weekEnd))
+          .where('status', whereIn: ['scheduled', 'completed'])
+          .orderBy('scheduledDate')
+          .get();
+
+      Set<String> addedExercises = {}; // Prevent duplicates
+      List<Map<String, dynamic>> exercises = [];
+
+      for (final doc in snapshot.docs) {
+        final data = doc.data();
+        final exerciseId = data['exerciseId'] as String;
+        final scheduledDate = (data['scheduledDate'] as Timestamp).toDate();
+        final uniqueKey =
+            '${exerciseId}_${scheduledDate.year}_${scheduledDate.month}_${scheduledDate.day}';
+
+        if (!addedExercises.contains(uniqueKey)) {
+          exercises.add({
+            'id': doc.id,
+            ...data,
+            'scheduledDate': scheduledDate,
+            'weekStartDate': (data['weekStartDate'] as Timestamp).toDate(),
+          });
+          addedExercises.add(uniqueKey);
+        }
+      }
+
+      print(
+          '📅 Found ${exercises.length} unique scheduled exercises for week starting ${_formatDate(weekStart)}');
+      return exercises;
+    } catch (e) {
+      print('❌ Error getting scheduled exercises for week: $e');
+      return [];
+    }
+  }
+
+  // 📋 Get scheduled exercises for a specific week (public method)
+  Future<List<Map<String, dynamic>>> getScheduledExercisesForWeek(
+      String userId, DateTime weekStart) async {
+    // Calculate week end
+    final weekEnd = weekStart.add(const Duration(days: 7));
+    return await _getScheduledExercisesForWeek(userId, weekStart, weekEnd);
+  }
+
+  // 📅 HELPER: Get exercises for a week range (FIXED: prevents over-generation)
   Future<List<Map<String, dynamic>>> _getExercisesForWeek(
       String userId, DateTime startDate, DateTime endDate) async {
     try {
-      final exercisesForWeek = <Map<String, dynamic>>[];
+      // For next week, prioritize scheduled exercises
+      final isNextWeek =
+          startDate.isAfter(DateTime.now().add(const Duration(days: 1)));
 
-      // Get scheduled exercises for the week
-      final scheduledExercises = await _firestore
-          .collection('scheduledExercises')
-          .where('userId', isEqualTo: userId)
-          .where('scheduledDate', isGreaterThanOrEqualTo: startDate)
-          .where('scheduledDate', isLessThan: endDate)
-          .get();
-
-      for (final doc in scheduledExercises.docs) {
-        final data = doc.data();
-        exercisesForWeek.add({
-          'id': doc.id,
-          ...data,
-          'isScheduled': true,
-        });
+      if (isNextWeek) {
+        // Next week: Only return scheduled exercises
+        return await _getScheduledExercisesForWeek(userId, startDate, endDate);
+      } else {
+        // Current week: Return pattern-based exercises (1 per day max)
+        return await _generateCurrentWeekExercisesFromPattern(
+            userId, startDate, endDate);
       }
-
-      // If no scheduled exercises, generate from patterns
-      if (exercisesForWeek.isEmpty) {
-        exercisesForWeek.addAll(await _generateWeeklyExercisesFromPattern(
-            userId, startDate, endDate));
-      }
-
-      return exercisesForWeek;
     } catch (e) {
       print('❌ Error getting exercises for week: $e');
       return [];
     }
   }
 
-  // 📅 HELPER: Get exercises from weekly pattern
-  Future<List<Map<String, dynamic>>> _getExercisesFromWeeklyPattern(
+  // 📅 HELPER: Get exercise from plan for a specific date
+  Future<List<Map<String, dynamic>>> _getExerciseFromPlanForDate(
       String userId, DateTime date) async {
     try {
       // Get user's current rehabilitation plan
@@ -961,18 +1238,72 @@ class ExerciseAdjustmentService {
         {
           ...selectedExercise,
           'scheduledDate': date.toIso8601String(),
-          'status': 'scheduled',
+          'status': 'pattern',
           'isAdjusted': hasAdjustments,
-          'isScheduled': true,
+          'isScheduled': false,
         }
       ];
     } catch (e) {
-      print('❌ Error getting exercises from weekly pattern: $e');
+      print('❌ Error getting exercise from plan for date: $e');
       return [];
     }
   }
 
-  // 📅 HELPER: Generate weekly exercises from pattern
+  // 📅 HELPER: Generate current week exercises from pattern (limited to 1 per day)
+  Future<List<Map<String, dynamic>>> _generateCurrentWeekExercisesFromPattern(
+      String userId, DateTime startDate, DateTime endDate) async {
+    try {
+      final exercises = <Map<String, dynamic>>[];
+
+      // Get user's current rehabilitation plan
+      final userPlans = await _firestore
+          .collection('rehabilitation_plans')
+          .where('userId', isEqualTo: userId)
+          .where('status', isEqualTo: 'active')
+          .orderBy('lastUpdated', descending: true)
+          .limit(1)
+          .get();
+
+      if (userPlans.docs.isEmpty) {
+        return [];
+      }
+
+      final planData = userPlans.docs.first.data();
+      final planExercises =
+          List<Map<String, dynamic>>.from(planData['exercises'] ?? []);
+
+      if (planExercises.isEmpty) {
+        return [];
+      }
+
+      // Generate exactly 1 exercise per day (no more!)
+      for (int dayOffset = 0; dayOffset < 7; dayOffset++) {
+        final currentDate = startDate.add(Duration(days: dayOffset));
+        if (currentDate.isAfter(endDate)) break;
+
+        // Pick different exercise for each day
+        final exerciseIndex = dayOffset % planExercises.length;
+        final selectedExercise = planExercises[exerciseIndex];
+
+        exercises.add({
+          ...selectedExercise,
+          'scheduledDate': currentDate.toIso8601String(),
+          'status': 'pattern',
+          'isAdjusted': false,
+          'isScheduled': false,
+        });
+      }
+
+      print(
+          '📅 Generated ${exercises.length} pattern exercises for current week');
+      return exercises;
+    } catch (e) {
+      print('❌ Error generating current week exercises from pattern: $e');
+      return [];
+    }
+  }
+
+  // 📅 HELPER: Generate exercises from weekly pattern
   Future<List<Map<String, dynamic>>> _generateWeeklyExercisesFromPattern(
       String userId, DateTime startDate, DateTime endDate) async {
     try {
@@ -1046,115 +1377,109 @@ class ExerciseAdjustmentService {
     }
   }
 
-  // 📅 NEW: Schedule exercise for specific date
-  Future<void> scheduleExerciseForDate({
-    required String userId,
-    required String exerciseId,
-    required DateTime scheduledDate,
-    required Map<String, dynamic> exerciseData,
-  }) async {
+  // 🚨 IMMEDIATE FIX: Call this method to fix the current duplicate issue
+  Future<void> fixDuplicateSchedulingIssue(String userId) async {
     try {
-      await _firestore.collection('scheduledExercises').add({
-        'userId': userId,
-        'exerciseId': exerciseId,
-        'scheduledDate': scheduledDate,
-        'status': 'scheduled',
-        'isCompleted': false,
-        'isAdjusted': exerciseData['isAdjusted'] ?? false,
-        'exerciseData': exerciseData,
-        'createdAt': FieldValue.serverTimestamp(),
-      });
+      print('🚨 EMERGENCY FIX: Resolving duplicate scheduling issue...');
 
-      print('✅ Exercise scheduled for ${scheduledDate.toIso8601String()}');
-    } catch (e) {
-      print('❌ Error scheduling exercise: $e');
-      throw e;
-    }
-  }
+      // Step 1: NUCLEAR OPTION - Clear everything for next week
+      await emergencyFixScheduling(userId);
 
-  // 📅 NEW: Update scheduled exercise status
-  Future<void> updateScheduledExerciseStatus({
-    required String userId,
-    required String exerciseId,
-    required DateTime scheduledDate,
-    required String status,
-  }) async {
-    try {
-      final startOfDay =
-          DateTime(scheduledDate.year, scheduledDate.month, scheduledDate.day);
-      final endOfDay = startOfDay.add(const Duration(days: 1));
+      // Step 2: Clean up any remaining duplicates
+      await cleanupDuplicateScheduledExercises(userId);
 
-      final scheduledExercises = await _firestore
-          .collection('scheduledExercises')
-          .where('userId', isEqualTo: userId)
-          .where('exerciseId', isEqualTo: exerciseId)
-          .where('scheduledDate', isGreaterThanOrEqualTo: startOfDay)
-          .where('scheduledDate', isLessThan: endOfDay)
-          .get();
+      // Step 3: Verify the fix worked
+      final now = DateTime.now();
+      final nextWeekStart = _getWeekStart(now).add(const Duration(days: 7));
 
-      for (final doc in scheduledExercises.docs) {
-        await doc.reference.update({
-          'status': status,
-          'isCompleted': status == 'completed',
-          'updatedAt': FieldValue.serverTimestamp(),
-        });
+      // Check each day of next week
+      print('📅 Checking each day of next week:');
+      for (int day = 0; day < 7; day++) {
+        final checkDate = nextWeekStart.add(Duration(days: day));
+        final dayExercises = await getExercisesForDate(userId, checkDate);
+        final dayName = _getDayOfWeekName(checkDate.weekday);
+        print('   $dayName: ${dayExercises.length} exercises');
       }
 
-      print('✅ Updated scheduled exercise status to: $status');
+      print('✅ Emergency fix completed!');
+      print('📊 Next week should now show 0 exercises per day');
+      print(
+          '🎯 Complete exercises this week to schedule optimized versions for next week');
     } catch (e) {
-      print('❌ Error updating scheduled exercise status: $e');
-      throw e;
+      print('❌ Error fixing duplicate scheduling issue: $e');
     }
   }
 
-  // 📅 NEW: Get exercise schedule analytics
-  Future<Map<String, dynamic>> getExerciseScheduleAnalytics(
-      String userId) async {
+  // 🎯 Manually create a clean next week schedule (1 exercise per day)
+  Future<void> createCleanNextWeekSchedule(String userId) async {
     try {
-      final now = DateTime.now();
-      final startOfMonth = DateTime(now.year, now.month, 1);
+      print('🎯 Creating clean next week schedule (1 exercise per day)...');
 
-      final monthlyExercises = await _firestore
-          .collection('scheduledExercises')
+      // Get user's plan
+      final userPlans = await _firestore
+          .collection('rehabilitation_plans')
           .where('userId', isEqualTo: userId)
-          .where('scheduledDate', isGreaterThanOrEqualTo: startOfMonth)
+          .where('status', isEqualTo: 'active')
+          .orderBy('lastUpdated', descending: true)
+          .limit(1)
           .get();
 
-      final total = monthlyExercises.docs.length;
-      final completed = monthlyExercises.docs
-          .where((doc) => doc.data()['isCompleted'] == true)
-          .length;
-      final skipped = monthlyExercises.docs
-          .where((doc) => doc.data()['status'] == 'skipped')
-          .length;
-      final scheduled = monthlyExercises.docs
-          .where((doc) => doc.data()['status'] == 'scheduled')
-          .length;
+      if (userPlans.docs.isEmpty) {
+        print('❌ No active rehabilitation plan found');
+        return;
+      }
 
-      return {
-        'total': total,
-        'completed': completed,
-        'skipped': skipped,
-        'scheduled': scheduled,
-        'completionRate': total > 0 ? (completed / total * 100).round() : 0,
-        'period': 'current_month',
-        'lastUpdated': DateTime.now().toIso8601String(),
-      };
+      final planData = userPlans.docs.first.data();
+      final planId = userPlans.docs.first.id;
+      final exercises =
+          List<Map<String, dynamic>>.from(planData['exercises'] ?? []);
+
+      if (exercises.isEmpty) {
+        print('❌ No exercises in rehabilitation plan');
+        return;
+      }
+
+      // Schedule 1 exercise per day for next week
+      final now = DateTime.now();
+      final nextWeekStart = _getWeekStart(now).add(const Duration(days: 7));
+
+      for (int day = 0; day < 7; day++) {
+        final scheduledDate = DateTime(nextWeekStart.year, nextWeekStart.month,
+            nextWeekStart.day + day, 9, 0, 0);
+
+        // Pick different exercise for each day
+        final exerciseIndex = day % exercises.length;
+        final selectedExercise = exercises[exerciseIndex];
+
+        await _firestore.collection('exerciseSchedule').add({
+          'userId': userId,
+          'planId': planId,
+          'exerciseId': selectedExercise['id'],
+          'exerciseName': selectedExercise['name'],
+          'adjustedExercise': selectedExercise,
+          'scheduledDate': Timestamp.fromDate(scheduledDate),
+          'dayOfWeek': _getDayOfWeekName(scheduledDate.weekday),
+          'weekStartDate': Timestamp.fromDate(nextWeekStart),
+          'status': 'scheduled',
+          'adjustmentReason': 'manual_clean_schedule',
+          'createdAt': FieldValue.serverTimestamp(),
+          'isAdjusted': false,
+          'schedulingType': 'manual_clean',
+        });
+
+        print(
+            '✅ Scheduled ${selectedExercise['name']} for ${_getDayOfWeekName(scheduledDate.weekday)}');
+      }
+
+      print('🎯 Clean schedule created: 7 exercises, 1 per day');
     } catch (e) {
-      print('❌ Error getting exercise schedule analytics: $e');
-      return {
-        'total': 0,
-        'completed': 0,
-        'skipped': 0,
-        'scheduled': 0,
-        'completionRate': 0,
-      };
+      print('❌ Error creating clean schedule: $e');
     }
   }
 
-  // Utility method to format dates
-  String _formatDate(DateTime date) {
-    final weekdays = [
+  // 📅 Helper function to get day of week name
+  String _getDayOfWeekName(int weekday) {
+    const dayNames = [
       'Monday',
       'Tuesday',
       'Wednesday',
@@ -1163,21 +1488,16 @@ class ExerciseAdjustmentService {
       'Saturday',
       'Sunday'
     ];
-    final months = [
-      'Jan',
-      'Feb',
-      'Mar',
-      'Apr',
-      'May',
-      'Jun',
-      'Jul',
-      'Aug',
-      'Sep',
-      'Oct',
-      'Nov',
-      'Dec'
-    ];
+    return dayNames[weekday - 1];
+  }
 
-    return '${weekdays[date.weekday - 1]}, ${months[date.month - 1]} ${date.day}';
+  // 📅 Helper function to get week start (Monday)
+  DateTime _getWeekStart(DateTime date) {
+    return date.subtract(Duration(days: date.weekday - 1));
+  }
+
+  // 📅 Helper function to format date
+  String _formatDate(DateTime date) {
+    return DateFormat('MMM dd, yyyy').format(date);
   }
 }
