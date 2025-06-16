@@ -420,29 +420,60 @@ class _DashboardHomeScreenState extends State<DashboardHomeScreen> {
   Future<int> _getLatestPainLevel() async {
     try {
       final authService = Provider.of<AuthService>(context, listen: false);
+
+      // Return default if no plan is selected
+      if (_selectedPlanId == null) {
+        print('⚠️ No plan selected, returning default pain level');
+        return 5;
+      }
+
+      print('🔍 Querying pain level for plan: $_selectedPlanId');
+
       final progressSnapshot = await FirebaseFirestore.instance
           .collection('progressLogs')
           .where('userId', isEqualTo: authService.currentUser?.uid)
+          .where('planId',
+              isEqualTo: _selectedPlanId) // ✅ Filter by selected plan
           .orderBy('date', descending: true)
           .limit(1)
           .get();
+
+      print(
+          '🔍 Found ${progressSnapshot.docs.length} documents for selected plan');
 
       if (progressSnapshot.docs.isNotEmpty) {
         final latestLog = progressSnapshot.docs.first.data();
         final exerciseLogs = latestLog['exerciseLogs'] as List<dynamic>? ?? [];
 
         if (exerciseLogs.isNotEmpty) {
-          // Calculate average pain level from latest session
-          double totalPain = 0;
+          // Find the most recent exercise by timestamp
+          var mostRecentExercise = exerciseLogs.first;
+          DateTime mostRecentTime =
+              DateTime.parse(mostRecentExercise['timestamp'] ?? '1970-01-01');
+
           for (var exercise in exerciseLogs) {
-            totalPain += (exercise['painLevel'] ?? 0);
+            final exerciseTime =
+                DateTime.parse(exercise['timestamp'] ?? '1970-01-01');
+            if (exerciseTime.isAfter(mostRecentTime)) {
+              mostRecentTime = exerciseTime;
+              mostRecentExercise = exercise;
+            }
           }
-          return (totalPain / exerciseLogs.length).round();
+
+          final painLevel = mostRecentExercise['painLevel'] as int? ?? 5;
+          print(
+              '✅ Found most recent exercise for plan $_selectedPlanId: ${mostRecentExercise['exerciseName']}');
+          print('✅ Pain level: $painLevel');
+          print('✅ Timestamp: ${mostRecentExercise['timestamp']}');
+
+          return painLevel;
         }
       }
     } catch (e) {
-      print('Error getting pain level: $e');
+      print('❌ Error getting pain level: $e');
     }
+
+    print('🔍 No progress data for selected plan, returning default: 5');
     return 5; // Default pain level
   }
 
