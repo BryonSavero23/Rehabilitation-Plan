@@ -4,6 +4,7 @@ import 'package:intl/intl.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:personalized_rehabilitation_plans/models/rehabilitation_models.dart';
 import 'package:personalized_rehabilitation_plans/screens/exercise_screen.dart';
+import 'package:personalized_rehabilitation_plans/screens/user_input_screen.dart';
 import 'package:personalized_rehabilitation_plans/services/auth_service.dart';
 import 'package:personalized_rehabilitation_plans/services/exercise_adjustment_service.dart';
 import 'package:personalized_rehabilitation_plans/theme/app_theme.dart';
@@ -50,12 +51,24 @@ class _RehabilitationProgressScreenState
   Map<String, dynamic>? _weeklyScheduleSummary;
   List<Map<String, dynamic>> _nextWeekScheduledExercises = [];
 
+  // Weekly completion tracking
+  bool _hasShownWeeklyDialog = false;
+
   @override
   void initState() {
     super.initState();
     _generateWeekDays();
     _generateNextWeekDays();
     _loadInitialData();
+  }
+
+  @override
+  void didUpdateWidget(RehabilitationProgressScreen oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    // Check for completion when widget updates
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _checkAndHandleWeeklyCompletion();
+    });
   }
 
   Future<void> _loadInitialData() async {
@@ -97,6 +110,9 @@ class _RehabilitationProgressScreenState
 
       // Load weekly schedule data
       await _loadWeeklyScheduleData();
+
+      // NEW: Check for weekly completion after initial data load
+      await _checkAndHandleWeeklyCompletion();
     } catch (e) {
       print('Error loading initial data: $e');
     }
@@ -226,6 +242,7 @@ class _RehabilitationProgressScreenState
     setState(() {
       _selectedPlanId = planId;
       _selectedPlan = plan;
+      _hasShownWeeklyDialog = false; // Reset dialog flag for new plan
     });
     _loadTherapistInfo();
     _loadWeeklyScheduleData();
@@ -249,8 +266,114 @@ class _RehabilitationProgressScreenState
     return _selectedPlan!.exercises.length;
   }
 
+  // NEW: Check if weekly goal is completed (5 exercises)
+  bool _isWeeklyGoalCompleted() {
+    return _completedExercisesCount >= 5;
+  }
+
+  // NEW: Show weekly completion dialog
+  Future<void> _showWeeklyCompletionDialog() async {
+    if (_hasShownWeeklyDialog) return; // Prevent showing multiple times
+
+    setState(() {
+      _hasShownWeeklyDialog = true;
+    });
+
+    final result = await showDialog<bool>(
+      context: context,
+      barrierDismissible: false,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(16),
+          ),
+          title: Row(
+            children: [
+              const Text('Week Completed! '),
+              const Text('🎉', style: TextStyle(fontSize: 24)),
+            ],
+          ),
+          content: const Text(
+            'Congratulations! You\'ve completed all exercises for this week.\n\nDo you want to continue to next week\'s exercise plan?',
+            style: TextStyle(fontSize: 16),
+          ),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.of(context).pop(false),
+              style: TextButton.styleFrom(
+                foregroundColor: Colors.grey[600],
+              ),
+              child: const Text('No', style: TextStyle(fontSize: 16)),
+            ),
+            ElevatedButton(
+              onPressed: () => Navigator.of(context).pop(true),
+              style: ElevatedButton.styleFrom(
+                backgroundColor: AppTheme.primaryBlue,
+                foregroundColor: Colors.white,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(8),
+                ),
+              ),
+              child: const Text('Yes', style: TextStyle(fontSize: 16)),
+            ),
+          ],
+        );
+      },
+    );
+
+    if (result == true) {
+      // Load next week's plan - switch to next week tab
+      setState(() {
+        _selectedTopTabIndex = 1; // Switch to "Next Week" tab
+      });
+
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text('Switched to next week\'s plan!'),
+            backgroundColor: Colors.green,
+            duration: Duration(seconds: 3),
+          ),
+        );
+      }
+    } else if (result == false) {
+      // Navigate to user_input_screen.dart
+      if (mounted) {
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => const UserInputScreen()),
+        );
+      }
+    }
+  }
+
+  // NEW: Check for weekly completion and show dialog if needed
+  Future<void> _checkAndHandleWeeklyCompletion() async {
+    if (!mounted) return;
+
+    final isCompleted = _isWeeklyGoalCompleted();
+    print(
+        '🔍 Checking weekly completion: $isCompleted (completed: $_completedExercisesCount/5, hasShown: $_hasShownWeeklyDialog)');
+
+    if (isCompleted && !_hasShownWeeklyDialog) {
+      print('🎉 Weekly goal completed! Showing dialog...');
+      // Small delay to ensure UI is updated
+      await Future.delayed(const Duration(milliseconds: 500));
+      if (mounted) {
+        await _showWeeklyCompletionDialog();
+      }
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
+    // NEW: Check for completion on every build (with debouncing)
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (mounted && _selectedPlan != null) {
+        _checkAndHandleWeeklyCompletion();
+      }
+    });
+
     return Scaffold(
       backgroundColor: Theme.of(context).primaryColor,
       body: SafeArea(
@@ -1989,6 +2112,9 @@ class _RehabilitationProgressScreenState
           // Reload weekly schedule data to show any new adjustments
           await _loadWeeklyScheduleData();
 
+          // NEW: Check for weekly completion after refreshing data
+          await _checkAndHandleWeeklyCompletion();
+
           if (mounted) {
             ScaffoldMessenger.of(context).showSnackBar(
               SnackBar(
@@ -2043,6 +2169,9 @@ class _RehabilitationProgressScreenState
         });
 
         print('✅ Plan data refreshed successfully');
+
+        // NEW: Check for weekly completion after refreshing plan data
+        await _checkAndHandleWeeklyCompletion();
       }
     } catch (e) {
       print('❌ Error refreshing plan data: $e');
