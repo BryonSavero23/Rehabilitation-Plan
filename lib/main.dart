@@ -44,8 +44,15 @@ class MyApp extends StatelessWidget {
   }
 }
 
-class AuthStateWrapper extends StatelessWidget {
+class AuthStateWrapper extends StatefulWidget {
   const AuthStateWrapper({super.key});
+
+  @override
+  State<AuthStateWrapper> createState() => _AuthStateWrapperState();
+}
+
+class _AuthStateWrapperState extends State<AuthStateWrapper> {
+  bool _isInitializing = false;
 
   @override
   Widget build(BuildContext context) {
@@ -59,25 +66,40 @@ class AuthStateWrapper extends StatelessWidget {
             }
 
             if (snapshot.hasData && snapshot.data != null) {
-              // User is logged in, determine their role
-              return FutureBuilder<void>(
-                future: authService.initializeUser(),
-                builder: (context, initSnapshot) {
-                  if (initSnapshot.connectionState == ConnectionState.waiting) {
-                    return const SplashScreen();
+              // 🔧 FIXED: Initialize user data safely after build completes
+              if (!_isInitializing && authService.currentUserModel == null) {
+                _isInitializing = true;
+                // Use addPostFrameCallback to defer the initialization until after build
+                WidgetsBinding.instance.addPostFrameCallback((_) async {
+                  try {
+                    await authService.initializeUser();
+                  } catch (e) {
+                    print('Error initializing user: $e');
+                  } finally {
+                    if (mounted) {
+                      setState(() {
+                        _isInitializing = false;
+                      });
+                    }
                   }
+                });
+                return const SplashScreen();
+              }
 
-                  // Check if user is a therapist
-                  final isTherapist =
-                      authService.currentUserModel?.isTherapist ?? false;
+              // Check if we're still initializing
+              if (_isInitializing || authService.currentUserModel == null) {
+                return const SplashScreen();
+              }
 
-                  if (isTherapist) {
-                    return const TherapistBottomBarScreen();
-                  } else {
-                    return const BottomBarScreen();
-                  }
-                },
-              );
+              // User is initialized, determine their role
+              final isTherapist =
+                  authService.currentUserModel?.isTherapist ?? false;
+
+              if (isTherapist) {
+                return const TherapistBottomBarScreen();
+              } else {
+                return const BottomBarScreen();
+              }
             } else {
               // User is not logged in
               return const SplashScreen();

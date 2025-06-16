@@ -57,9 +57,6 @@ class ProgressService with ChangeNotifier {
   Future<Map<String, dynamic>> getProgressTrends(String userId,
       {int daysBack = 30}) async {
     try {
-      _isLoading = true;
-      notifyListeners();
-
       final endDate = DateTime.now();
       final startDate = endDate.subtract(Duration(days: daysBack));
 
@@ -115,9 +112,6 @@ class ProgressService with ChangeNotifier {
         'adherenceRates': [],
         'dates': [],
       };
-    } finally {
-      _isLoading = false;
-      notifyListeners();
     }
   }
 

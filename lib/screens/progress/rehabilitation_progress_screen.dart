@@ -177,63 +177,94 @@ class _RehabilitationProgressScreenState
   }
 
   Future<void> _loadTherapistInfo() async {
-    if (_selectedPlan == null || _selectedPlanId == null) return;
-
     try {
-      final planSnapshot = await FirebaseFirestore.instance
-          .collection('rehabilitation_plans')
-          .doc(_selectedPlanId)
-          .get();
+      final authService = Provider.of<AuthService>(context, listen: false);
+      final patientId = authService.currentUser?.uid;
 
-      if (planSnapshot.exists) {
-        final planData = planSnapshot.data();
-        final therapistId = planData?['therapistId'];
+      if (patientId != null) {
+        print(
+            '🔍 Looking for patient in therapists/patients collection: $patientId');
 
-        if (therapistId != null && therapistId.isNotEmpty) {
-          final therapistDoc = await FirebaseFirestore.instance
-              .collection('users')
-              .doc(therapistId)
-              .get();
+        // Use collection group query to find patient in therapists/{therapistId}/patients/{patientId}
+        final patientInTherapistQuery = await FirebaseFirestore.instance
+            .collectionGroup('patients')
+            .where('id', isEqualTo: patientId)
+            .limit(1)
+            .get();
 
-          if (therapistDoc.exists) {
-            final therapistData = therapistDoc.data()!;
-            final therapistProfileDoc = await FirebaseFirestore.instance
-                .collection('therapists')
+        if (patientInTherapistQuery.docs.isNotEmpty) {
+          final patientDoc = patientInTherapistQuery.docs.first;
+          final patientData = patientDoc.data();
+
+          // Get therapistId from the patient document field
+          final therapistId = patientData['therapistId'] as String?;
+
+          print('✅ Found patient document with therapistId: $therapistId');
+
+          if (therapistId != null && therapistId.isNotEmpty) {
+            // Now get the therapist details from users collection
+            final therapistUserDoc = await FirebaseFirestore.instance
+                .collection('users')
                 .doc(therapistId)
                 .get();
 
-            String therapistName = therapistData['name'] ?? 'Unknown Therapist';
-            String therapistTitle = 'Dr.';
+            if (therapistUserDoc.exists) {
+              final therapistData = therapistUserDoc.data()!;
+              String therapistName =
+                  therapistData['name'] ?? 'Unknown Therapist';
+              String therapistTitle = 'Dr.';
 
-            if (therapistProfileDoc.exists) {
-              final profileData = therapistProfileDoc.data();
-              therapistTitle = profileData?['title'] ??
-                  profileData?['specialization'] ??
-                  'Dr.';
+              // Try to get additional details from therapist profile
+              try {
+                final therapistProfileDoc = await FirebaseFirestore.instance
+                    .collection('therapists')
+                    .doc(therapistId)
+                    .get();
+
+                if (therapistProfileDoc.exists) {
+                  final profileData = therapistProfileDoc.data();
+                  therapistTitle = profileData?['title'] ??
+                      profileData?['specialization'] ??
+                      'Dr.';
+                }
+              } catch (e) {
+                print('⚠️ Could not fetch therapist profile details: $e');
+              }
+
+              setState(() {
+                _therapistName = therapistName;
+                _therapistTitle = therapistTitle;
+              });
+
+              print('🎉 Successfully loaded: $therapistTitle $therapistName');
+            } else {
+              setState(() {
+                _therapistName = 'Therapist Not Found';
+                _therapistTitle = 'Dr.';
+              });
+              print('❌ Therapist user document not found for ID: $therapistId');
             }
-
-            setState(() {
-              _therapistName = therapistName;
-              _therapistTitle = therapistTitle;
-            });
           } else {
             setState(() {
-              _therapistName = 'Therapist Not Found';
-              _therapistTitle = 'Dr.';
+              _therapistName = 'No Therapist ID Found';
+              _therapistTitle = '';
             });
+            print('❌ Patient document found but no therapistId field');
           }
         } else {
+          // No patient found in any therapist's patients collection
           setState(() {
             _therapistName = 'No Therapist Assigned';
             _therapistTitle = '';
           });
+          print('ℹ️ Patient not found in any therapist\'s patients collection');
         }
       }
     } catch (e) {
-      print('Error loading therapist info: $e');
+      print('❌ Error loading therapist info: $e');
       setState(() {
-        _therapistName = widget.therapistName ?? 'Your Therapist';
-        _therapistTitle = widget.therapistTitle ?? 'Dr.';
+        _therapistName = 'Unable to Load Therapist';
+        _therapistTitle = '';
       });
     }
   }
@@ -421,7 +452,7 @@ class _RehabilitationProgressScreenState
               const CircleAvatar(
                 radius: 20,
                 backgroundImage: NetworkImage(
-                    'https://placehold.co/100x100/orange/white?text=T'),
+                    'https://placehold.co/100x100/orange/white.png?text=T'),
               ),
               const SizedBox(width: 12),
               Expanded(
@@ -711,42 +742,60 @@ class _RehabilitationProgressScreenState
       List<DateTime> weekDays, bool isNextWeek) {
     return Column(
       children: [
+        // Navigation arrows and calendar days
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: 10),
           child: Row(
             children: [
-              // Left Arrow
+              // Left Arrow - smaller and more compact
               IconButton(
                 onPressed: () => _navigateToPreviousWeek(),
-                icon: Icon(
+                icon: const Icon(
                   Icons.chevron_left,
-                  size: 30,
+                  size: 24, // Reduced size
                   color: Colors.black54,
                 ),
+                constraints: const BoxConstraints(
+                  minWidth: 32, // Smaller than default 48
+                  minHeight: 32,
+                ),
+                padding: EdgeInsets.zero,
               ),
-              // Calendar Days
-              Expanded(
+
+              // Calendar Days - use Flexible instead of Expanded
+              Flexible(
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: List.generate(
                     weekDays.length,
-                    (index) => _buildCalendarDay(index, weekDays, isNextWeek),
+                    (index) => Flexible(
+                      child: _buildCalendarDay(index, weekDays, isNextWeek),
+                    ),
                   ),
                 ),
               ),
-              // Right Arrow
+
+              // Right Arrow - smaller and more compact
               IconButton(
                 onPressed: () => _navigateToNextWeek(),
-                icon: Icon(
+                icon: const Icon(
                   Icons.chevron_right,
-                  size: 30,
+                  size: 24, // Reduced size
                   color: Colors.black54,
                 ),
+                constraints: const BoxConstraints(
+                  minWidth: 32, // Smaller than default 48
+                  minHeight: 32,
+                ),
+                padding: EdgeInsets.zero,
               ),
             ],
           ),
         ),
+
         const SizedBox(height: 16),
+
+        // Day information text
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: 16),
           child: FutureBuilder<List<Map<String, dynamic>>>(
@@ -1175,8 +1224,12 @@ class _RehabilitationProgressScreenState
           final hasExercises = (snapshot.data?.length ?? 0) > 0;
 
           return Container(
-            width: 50, // Slightly wider for better touch when scrolling
-            height: 70, // Slightly taller
+            // Remove fixed width, let it be flexible
+            constraints: const BoxConstraints(
+              minWidth: 35, // Minimum width
+              maxWidth: 50, // Maximum width
+            ),
+            height: 65, // Slightly smaller height
             decoration: BoxDecoration(
               shape: BoxShape.circle,
               color: isSelected ? accentColor : Colors.transparent,
@@ -1190,16 +1243,16 @@ class _RehabilitationProgressScreenState
                 Text(
                   DateFormat('E').format(day).toUpperCase(),
                   style: TextStyle(
-                    fontSize: 10,
+                    fontSize: 9, // Slightly smaller font
                     color: isSelected ? Colors.white : Colors.grey,
                     fontWeight: FontWeight.w500,
                   ),
                 ),
-                const SizedBox(height: 4),
+                const SizedBox(height: 2), // Reduced spacing
                 Text(
                   day.day.toString(),
                   style: TextStyle(
-                    fontSize: 16,
+                    fontSize: 14, // Slightly smaller font
                     fontWeight: FontWeight.bold,
                     color: isSelected
                         ? Colors.white
@@ -1207,12 +1260,12 @@ class _RehabilitationProgressScreenState
                   ),
                 ),
                 if (hasExercises && !isSelected) ...[
-                  const SizedBox(height: 2),
+                  const SizedBox(height: 1),
                   Container(
-                    width: 6,
-                    height: 6,
+                    width: 4, // Smaller indicator
+                    height: 4,
                     decoration: BoxDecoration(
-                      color: isNextWeek ? Colors.purple : Colors.orange,
+                      color: isNextWeek ? Colors.purple : AppTheme.vibrantRed,
                       shape: BoxShape.circle,
                     ),
                   ),

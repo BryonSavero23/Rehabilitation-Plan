@@ -129,23 +129,31 @@ class _AddPatientScreenState extends State<AddPatientScreen> {
 
     try {
       final authService = Provider.of<AuthService>(context, listen: false);
+      final therapistId = authService.currentUser!.uid;
 
       // Get therapist details
       final therapistSnapshot = await FirebaseFirestore.instance
           .collection('users')
-          .doc(authService.currentUser!.uid)
+          .doc(therapistId)
           .get();
 
       final therapistName =
           therapistSnapshot.data()?['name'] ?? 'Your Therapist';
+      final therapistEmail = authService.currentUserModel?.email ?? '';
 
-      // Add patient to therapist's patients collection
-      await FirebaseFirestore.instance
+      print('🔄 Adding patient with therapistId: $therapistId');
+
+      // Create a batch for atomic operations
+      final batch = FirebaseFirestore.instance.batch();
+
+      // 1. Add patient to therapist's patients collection
+      final therapistPatientRef = FirebaseFirestore.instance
           .collection('therapists')
-          .doc(authService.currentUser!.uid)
+          .doc(therapistId)
           .collection('patients')
-          .doc(patientId)
-          .set({
+          .doc(patientId);
+
+      batch.set(therapistPatientRef, {
         'id': patientId,
         'name': patientName,
         'email': patientEmail,
@@ -153,33 +161,92 @@ class _AddPatientScreenState extends State<AddPatientScreen> {
         'notes': _notesController.text.trim(),
         'dateAdded': FieldValue.serverTimestamp(),
         'lastActivity': FieldValue.serverTimestamp(),
+        'therapistId': therapistId, // NEW: Add therapistId here too
       });
 
-      // Add therapist to patient's therapists collection
-      await FirebaseFirestore.instance
+      // 2. Add therapist to patient's therapists collection
+      final patientTherapistRef = FirebaseFirestore.instance
           .collection('patients')
           .doc(patientId)
           .collection('therapists')
-          .doc(authService.currentUser!.uid)
-          .set({
-        'id': authService.currentUser!.uid,
+          .doc(therapistId);
+
+      batch.set(patientTherapistRef, {
+        'id': therapistId,
         'name': therapistName,
-        'email': authService.currentUserModel?.email ?? '',
+        'email': therapistEmail,
         'dateAdded': FieldValue.serverTimestamp(),
       });
 
-      // Update patient's notification collection
-      await FirebaseFirestore.instance
+      // 3. NEW: Update patient's main user document with therapistId
+      final patientUserRef =
+          FirebaseFirestore.instance.collection('users').doc(patientId);
+
+      batch.update(patientUserRef, {
+        'assignedTherapistId':
+            therapistId, // NEW: Store therapistId in main user doc
+        'assignedTherapistName': therapistName, // NEW: Store therapist name too
+        'therapistAssignedAt':
+            FieldValue.serverTimestamp(), // NEW: Track when assigned
+      });
+
+      // 4. NEW: Create a patient-therapist relationship document for easy querying
+      final relationshipRef = FirebaseFirestore.instance
+          .collection('patient_therapist_relationships')
+          .doc('${patientId}_${therapistId}');
+
+      batch.set(relationshipRef, {
+        'patientId': patientId,
+        'patientName': patientName,
+        'patientEmail': patientEmail,
+        'therapistId': therapistId,
+        'therapistName': therapistName,
+        'therapistEmail': therapistEmail,
+        'condition': _selectedCondition,
+        'status': 'active',
+        'createdAt': FieldValue.serverTimestamp(),
+        'lastUpdated': FieldValue.serverTimestamp(),
+      });
+
+      // 5. Add notification for the patient
+      final notificationRef = FirebaseFirestore.instance
           .collection('users')
           .doc(patientId)
           .collection('notifications')
-          .add({
+          .doc(); // Auto-generate ID
+
+      batch.set(notificationRef, {
         'title': 'New Therapist',
         'message': '$therapistName is now your therapist',
         'type': 'therapist_added',
         'isRead': false,
         'timestamp': FieldValue.serverTimestamp(),
+        'therapistId': therapistId, // NEW: Include therapistId in notification
+        'therapistName': therapistName, // NEW: Include therapist name
       });
+
+      // 6. NEW: Add entry to therapist's activity log
+      final activityRef = FirebaseFirestore.instance
+          .collection('therapists')
+          .doc(therapistId)
+          .collection('activity_log')
+          .doc();
+
+      batch.set(activityRef, {
+        'action': 'patient_added',
+        'patientId': patientId,
+        'patientName': patientName,
+        'timestamp': FieldValue.serverTimestamp(),
+        'details': {
+          'condition': _selectedCondition,
+          'notes': _notesController.text.trim(),
+        },
+      });
+
+      // Execute all operations atomically
+      await batch.commit();
+
+      print('✅ Patient added successfully with therapistId: $therapistId');
 
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
@@ -192,6 +259,7 @@ class _AddPatientScreenState extends State<AddPatientScreen> {
         Navigator.pop(context);
       }
     } catch (e) {
+      print('❌ Error adding patient: $e');
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
