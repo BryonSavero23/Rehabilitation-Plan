@@ -1,4 +1,6 @@
 // Updated RehabilitationData Model with proper data type handling
+import 'package:cloud_firestore/cloud_firestore.dart';
+
 class RehabilitationData {
   final Map<String, dynamic> medicalHistory;
   final Map<String, dynamic> physicalCondition;
@@ -134,12 +136,22 @@ class RehabilitationPlan {
   final String description;
   final List<Exercise> exercises;
   final Map<String, dynamic> goals;
+  final DateTime? startDate;
+  final DateTime? lastUpdated;
+  final String? status;
+  final String? userId;
+  final String? therapistId;
 
   RehabilitationPlan({
     required this.title,
     required this.description,
     required this.exercises,
     required this.goals,
+    this.startDate,
+    this.lastUpdated,
+    this.status,
+    this.userId,
+    this.therapistId,
   });
 
   Map<String, dynamic> toJson() {
@@ -148,6 +160,11 @@ class RehabilitationPlan {
       'description': description,
       'exercises': exercises.map((e) => e.toJson()).toList(),
       'goals': goals,
+      'startDate': startDate,
+      'lastUpdated': lastUpdated ?? DateTime.now(),
+      'status': status ?? 'active',
+      'userId': userId,
+      'therapistId': therapistId,
     };
   }
 
@@ -166,8 +183,19 @@ class RehabilitationPlan {
           json['description']?.toString() ?? 'No description available',
       exercises: exerciseList,
       goals: Map<String, dynamic>.from(json['goals'] ?? {}),
+      startDate: json['startDate'] != null
+          ? (json['startDate'] is Timestamp
+              ? (json['startDate'] as Timestamp).toDate()
+              : DateTime.tryParse(json['startDate'].toString()))
+          : null,
+      lastUpdated: json['lastUpdated'] != null
+          ? (json['lastUpdated'] is Timestamp
+              ? (json['lastUpdated'] as Timestamp).toDate()
+              : DateTime.tryParse(json['lastUpdated'].toString()))
+          : null,
+      status: json['status']?.toString(),
+      userId: json['userId']?.toString(),
+      therapistId: json['therapistId']?.toString(),
     );
   }
-
-  get therapistId => null;
 }

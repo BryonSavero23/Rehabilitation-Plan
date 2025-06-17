@@ -1,11 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:personalized_rehabilitation_plans/services/auth_service.dart';
 import 'package:personalized_rehabilitation_plans/models/user_model.dart';
 import 'package:personalized_rehabilitation_plans/screens/therapist/edit_rehabilitation_plan_screen.dart';
 import 'package:personalized_rehabilitation_plans/screens/therapist/create_rehabilitation_plan_screen.dart';
 import 'package:personalized_rehabilitation_plans/widgets/custom_button.dart';
+import 'package:personalized_rehabilitation_plans/models/rehabilitation_models.dart';
+import 'package:personalized_rehabilitation_plans/screens/exercise_recommendation_screen.dart';
+import 'package:personalized_rehabilitation_plans/screens/progress/rehabilitation_progress_screen.dart';
 
 class PatientDetailScreen extends StatefulWidget {
   final String patientId;
@@ -270,20 +274,20 @@ class _PatientDetailScreenState extends State<PatientDetailScreen>
 
           // Current Plan Summary
           _buildSectionHeader('Current Rehabilitation'),
-          FutureBuilder<QuerySnapshot>(
-            future: FirebaseFirestore.instance
+          StreamBuilder<QuerySnapshot>(
+            stream: FirebaseFirestore.instance
+                .collection('users')
+                .doc(widget.patientId)
                 .collection('rehabilitation_plans')
-                .where('userId', isEqualTo: widget.patientId)
-                .where('status', isEqualTo: 'active')
                 .orderBy('lastUpdated', descending: true)
                 .limit(1)
-                .get(),
+                .snapshots(),
             builder: (context, snapshot) {
               if (snapshot.connectionState == ConnectionState.waiting) {
-                return const Center(
+                return const Card(
                   child: Padding(
                     padding: EdgeInsets.all(20.0),
-                    child: CircularProgressIndicator(),
+                    child: Center(child: CircularProgressIndicator()),
                   ),
                 );
               }
@@ -329,12 +333,9 @@ class _PatientDetailScreenState extends State<PatientDetailScreen>
               }
 
               final planDoc = snapshot.data!.docs.first;
-              final planData = planDoc.data() as Map<String, dynamic>;
-              final planTitle = planData['title'] ?? 'Unnamed Plan';
-              final planDescription =
-                  planData['description'] ?? 'No description';
-              final startDate = (planData['startDate'] as Timestamp).toDate();
-              final exercises = (planData['exercises'] as List<dynamic>?) ?? [];
+              final plan = RehabilitationPlan.fromJson(
+                  planDoc.data() as Map<String, dynamic>);
+              final planId = planDoc.id;
 
               return Card(
                 child: Padding(
@@ -342,58 +343,134 @@ class _PatientDetailScreenState extends State<PatientDetailScreen>
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text(
-                        planTitle,
-                        style: const TextStyle(
-                          fontSize: 18,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                      const SizedBox(height: 8),
-                      Text(
-                        planDescription,
-                        style: TextStyle(
-                          color: Colors.grey[600],
-                        ),
-                      ),
-                      const SizedBox(height: 8),
-                      Text(
-                        'Started: ${_formatDate(startDate)}',
-                        style: TextStyle(
-                          fontSize: 14,
-                          color: Colors.grey[700],
-                        ),
-                      ),
-                      const SizedBox(height: 16),
-                      Text(
-                        '${exercises.length} Exercises',
-                        style: const TextStyle(
-                          fontWeight: FontWeight.w500,
-                        ),
-                      ),
-                      const SizedBox(height: 8),
-                      LinearProgressIndicator(
-                        value: 0.65, // Mock adherence value
-                        backgroundColor: Colors.grey[200],
-                        valueColor: AlwaysStoppedAnimation<Color>(
-                          Theme.of(context).primaryColor,
-                        ),
-                      ),
-                      const SizedBox(height: 4),
-                      Text(
-                        'Adherence: 65%', // Mock value
-                        style: TextStyle(
-                          fontSize: 12,
-                          color: Colors.grey[600],
-                        ),
+                      Row(
+                        children: [
+                          Container(
+                            width: 40,
+                            height: 40,
+                            decoration: BoxDecoration(
+                              color: Theme.of(context)
+                                  .primaryColor
+                                  .withOpacity(0.1),
+                              borderRadius: BorderRadius.circular(8),
+                            ),
+                            child: Icon(
+                              Icons.assignment_outlined,
+                              color: Theme.of(context).primaryColor,
+                            ),
+                          ),
+                          const SizedBox(width: 12),
+                          Expanded(
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  plan.title,
+                                  style: const TextStyle(
+                                    fontSize: 18,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                                Text(
+                                  plan.description,
+                                  style: TextStyle(
+                                    color: Colors.grey[600],
+                                    fontSize: 14,
+                                  ),
+                                  maxLines: 2,
+                                  overflow: TextOverflow.ellipsis,
+                                ),
+                              ],
+                            ),
+                          ),
+                        ],
                       ),
                       const SizedBox(height: 16),
-                      CustomButton(
-                        text: 'View Details',
-                        onPressed: () {
-                          // Navigate to plan details
-                          _tabController.animateTo(1); // Switch to Plans tab
-                        },
+                      Row(
+                        children: [
+                          Icon(
+                            Icons.fitness_center,
+                            size: 16,
+                            color: Colors.grey[600],
+                          ),
+                          const SizedBox(width: 4),
+                          Text(
+                            '${plan.exercises.length} exercises',
+                            style: TextStyle(
+                              fontSize: 14,
+                              color: Colors.grey[600],
+                            ),
+                          ),
+                          const SizedBox(width: 16),
+                          if (plan.startDate != null) ...[
+                            Icon(
+                              Icons.calendar_today,
+                              size: 16,
+                              color: Colors.grey[600],
+                            ),
+                            const SizedBox(width: 4),
+                            Text(
+                              'Started ${DateFormat('MMM dd, yyyy').format(plan.startDate!)}',
+                              style: TextStyle(
+                                fontSize: 14,
+                                color: Colors.grey[600],
+                              ),
+                            ),
+                          ],
+                        ],
+                      ),
+                      const SizedBox(height: 16),
+                      Row(
+                        children: [
+                          Expanded(
+                            child: OutlinedButton.icon(
+                              icon: const Icon(Icons.visibility_outlined),
+                              label: const Text('View Plan'),
+                              onPressed: () {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) =>
+                                        ExerciseRecommendationScreen(
+                                      plan: plan,
+                                      planId: planId,
+                                    ),
+                                  ),
+                                );
+                              },
+                              style: OutlinedButton.styleFrom(
+                                foregroundColor: Theme.of(context).primaryColor,
+                                side: BorderSide(
+                                  color: Theme.of(context).primaryColor,
+                                ),
+                              ),
+                            ),
+                          ),
+                          const SizedBox(width: 12),
+                          Expanded(
+                            child: ElevatedButton.icon(
+                              icon: const Icon(Icons.edit),
+                              label: const Text('Edit Plan'),
+                              onPressed: () {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) =>
+                                        EditRehabilitationPlanScreen(
+                                      planId: planId,
+                                      patientId: widget.patientId,
+                                      patientName: widget.patientName,
+                                    ),
+                                  ),
+                                );
+                              },
+                              style: ElevatedButton.styleFrom(
+                                backgroundColor: Theme.of(context).primaryColor,
+                                foregroundColor: Colors.white,
+                              ),
+                            ),
+                          ),
+                        ],
                       ),
                     ],
                   ),
@@ -529,13 +606,45 @@ class _PatientDetailScreenState extends State<PatientDetailScreen>
   Widget _buildRehabPlansTab() {
     return StreamBuilder<QuerySnapshot>(
       stream: FirebaseFirestore.instance
+          .collection('users')
+          .doc(widget.patientId)
           .collection('rehabilitation_plans')
-          .where('userId', isEqualTo: widget.patientId)
-          .orderBy('lastUpdated', descending: true)
           .snapshots(),
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
           return const Center(child: CircularProgressIndicator());
+        }
+
+        if (snapshot.hasError) {
+          return Center(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Icon(
+                  Icons.error_outline,
+                  size: 64,
+                  color: Colors.red.withOpacity(0.5),
+                ),
+                const SizedBox(height: 16),
+                Text(
+                  'Error loading rehabilitation plans',
+                  style: TextStyle(
+                    fontSize: 18,
+                    color: Colors.grey[600],
+                    fontWeight: FontWeight.w500,
+                  ),
+                ),
+                const SizedBox(height: 8),
+                Text(
+                  'Error: ${snapshot.error}',
+                  style: TextStyle(
+                    color: Colors.red,
+                    fontWeight: FontWeight.w500,
+                  ),
+                ),
+              ],
+            ),
+          );
         }
 
         if (!snapshot.hasData || snapshot.data!.docs.isEmpty) {
@@ -545,32 +654,17 @@ class _PatientDetailScreenState extends State<PatientDetailScreen>
               children: [
                 Icon(
                   Icons.healing_outlined,
-                  size: 80,
+                  size: 64,
                   color: Colors.grey[400],
                 ),
                 const SizedBox(height: 16),
                 Text(
-                  'No rehabilitation plans',
+                  'No rehabilitation plans found',
                   style: TextStyle(
                     fontSize: 18,
                     color: Colors.grey[600],
+                    fontWeight: FontWeight.w500,
                   ),
-                ),
-                const SizedBox(height: 24),
-                CustomButton(
-                  text: 'Create New Plan',
-                  icon: Icons.add,
-                  onPressed: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => CreateRehabilitationPlanScreen(
-                          patientId: widget.patientId,
-                          patientName: widget.patientName,
-                        ),
-                      ),
-                    );
-                  },
                 ),
               ],
             ),
@@ -580,177 +674,138 @@ class _PatientDetailScreenState extends State<PatientDetailScreen>
         final plans = snapshot.data!.docs;
 
         return ListView.builder(
-          padding: const EdgeInsets.all(16.0),
-          itemCount: plans.length + 1, // +1 for the "Add Plan" button
+          itemCount: plans.length,
           itemBuilder: (context, index) {
-            // Add button at the top
-            if (index == 0) {
-              return Padding(
-                padding: const EdgeInsets.only(bottom: 16.0),
-                child: CustomButton(
-                  text: 'Create New Rehabilitation Plan',
-                  icon: Icons.add,
-                  backgroundColor: Theme.of(context).primaryColor,
-                  onPressed: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => CreateRehabilitationPlanScreen(
-                          patientId: widget.patientId,
-                          patientName: widget.patientName,
-                        ),
-                      ),
-                    );
-                  },
-                ),
-              );
-            }
-
-            final planDoc = plans[index - 1];
-            final planData = planDoc.data() as Map<String, dynamic>;
-            final planId = planDoc.id;
-            final planTitle = planData['title'] ?? 'Unnamed Plan';
-            final planDescription = planData['description'] ?? 'No description';
-            final planStatus = planData['status'] ?? 'active';
-            final startDate = (planData['startDate'] as Timestamp).toDate();
-            final endDate = planData['endDate'] != null
-                ? (planData['endDate'] as Timestamp).toDate()
-                : null;
-            final lastUpdated = (planData['lastUpdated'] as Timestamp).toDate();
-            final exercises = (planData['exercises'] as List<dynamic>?) ?? [];
-
-            // Highlight the selected plan if specified
-            final isSelected = widget.selectedPlanId == planId;
+            final plan = RehabilitationPlan.fromJson(
+                plans[index].data() as Map<String, dynamic>);
+            final planId = plans[index].id;
 
             return Card(
-              elevation: isSelected ? 4 : 1,
-              margin: const EdgeInsets.only(bottom: 16.0),
+              margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+              elevation: 2,
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(12),
-                side: isSelected
-                    ? BorderSide(
-                        color: Theme.of(context).primaryColor, width: 2)
-                    : BorderSide.none,
               ),
-              child: Padding(
-                padding: const EdgeInsets.all(16.0),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Expanded(
-                          child: Text(
-                            planTitle,
-                            style: const TextStyle(
-                              fontSize: 18,
-                              fontWeight: FontWeight.bold,
-                            ),
-                            overflow: TextOverflow.ellipsis,
-                          ),
-                        ),
-                        Container(
-                          padding: const EdgeInsets.symmetric(
-                            horizontal: 12,
-                            vertical: 6,
-                          ),
-                          decoration: BoxDecoration(
-                            color: _getStatusColor(planStatus).withOpacity(0.2),
-                            borderRadius: BorderRadius.circular(20),
-                          ),
-                          child: Text(
-                            _getStatusText(planStatus),
-                            style: TextStyle(
-                              color: _getStatusColor(planStatus),
-                              fontWeight: FontWeight.w500,
-                              fontSize: 12,
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                    const SizedBox(height: 8),
-                    Text(
-                      planDescription,
-                      style: TextStyle(
-                        color: Colors.grey[600],
+              child: Column(
+                children: [
+                  ListTile(
+                    leading: Container(
+                      width: 40,
+                      height: 40,
+                      decoration: BoxDecoration(
+                        color: Theme.of(context).primaryColor.withOpacity(0.1),
+                        borderRadius: BorderRadius.circular(8),
                       ),
+                      child: Icon(
+                        Icons.assignment_outlined,
+                        color: Theme.of(context).primaryColor,
+                      ),
+                    ),
+                    title: Text(
+                      plan.title,
+                      style: const TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: 16,
+                      ),
+                    ),
+                    subtitle: Text(
+                      plan.description,
                       maxLines: 2,
                       overflow: TextOverflow.ellipsis,
                     ),
-                    const SizedBox(height: 16),
-                    Row(
-                      children: [
-                        Expanded(
-                          child: _buildPlanInfoItem(
-                            'Start Date',
-                            _formatDate(startDate),
-                            Icons.calendar_today,
-                          ),
-                        ),
-                        Expanded(
-                          child: _buildPlanInfoItem(
-                            'End Date',
-                            endDate != null ? _formatDate(endDate) : 'Ongoing',
-                            Icons.event,
-                          ),
-                        ),
-                      ],
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 16,
+                      vertical: 8,
                     ),
-                    const SizedBox(height: 8),
-                    Row(
+                    child: Column(
                       children: [
-                        Expanded(
-                          child: _buildPlanInfoItem(
-                            'Exercises',
-                            exercises.length.toString(),
-                            Icons.fitness_center,
-                          ),
-                        ),
-                        Expanded(
-                          child: _buildPlanInfoItem(
-                            'Last Updated',
-                            _getRelativeTime(lastUpdated),
-                            Icons.update,
-                          ),
-                        ),
-                      ],
-                    ),
-                    const SizedBox(height: 16),
-                    Row(
-                      children: [
-                        Expanded(
-                          child: CustomButton(
-                            text: 'View Details',
-                            backgroundColor: Theme.of(context).primaryColor,
+                        // Details button (full width)
+                        SizedBox(
+                          width: double.infinity,
+                          child: OutlinedButton.icon(
+                            icon: const Icon(Icons.visibility_outlined),
+                            label: const Text('Details'),
                             onPressed: () {
                               Navigator.push(
                                 context,
                                 MaterialPageRoute(
                                   builder: (context) =>
-                                      EditRehabilitationPlanScreen(
+                                      ExerciseRecommendationScreen(
+                                    plan: plan,
                                     planId: planId,
-                                    patientId: widget.patientId,
-                                    patientName: widget.patientName,
                                   ),
                                 ),
                               );
                             },
+                            style: OutlinedButton.styleFrom(
+                              foregroundColor: Theme.of(context).primaryColor,
+                              side: BorderSide(
+                                color: Theme.of(context).primaryColor,
+                              ),
+                            ),
                           ),
                         ),
-                        const SizedBox(width: 8),
-                        IconButton(
-                          icon: const Icon(Icons.more_vert),
-                          onPressed: () {
-                            _showPlanOptionsDialog(
-                                context, planId, planStatus, planTitle);
-                          },
+                        const SizedBox(height: 8),
+                        // Edit and Progress buttons (side by side)
+                        Row(
+                          children: [
+                            Expanded(
+                              child: ElevatedButton.icon(
+                                icon: const Icon(Icons.edit),
+                                label: const Text('Edit'),
+                                onPressed: () {
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) =>
+                                          EditRehabilitationPlanScreen(
+                                        planId: planId,
+                                        patientId: widget.patientId,
+                                        patientName: widget.patientName,
+                                      ),
+                                    ),
+                                  );
+                                },
+                                style: ElevatedButton.styleFrom(
+                                  backgroundColor: Colors.orange,
+                                  foregroundColor: Colors.white,
+                                ),
+                              ),
+                            ),
+                            const SizedBox(width: 8),
+                            Expanded(
+                              child: ElevatedButton.icon(
+                                icon: const Icon(Icons.show_chart),
+                                label: const Text('Progress'),
+                                onPressed: () {
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) =>
+                                          RehabilitationProgressScreen(
+                                        plan: plan,
+                                        planId: planId,
+                                        therapistName: "Your Therapist",
+                                        therapistTitle: "Dr.",
+                                      ),
+                                    ),
+                                  );
+                                },
+                                style: ElevatedButton.styleFrom(
+                                  backgroundColor:
+                                      const Color.fromARGB(255, 19, 242, 15),
+                                  foregroundColor: Colors.white,
+                                ),
+                              ),
+                            ),
+                          ],
                         ),
                       ],
                     ),
-                  ],
-                ),
+                  ),
+                ],
               ),
             );
           },

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:intl/intl.dart';
 import 'package:personalized_rehabilitation_plans/services/auth_service.dart';
 import 'package:personalized_rehabilitation_plans/widgets/custom_button.dart';
 import 'package:personalized_rehabilitation_plans/screens/therapist/patient_detail_screen.dart';
@@ -77,10 +78,7 @@ class _PatientManagementDashboardState extends State<PatientManagementDashboard>
           ),
           IconButton(
             icon: const Icon(Icons.filter_list),
-            onPressed: () {
-              // Show filter options
-              _showFilterDialog();
-            },
+            onPressed: _showFilterDialog,
           ),
         ],
         bottom: TabBar(
@@ -110,7 +108,10 @@ class _PatientManagementDashboardState extends State<PatientManagementDashboard>
             MaterialPageRoute(
               builder: (context) => const AddPatientScreen(),
             ),
-          );
+          ).then((_) {
+            // Refresh data when returning
+            setState(() {});
+          });
         },
         backgroundColor: Theme.of(context).primaryColor,
         child: const Icon(Icons.person_add),
@@ -129,6 +130,20 @@ class _PatientManagementDashboardState extends State<PatientManagementDashboard>
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
           return const Center(child: CircularProgressIndicator());
+        }
+
+        if (snapshot.hasError) {
+          return Center(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Icon(Icons.error_outline,
+                    size: 64, color: Colors.red.withOpacity(0.5)),
+                const SizedBox(height: 16),
+                Text('Error: ${snapshot.error}'),
+              ],
+            ),
+          );
         }
 
         if (!snapshot.hasData || snapshot.data!.docs.isEmpty) {
@@ -217,9 +232,16 @@ class _PatientManagementDashboardState extends State<PatientManagementDashboard>
                         ),
                       ),
                       title: Text(patientName),
-                      subtitle: Text(
-                        '$patientCondition\n$patientEmail',
-                        style: const TextStyle(fontSize: 12),
+                      subtitle: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(patientCondition),
+                          Text(
+                            patientEmail,
+                            style: TextStyle(
+                                fontSize: 11, color: Colors.grey[600]),
+                          ),
+                        ],
                       ),
                       isThreeLine: true,
                       trailing: Column(
@@ -228,7 +250,7 @@ class _PatientManagementDashboardState extends State<PatientManagementDashboard>
                         children: [
                           if (lastActivity != null)
                             Text(
-                              'Last activity: ${_formatDate(lastActivity)}',
+                              _formatDate(lastActivity),
                               style: TextStyle(
                                 fontSize: 10,
                                 color: Colors.grey[600],
@@ -260,7 +282,7 @@ class _PatientManagementDashboardState extends State<PatientManagementDashboard>
   Widget _buildActivePlansTab(AuthService authService) {
     return StreamBuilder<QuerySnapshot>(
       stream: FirebaseFirestore.instance
-          .collection('rehabilitation_plans')
+          .collectionGroup('rehabilitation_plans')
           .where('therapistId', isEqualTo: authService.currentUser!.uid)
           .where('status', isEqualTo: 'active')
           .orderBy('lastUpdated', descending: true)
@@ -268,6 +290,12 @@ class _PatientManagementDashboardState extends State<PatientManagementDashboard>
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
           return const Center(child: CircularProgressIndicator());
+        }
+
+        if (snapshot.hasError) {
+          return Center(
+            child: Text('Error loading plans: ${snapshot.error}'),
+          );
         }
 
         if (!snapshot.hasData || snapshot.data!.docs.isEmpty) {
@@ -282,7 +310,7 @@ class _PatientManagementDashboardState extends State<PatientManagementDashboard>
                 ),
                 const SizedBox(height: 16),
                 Text(
-                  'No active rehabilitation plans',
+                  'No active plans found',
                   style: TextStyle(
                     fontSize: 18,
                     color: Colors.grey[600],
@@ -295,104 +323,81 @@ class _PatientManagementDashboardState extends State<PatientManagementDashboard>
 
         final plans = snapshot.data!.docs;
 
-        // Filter plans based on search
-        final filteredPlans = _searchQuery.isEmpty
-            ? plans
-            : plans.where((doc) {
-                final planData = doc.data() as Map<String, dynamic>;
-                final title = planData['title'].toString().toLowerCase();
-                final userIdSearch =
-                    planData['userId'].toString().toLowerCase();
+        return ListView.builder(
+          padding: const EdgeInsets.all(8.0),
+          itemCount: plans.length,
+          itemBuilder: (context, index) {
+            final planData = plans[index].data() as Map<String, dynamic>;
+            final planId = plans[index].id;
+            final planTitle = planData['title'] ?? 'Unnamed Plan';
+            final patientId = planData['userId'] ?? '';
+            final lastUpdated =
+                (planData['lastUpdated'] as Timestamp?)?.toDate() ??
+                    DateTime.now();
 
-                return title.contains(_searchQuery) ||
-                    userIdSearch.contains(_searchQuery);
-              }).toList();
+            return FutureBuilder<DocumentSnapshot>(
+              future: FirebaseFirestore.instance
+                  .collection('users')
+                  .doc(patientId)
+                  .get(),
+              builder: (context, userSnapshot) {
+                String patientName = 'Unknown Patient';
+                if (userSnapshot.hasData && userSnapshot.data!.exists) {
+                  final userData =
+                      userSnapshot.data!.data() as Map<String, dynamic>?;
+                  patientName = userData?['name'] ?? 'Unknown Patient';
+                }
 
-        return filteredPlans.isEmpty
-            ? Center(
-                child: Text(
-                  'No plans match your search',
-                  style: TextStyle(color: Colors.grey[600]),
-                ),
-              )
-            : ListView.builder(
-                padding: const EdgeInsets.all(8.0),
-                itemCount: filteredPlans.length,
-                itemBuilder: (context, index) {
-                  final planData =
-                      filteredPlans[index].data() as Map<String, dynamic>;
-                  final planTitle = planData['title'] ?? 'Unnamed Plan';
-                  final patientId = planData['userId'];
-                  final lastUpdated =
-                      (planData['lastUpdated'] as Timestamp).toDate();
-
-                  return FutureBuilder<DocumentSnapshot>(
-                    future: FirebaseFirestore.instance
-                        .collection('users')
-                        .doc(patientId)
-                        .get(),
-                    builder: (context, userSnapshot) {
-                      String patientName = 'Loading...';
-
-                      if (userSnapshot.hasData && userSnapshot.data != null) {
-                        final userData =
-                            userSnapshot.data!.data() as Map<String, dynamic>?;
-                        patientName = userData?['name'] ?? 'Unknown Patient';
-                      }
-
-                      return Card(
-                        margin: const EdgeInsets.symmetric(
-                            vertical: 6.0, horizontal: 4.0),
-                        child: ListTile(
-                          leading: Container(
-                            width: 48,
-                            height: 48,
-                            decoration: BoxDecoration(
-                              color: Theme.of(context)
-                                  .primaryColor
-                                  .withOpacity(0.1),
-                              borderRadius: BorderRadius.circular(8),
-                            ),
-                            child: const Icon(
-                              Icons.healing,
-                              color: Colors.blue,
-                            ),
+                return Card(
+                  margin: const EdgeInsets.symmetric(
+                      vertical: 6.0, horizontal: 4.0),
+                  child: ListTile(
+                    leading: Container(
+                      width: 48,
+                      height: 48,
+                      decoration: BoxDecoration(
+                        color: Theme.of(context).primaryColor.withOpacity(0.1),
+                        borderRadius: BorderRadius.circular(8),
+                      ),
+                      child: const Icon(
+                        Icons.healing,
+                        color: Colors.blue,
+                      ),
+                    ),
+                    title: Text(planTitle),
+                    subtitle: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text('Patient: $patientName'),
+                        Text(
+                          'Last updated: ${_formatDate(lastUpdated)}',
+                          style: TextStyle(
+                            fontSize: 12,
+                            color: Colors.grey[600],
                           ),
-                          title: Text(planTitle),
-                          subtitle: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text('Patient: $patientName'),
-                              Text(
-                                'Last updated: ${_formatDate(lastUpdated)}',
-                                style: TextStyle(
-                                  fontSize: 12,
-                                  color: Colors.grey[600],
-                                ),
-                              ),
-                            ],
+                        ),
+                      ],
+                    ),
+                    isThreeLine: true,
+                    trailing: const Icon(Icons.chevron_right),
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => PatientDetailScreen(
+                            patientId: patientId,
+                            patientName: patientName,
+                            initialTabIndex: 1, // Plans tab
                           ),
-                          isThreeLine: true,
-                          trailing: const Icon(Icons.chevron_right),
-                          onTap: () {
-                            // Navigate to plan detail/edit screen
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => PatientDetailScreen(
-                                  patientId: patientId,
-                                  patientName: patientName,
-                                  initialTabIndex: 1, // Plans tab
-                                ),
-                              ),
-                            );
-                          },
                         ),
                       );
                     },
-                  );
-                },
-              );
+                  ),
+                );
+              },
+            );
+          },
+        );
       },
     );
   }
@@ -403,11 +408,17 @@ class _PatientManagementDashboardState extends State<PatientManagementDashboard>
           .collection('progress_logs')
           .where('therapistId', isEqualTo: authService.currentUser!.uid)
           .orderBy('date', descending: true)
-          .limit(30) // Get last 30 activities
+          .limit(50)
           .snapshots(),
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
           return const Center(child: CircularProgressIndicator());
+        }
+
+        if (snapshot.hasError) {
+          return Center(
+            child: Text('Error loading activity: ${snapshot.error}'),
+          );
         }
 
         if (!snapshot.hasData || snapshot.data!.docs.isEmpty) {
@@ -441,10 +452,10 @@ class _PatientManagementDashboardState extends State<PatientManagementDashboard>
           itemBuilder: (context, index) {
             final activityData =
                 activities[index].data() as Map<String, dynamic>;
-            final patientId = activityData['userId'];
-            final activityDate = (activityData['date'] as Timestamp).toDate();
-            final activityType = activityData['type'] ?? 'activity';
-            final planId = activityData['planId'];
+            final activityType = activityData['type'] ?? 'unknown';
+            final patientId = activityData['userId'] ?? '';
+            final date = (activityData['date'] as Timestamp?)?.toDate() ??
+                DateTime.now();
 
             return FutureBuilder<DocumentSnapshot>(
               future: FirebaseFirestore.instance
@@ -452,9 +463,8 @@ class _PatientManagementDashboardState extends State<PatientManagementDashboard>
                   .doc(patientId)
                   .get(),
               builder: (context, userSnapshot) {
-                String patientName = 'Loading...';
-
-                if (userSnapshot.hasData && userSnapshot.data != null) {
+                String patientName = 'Unknown Patient';
+                if (userSnapshot.hasData && userSnapshot.data!.exists) {
                   final userData =
                       userSnapshot.data!.data() as Map<String, dynamic>?;
                   patientName = userData?['name'] ?? 'Unknown Patient';
@@ -462,31 +472,39 @@ class _PatientManagementDashboardState extends State<PatientManagementDashboard>
 
                 return Card(
                   margin: const EdgeInsets.symmetric(
-                      vertical: 6.0, horizontal: 4.0),
+                      vertical: 4.0, horizontal: 4.0),
                   child: ListTile(
                     leading: CircleAvatar(
-                      backgroundColor: _getActivityColor(activityType),
+                      backgroundColor:
+                          _getActivityColor(activityType).withOpacity(0.1),
                       child: Icon(
                         _getActivityIcon(activityType),
-                        color: Colors.white,
-                        size: 18,
+                        color: _getActivityColor(activityType),
+                        size: 20,
                       ),
                     ),
                     title: Text(_getActivityTitle(activityType, patientName)),
-                    subtitle: Text(
-                      '${_formatDateWithTime(activityDate)}\n${_getActivityDescription(activityType, activityData)}',
-                      style: const TextStyle(fontSize: 12),
+                    subtitle: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(_getActivityDescription(
+                            activityType, activityData)),
+                        const SizedBox(height: 4),
+                        Text(
+                          _formatDateWithTime(date),
+                          style: TextStyle(
+                            fontSize: 11,
+                            color: Colors.grey[500],
+                          ),
+                        ),
+                      ],
                     ),
                     isThreeLine: true,
                     onTap: () {
-                      // Navigate to appropriate screen based on activity type
-                      if (activityType == 'plan_update' ||
-                          activityType == 'plan_created') {
-                        // Navigate to plan details
-                        _navigateToPlanDetails(
-                            context, planId, patientId, patientName);
+                      if (activityData['planId'] != null) {
+                        _navigateToPlanDetails(context, activityData['planId'],
+                            patientId, patientName);
                       } else {
-                        // Navigate to patient details
                         Navigator.push(
                           context,
                           MaterialPageRoute(
@@ -517,7 +535,6 @@ class _PatientManagementDashboardState extends State<PatientManagementDashboard>
           patientId: patientId,
           patientName: patientName,
           initialTabIndex: 1, // Plans tab
-          selectedPlanId: planId,
         ),
       ),
     );
@@ -529,7 +546,7 @@ class _PatientManagementDashboardState extends State<PatientManagementDashboard>
         return Colors.green;
       case 'plan_created':
         return Colors.blue;
-      case 'plan_update':
+      case 'plan_updated':
         return Colors.orange;
       case 'message':
         return Colors.purple;
@@ -544,7 +561,7 @@ class _PatientManagementDashboardState extends State<PatientManagementDashboard>
         return Icons.trending_up;
       case 'plan_created':
         return Icons.add_circle_outline;
-      case 'plan_update':
+      case 'plan_updated':
         return Icons.edit;
       case 'message':
         return Icons.message;
@@ -559,7 +576,7 @@ class _PatientManagementDashboardState extends State<PatientManagementDashboard>
         return '$patientName logged progress';
       case 'plan_created':
         return 'New plan created for $patientName';
-      case 'plan_update':
+      case 'plan_updated':
         return 'Plan updated for $patientName';
       case 'message':
         return 'Message from $patientName';
@@ -576,7 +593,7 @@ class _PatientManagementDashboardState extends State<PatientManagementDashboard>
         return 'Adherence: $adherence%';
       case 'plan_created':
         return data['planTitle'] ?? 'New rehabilitation plan';
-      case 'plan_update':
+      case 'plan_updated':
         return data['updateDescription'] ?? 'Plan details were updated';
       case 'message':
         return data['messagePreview'] ?? 'New message received';
@@ -586,18 +603,29 @@ class _PatientManagementDashboardState extends State<PatientManagementDashboard>
   }
 
   String _formatDate(DateTime date) {
-    return '${date.day}/${date.month}/${date.year}';
+    final now = DateTime.now();
+    final difference = now.difference(date);
+
+    if (difference.inDays == 0) {
+      return 'Today';
+    } else if (difference.inDays == 1) {
+      return 'Yesterday';
+    } else if (difference.inDays < 7) {
+      return '${difference.inDays} days ago';
+    } else {
+      return DateFormat('MMM dd, yyyy').format(date);
+    }
   }
 
   String _formatDateWithTime(DateTime date) {
-    return '${date.day}/${date.month}/${date.year} ${date.hour}:${date.minute.toString().padLeft(2, '0')}';
+    return DateFormat('MMM dd, yyyy HH:mm').format(date);
   }
 
   void _showFilterDialog() {
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
-        title: const Text('Filter Patients'),
+        title: const Text('Filter Options'),
         content: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
@@ -606,7 +634,15 @@ class _PatientManagementDashboardState extends State<PatientManagementDashboard>
               leading: const Icon(Icons.people),
               onTap: () {
                 Navigator.pop(context);
-                // Apply filter logic here
+                _tabController.animateTo(0);
+              },
+            ),
+            ListTile(
+              title: const Text('Active Plans'),
+              leading: const Icon(Icons.assignment),
+              onTap: () {
+                Navigator.pop(context);
+                _tabController.animateTo(1);
               },
             ),
             ListTile(
@@ -614,15 +650,7 @@ class _PatientManagementDashboardState extends State<PatientManagementDashboard>
               leading: const Icon(Icons.history),
               onTap: () {
                 Navigator.pop(context);
-                // Apply filter logic here
-              },
-            ),
-            ListTile(
-              title: const Text('Needs Attention'),
-              leading: const Icon(Icons.warning_amber_rounded),
-              onTap: () {
-                Navigator.pop(context);
-                // Apply filter logic here
+                _tabController.animateTo(2);
               },
             ),
           ],
