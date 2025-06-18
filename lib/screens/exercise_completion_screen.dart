@@ -354,58 +354,46 @@ class _ExerciseCompletionScreenState extends State<ExerciseCompletionScreen>
   Future<void> _checkAndDisplayAdjustments(
       String userId, String exerciseId) async {
     try {
-      // Get recent adjustments for this exercise
+      print('🔍 Checking adjustments for user: $userId, exercise: $exerciseId');
+
       final adjustmentHistory =
           await _adjustmentService.getAdjustmentHistory(userId, exerciseId);
+
+      print('📊 Found ${adjustmentHistory.length} adjustments in history');
 
       if (adjustmentHistory.isNotEmpty) {
         final latestAdjustment = adjustmentHistory.first;
 
-        // FIXED: Safe timestamp handling
-        dynamic timestampData = latestAdjustment['timestamp'];
-        DateTime? adjustmentTime;
+        // Check if adjustment has valid data
+        if (latestAdjustment['adjustments'] != null) {
+          final adjustments =
+              latestAdjustment['adjustments'] as Map<String, dynamic>;
 
-        if (timestampData is Timestamp) {
-          adjustmentTime = timestampData.toDate();
-        } else if (timestampData is DateTime) {
-          adjustmentTime = timestampData;
-        } else if (timestampData is String) {
-          try {
-            adjustmentTime = DateTime.parse(timestampData);
-          } catch (e) {
-            print('❌ Error parsing timestamp string: $e');
-            adjustmentTime = null;
-          }
-        }
-
-        // Check if adjustment was made in the last 2 minutes (indicating it was from this session)
-        if (adjustmentTime != null) {
-          final now = DateTime.now();
-          final timeDifference = now.difference(adjustmentTime).inMinutes;
-
-          if (timeDifference < 2) {
+          // Always show the most recent adjustment (remove time restriction)
+          if (mounted) {
             setState(() {
-              _exerciseAdjustments = latestAdjustment['adjustments'];
+              _exerciseAdjustments = adjustments;
               _adjustmentsApplied = true;
             });
 
-            // Animate adjustment display
-            _adjustmentController.forward();
+            // Animate after a short delay
+            Future.delayed(const Duration(milliseconds: 500), () {
+              if (mounted) {
+                _adjustmentController.forward();
+              }
+            });
 
-            print('🎯 Recent adjustments detected and displayed');
-          } else {
-            print(
-                '📊 Latest adjustment is too old: ${timeDifference} minutes ago');
+            print('🎯 Most recent adjustments displayed');
+            print('📊 Adjustment data: $adjustments');
           }
         } else {
-          print('❌ Could not parse adjustment timestamp');
+          print('❌ No valid adjustment data found');
         }
       } else {
         print('📊 No adjustment history found for exercise: $exerciseId');
       }
     } catch (e) {
       print('❌ Error checking adjustments: $e');
-      // Don't throw error - this is optional functionality
     }
   }
 
