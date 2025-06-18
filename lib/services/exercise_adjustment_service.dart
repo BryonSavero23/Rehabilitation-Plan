@@ -1274,43 +1274,6 @@ class ExerciseAdjustmentService {
   }
 
   // 🚨 Nuclear option - delete all scheduled exercises
-  Future<void> nukeAllScheduledExercises(String userId) async {
-    try {
-      print('🚨 NUCLEAR OPTION: Deleting ALL scheduled exercises for user...');
-
-      final allScheduled = await _firestore
-          .collection('exerciseSchedule')
-          .where('userId', isEqualTo: userId)
-          .get();
-
-      print(
-          '🗑️ Found ${allScheduled.docs.length} total scheduled exercises to delete...');
-
-      int deleteCount = 0;
-      for (final doc in allScheduled.docs) {
-        final data = doc.data();
-        final exerciseName = data['exerciseName'] ?? 'Unknown';
-        final scheduledDate = (data['scheduledDate'] as Timestamp).toDate();
-
-        print('🗑️ Deleting: $exerciseName scheduled for $scheduledDate');
-        await doc.reference.delete();
-        deleteCount++;
-      }
-
-      print('✅ NUCLEAR COMPLETE: Deleted $deleteCount scheduled exercises');
-
-      // Verify cleanup
-      final remaining = await _firestore
-          .collection('exerciseSchedule')
-          .where('userId', isEqualTo: userId)
-          .get();
-
-      print(
-          '✅ Verification: ${remaining.docs.length} exercises remaining (should be 0)');
-    } catch (e) {
-      print('❌ Error in nuclear option: $e');
-    }
-  }
 
   // 📅 Helper function to get day of week name
   String _getDayOfWeekName(int weekday) {

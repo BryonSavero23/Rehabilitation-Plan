@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:personalized_rehabilitation_plans/widgets/therapy_progress_widget.dart';
 import 'package:provider/provider.dart';
 import 'package:personalized_rehabilitation_plans/services/auth_service.dart';
 import 'package:personalized_rehabilitation_plans/models/rehabilitation_models.dart';
@@ -88,18 +89,94 @@ class _DashboardHomeScreenState extends State<DashboardHomeScreen> {
           child: _isLoading
               ? const Center(child: CircularProgressIndicator())
               : SingleChildScrollView(
-                  padding: const EdgeInsets.all(20.0),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      _buildHeader(userName),
-                      const SizedBox(height: 24),
-                      _buildPlanSelector(authService),
-                      const SizedBox(height: 24),
-                      _buildStatsGrid(authService),
-                      const SizedBox(height: 24),
-                      if (_selectedPlan != null) _buildQuickActions(),
-                    ],
+                  child: Padding(
+                    padding: const EdgeInsets.all(20),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        // Welcome Section
+                        Row(
+                          children: [
+                            Expanded(
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    'Hi, ${userName.toUpperCase()}.',
+                                    style: const TextStyle(
+                                      fontSize: 20,
+                                      fontWeight: FontWeight.bold,
+                                      color: Colors.black87,
+                                    ),
+                                  ),
+                                  const SizedBox(height: 4),
+                                  const Text(
+                                    'Doing great, keep it up!',
+                                    style: TextStyle(
+                                      fontSize: 14,
+                                      color: Colors.black54,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                            Container(
+                              padding: const EdgeInsets.all(12),
+                              decoration: BoxDecoration(
+                                color: Colors.amber.withOpacity(0.2),
+                                borderRadius: BorderRadius.circular(12),
+                              ),
+                              child: const Icon(
+                                Icons.emoji_events,
+                                color: Colors.amber,
+                                size: 24,
+                              ),
+                            ),
+                          ],
+                        ),
+                        const SizedBox(height: 24),
+
+                        // Plan Selection
+                        _buildPlanSelector(authService),
+                        const SizedBox(height: 24),
+
+                        // Stats Grid
+                        _buildStatsGrid(authService),
+                        const SizedBox(height: 32),
+
+                        // Quick Actions
+                        _buildQuickActions(),
+
+                        // Add spacing after Quick Actions
+                        const SizedBox(height: 24),
+
+                        // NEW: Therapy Progress Widget - Add this below Quick Actions
+                        TherapyProgressWidget(
+                          userName: userName,
+                          selectedPlan: _selectedPlan,
+                          onTap: () {
+                            if (_selectedPlan != null &&
+                                _selectedPlanId != null) {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) =>
+                                      RehabilitationProgressScreen(
+                                    plan: _selectedPlan!,
+                                    planId: _selectedPlanId,
+                                    therapistName: "Your Therapist",
+                                    therapistTitle: "Dr.",
+                                  ),
+                                ),
+                              );
+                            }
+                          },
+                        ),
+
+                        // Add some bottom spacing
+                        const SizedBox(height: 32),
+                      ],
+                    ),
                   ),
                 ),
         ),
