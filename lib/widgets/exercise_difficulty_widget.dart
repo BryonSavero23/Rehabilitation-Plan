@@ -320,69 +320,6 @@ class _ExerciseDifficultyWidgetState extends State<ExerciseDifficultyWidget>
               ),
             ),
           ],
-
-          // Additional feedback options
-          const SizedBox(height: 20),
-          _buildAdditionalFeedback(),
-        ],
-      ),
-    );
-  }
-
-  Widget _buildAdditionalFeedback() {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Text(
-          'Additional Feedback (Optional)',
-          style: TextStyle(
-            fontSize: 14,
-            fontWeight: FontWeight.w500,
-            color: Colors.grey[700],
-          ),
-        ),
-        const SizedBox(height: 12),
-
-        // Quick feedback tags
-        Wrap(
-          spacing: 8,
-          runSpacing: 8,
-          children: [
-            _buildFeedbackTag('Form was good', Icons.check_circle_outline),
-            _buildFeedbackTag('Felt muscle fatigue', Icons.fitness_center),
-            _buildFeedbackTag('Joint discomfort', Icons.warning_amber_rounded),
-            _buildFeedbackTag('Could go longer', Icons.timer),
-            _buildFeedbackTag('Need more rest', Icons.pause_circle_outline),
-          ],
-        ),
-      ],
-    );
-  }
-
-  Widget _buildFeedbackTag(String label, IconData icon) {
-    return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
-      decoration: BoxDecoration(
-        color: Colors.grey.shade100,
-        borderRadius: BorderRadius.circular(20),
-        border: Border.all(color: Colors.grey.shade300),
-      ),
-      child: Row(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          Icon(
-            icon,
-            size: 14,
-            color: Colors.grey[600],
-          ),
-          const SizedBox(width: 6),
-          Text(
-            label,
-            style: TextStyle(
-              fontSize: 12,
-              color: Colors.grey[700],
-            ),
-          ),
         ],
       ),
     );

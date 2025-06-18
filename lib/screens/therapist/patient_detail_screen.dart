@@ -240,38 +240,6 @@ class _PatientDetailScreenState extends State<PatientDetailScreen>
 
           const SizedBox(height: 24),
 
-          // Medical Information
-          _buildSectionHeader('Medical Information'),
-          Card(
-            child: Padding(
-              padding: const EdgeInsets.all(16.0),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  _buildInfoRow(
-                    icon: Icons.medical_services,
-                    title: 'Condition',
-                    value: 'Recovering from knee surgery',
-                  ),
-                  const Divider(),
-                  _buildInfoRow(
-                    icon: Icons.history,
-                    title: 'Medical History',
-                    value: 'ACL tear (2023), Sprained ankle (2021)',
-                  ),
-                  const Divider(),
-                  _buildInfoRow(
-                    icon: Icons.medication,
-                    title: 'Medications',
-                    value: 'Ibuprofen as needed',
-                  ),
-                ],
-              ),
-            ),
-          ),
-
-          const SizedBox(height: 24),
-
           // Current Plan Summary
           _buildSectionHeader('Current Rehabilitation'),
           StreamBuilder<QuerySnapshot>(

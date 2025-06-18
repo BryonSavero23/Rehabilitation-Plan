@@ -325,7 +325,7 @@ class _RehabilitationProgressScreenState
             ],
           ),
           content: const Text(
-            'Congratulations! You\'ve completed all exercises for this week.\n\nDo you want to continue to next week\'s exercise plan?',
+            'Congratulations! You\'ve completed all exercises for this week.\n\nDo you want to continue to next week\'s exercise plan? \n\nOr you have completed your rehabilitation goal and want to create a new plan?',
             style: TextStyle(fontSize: 16),
           ),
           actions: [
@@ -334,7 +334,7 @@ class _RehabilitationProgressScreenState
               style: TextButton.styleFrom(
                 foregroundColor: Colors.grey[600],
               ),
-              child: const Text('No', style: TextStyle(fontSize: 16)),
+              child: const Text('New Plan', style: TextStyle(fontSize: 16)),
             ),
             ElevatedButton(
               onPressed: () => Navigator.of(context).pop(true),
@@ -345,7 +345,8 @@ class _RehabilitationProgressScreenState
                   borderRadius: BorderRadius.circular(8),
                 ),
               ),
-              child: const Text('Yes', style: TextStyle(fontSize: 16)),
+              child:
+                  const Text('Yes, Next week', style: TextStyle(fontSize: 16)),
             ),
           ],
         );

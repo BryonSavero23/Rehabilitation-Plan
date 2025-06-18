@@ -214,8 +214,6 @@ class _PatientManagementDashboardState extends State<PatientManagementDashboard>
                   final patientId = filteredPatients[index].id;
                   final patientName = patientData['name'] ?? 'Unknown';
                   final patientEmail = patientData['email'] ?? 'No email';
-                  final patientCondition =
-                      patientData['condition'] ?? 'Not specified';
                   final lastActivity = patientData['lastActivity'] != null
                       ? (patientData['lastActivity'] as Timestamp).toDate()
                       : null;
@@ -235,7 +233,6 @@ class _PatientManagementDashboardState extends State<PatientManagementDashboard>
                       subtitle: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Text(patientCondition),
                           Text(
                             patientEmail,
                             style: TextStyle(

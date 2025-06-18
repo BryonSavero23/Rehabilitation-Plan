@@ -639,7 +639,10 @@ class _ExerciseCompletionScreenState extends State<ExerciseCompletionScreen>
 
   int _calculateAdherence() {
     final setsCompletion = (widget.completedSets / widget.exercise.sets) * 100;
-    final repsCompletion = (widget.completedReps / widget.exercise.reps) * 100;
+    final totalTargetReps =
+        widget.exercise.sets * widget.exercise.reps; // Add this line
+    final repsCompletion =
+        (widget.completedReps / totalTargetReps) * 100; // Use totalTargetReps
     return ((setsCompletion + repsCompletion) / 2).round().clamp(0, 100);
   }
 
@@ -961,7 +964,7 @@ class _ExerciseCompletionScreenState extends State<ExerciseCompletionScreen>
               Expanded(
                 child: _buildSummaryItem(
                   'Reps Completed',
-                  '${widget.completedReps}/${widget.exercise.reps}',
+                  '${widget.completedReps}/${widget.exercise.sets * widget.exercise.reps}',
                   Icons.fitness_center,
                   _getRepsCompletionColor(),
                 ),
@@ -1512,9 +1515,12 @@ class _ExerciseCompletionScreenState extends State<ExerciseCompletionScreen>
   }
 
   Color _getRepsCompletionColor() {
-    final completion = widget.completedReps / widget.exercise.reps;
-    if (completion >= 1.0) return Colors.green;
-    if (completion >= 0.8) return Colors.orange;
+    final totalTargetReps =
+        widget.exercise.sets * widget.exercise.reps; // Add this line
+    final percentage = widget.completedReps /
+        totalTargetReps; // Use totalTargetReps instead of widget.exercise.reps
+    if (percentage >= 1.0) return Colors.green;
+    if (percentage >= 0.8) return Colors.orange;
     return Colors.red;
   }
 

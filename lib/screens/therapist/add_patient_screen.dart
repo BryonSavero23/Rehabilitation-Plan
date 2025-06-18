@@ -14,27 +14,11 @@ class AddPatientScreen extends StatefulWidget {
 class _AddPatientScreenState extends State<AddPatientScreen> {
   final _formKey = GlobalKey<FormState>();
   final _emailController = TextEditingController();
-  String? _selectedCondition;
   final _notesController = TextEditingController();
   List<Map<String, dynamic>> _searchResults = [];
   bool _isSearching = false;
   bool _hasSearched = false;
   bool _isAdding = false;
-
-  // List of common conditions for dropdown
-  final List<String> _conditions = [
-    'Post-Surgical Rehabilitation',
-    'Sports Injury',
-    'Knee Pain/Injury',
-    'Shoulder Pain/Injury',
-    'Back Pain',
-    'Neck Pain',
-    'Joint Replacement',
-    'Sprain/Strain',
-    'Balance/Gait Disorders',
-    'Neurological Condition',
-    'Other',
-  ];
 
   @override
   void dispose() {
@@ -113,16 +97,6 @@ class _AddPatientScreenState extends State<AddPatientScreen> {
   // Add patient to therapist's patient list
   Future<void> _addPatient(
       String patientId, String patientName, String patientEmail) async {
-    if (_selectedCondition == null) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text('Please select a condition'),
-          backgroundColor: Colors.red,
-        ),
-      );
-      return;
-    }
-
     setState(() {
       _isAdding = true;
     });
@@ -157,11 +131,10 @@ class _AddPatientScreenState extends State<AddPatientScreen> {
         'id': patientId,
         'name': patientName,
         'email': patientEmail,
-        'condition': _selectedCondition,
         'notes': _notesController.text.trim(),
         'dateAdded': FieldValue.serverTimestamp(),
         'lastActivity': FieldValue.serverTimestamp(),
-        'therapistId': therapistId, // NEW: Add therapistId here too
+        'therapistId': therapistId,
       });
 
       // 2. Add therapist to patient's therapists collection
@@ -178,19 +151,17 @@ class _AddPatientScreenState extends State<AddPatientScreen> {
         'dateAdded': FieldValue.serverTimestamp(),
       });
 
-      // 3. NEW: Update patient's main user document with therapistId
+      // 3. Update patient's main user document with therapistId
       final patientUserRef =
           FirebaseFirestore.instance.collection('users').doc(patientId);
 
       batch.update(patientUserRef, {
-        'assignedTherapistId':
-            therapistId, // NEW: Store therapistId in main user doc
-        'assignedTherapistName': therapistName, // NEW: Store therapist name too
-        'therapistAssignedAt':
-            FieldValue.serverTimestamp(), // NEW: Track when assigned
+        'assignedTherapistId': therapistId,
+        'assignedTherapistName': therapistName,
+        'therapistAssignedAt': FieldValue.serverTimestamp(),
       });
 
-      // 4. NEW: Create a patient-therapist relationship document for easy querying
+      // 4. Create a patient-therapist relationship document
       final relationshipRef = FirebaseFirestore.instance
           .collection('patient_therapist_relationships')
           .doc('${patientId}_${therapistId}');
@@ -202,7 +173,6 @@ class _AddPatientScreenState extends State<AddPatientScreen> {
         'therapistId': therapistId,
         'therapistName': therapistName,
         'therapistEmail': therapistEmail,
-        'condition': _selectedCondition,
         'status': 'active',
         'createdAt': FieldValue.serverTimestamp(),
         'lastUpdated': FieldValue.serverTimestamp(),
@@ -213,7 +183,7 @@ class _AddPatientScreenState extends State<AddPatientScreen> {
           .collection('users')
           .doc(patientId)
           .collection('notifications')
-          .doc(); // Auto-generate ID
+          .doc();
 
       batch.set(notificationRef, {
         'title': 'New Therapist',
@@ -221,11 +191,11 @@ class _AddPatientScreenState extends State<AddPatientScreen> {
         'type': 'therapist_added',
         'isRead': false,
         'timestamp': FieldValue.serverTimestamp(),
-        'therapistId': therapistId, // NEW: Include therapistId in notification
-        'therapistName': therapistName, // NEW: Include therapist name
+        'therapistId': therapistId,
+        'therapistName': therapistName,
       });
 
-      // 6. NEW: Add entry to therapist's activity log
+      // 6. Add entry to therapist's activity log
       final activityRef = FirebaseFirestore.instance
           .collection('therapists')
           .doc(therapistId)
@@ -238,15 +208,11 @@ class _AddPatientScreenState extends State<AddPatientScreen> {
         'patientName': patientName,
         'timestamp': FieldValue.serverTimestamp(),
         'details': {
-          'condition': _selectedCondition,
           'notes': _notesController.text.trim(),
         },
       });
 
-      // Execute all operations atomically
       await batch.commit();
-
-      print('✅ Patient added successfully with therapistId: $therapistId');
 
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
@@ -255,11 +221,9 @@ class _AddPatientScreenState extends State<AddPatientScreen> {
             backgroundColor: Colors.green,
           ),
         );
-
         Navigator.pop(context);
       }
     } catch (e) {
-      print('❌ Error adding patient: $e');
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
@@ -494,33 +458,6 @@ class _AddPatientScreenState extends State<AddPatientScreen> {
                                 ),
                               ),
                               const SizedBox(height: 12),
-
-                              // Condition Dropdown
-                              DropdownButtonFormField<String>(
-                                decoration: const InputDecoration(
-                                  labelText: 'Primary Condition',
-                                  prefixIcon: Icon(Icons.medical_services),
-                                ),
-                                value: _selectedCondition,
-                                items: _conditions.map((condition) {
-                                  return DropdownMenuItem(
-                                    value: condition,
-                                    child: Text(condition),
-                                  );
-                                }).toList(),
-                                onChanged: (value) {
-                                  setState(() {
-                                    _selectedCondition = value;
-                                  });
-                                },
-                                validator: (value) {
-                                  if (value == null || value.isEmpty) {
-                                    return 'Please select a condition';
-                                  }
-                                  return null;
-                                },
-                              ),
-                              const SizedBox(height: 16),
 
                               // Notes TextField
                               TextFormField(
